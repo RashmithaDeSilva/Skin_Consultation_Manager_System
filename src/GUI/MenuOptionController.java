@@ -16,3 +16,4 @@ abstract class MenuOptionController extends JFrame {
     }
 
 }
+

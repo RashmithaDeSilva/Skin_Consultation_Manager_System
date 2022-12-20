@@ -1,6 +1,9 @@
 package consoleSystem_v2;
 
 import GUI.MainMenu;
+
+import javax.swing.*;
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
@@ -45,7 +48,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                     loopBreak = false;
                     break;
                 default:
-                    System.out.println("Invalid Value .....!");
+                    System.out.println("Invalid Value .....!\n");
             }
         }while(loopBreak);
     }
@@ -272,18 +275,29 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     }
     @Override
     public void openGUI() {
-        new MainMenu(doctors,this).setVisible(true);
+        new MainMenu(this).setVisible(true);
+    }
+
+
+    // Other Methods
+    public void openGUIWithOption(int GUI_MenuOptionPosition){
+        MainMenu GUI = new MainMenu(this);
+        GUI.setVisible(true);
+        GUI.openMenuOption(GUI_MenuOptionPosition);
     }
 
 
     // Set Methods
-    public void setDoctors(Doctor doctor) {
+    public void setDoctor(Doctor doctor) {
         this.doctors.add(doctor);
     }
 
     // Get Methods
-    public Doctor getDoctors(int position) {
+    public Doctor getDoctor(int position) {
         return doctors.get(position);
+    }
+    public ArrayList<Doctor> getDoctors(){
+        return doctors;
     }
 
 }

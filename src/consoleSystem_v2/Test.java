@@ -1,17 +1,13 @@
 package consoleSystem_v2;
 
-import java.io.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Locale;
-import java.io.NotSerializableException;
+import java.util.Scanner;
 
 public class Test {
 
     private static ArrayList<Doctor> doctors = new ArrayList<Doctor>(10);
 
-    public static void main(String[] args) throws IOException {
+    public static void main() {
 
         /*
         LocalDate DOB = LocalDate.parse("2000-11-20");
@@ -41,7 +37,7 @@ public class Test {
         }catch (Exception e){
             System.out.println(e);
         }
-         */
+         *
 
 
         for (int i=0;i<2;i++){
@@ -62,7 +58,14 @@ public class Test {
         }catch (Exception e){
             System.out.println(e);
         }
+        */
+
+
+
+
+
 
 
     }
+
 }

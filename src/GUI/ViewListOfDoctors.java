@@ -1,6 +1,8 @@
 package GUI;
 
 import consoleSystem_v2.Doctor;
+import consoleSystem_v2.SkinConsultationManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -14,6 +16,7 @@ public class ViewListOfDoctors extends MenuOptionController {
     private JTable doctorsTable;
     private JButton firstNameBtn;
     private JButton surnameBtn;
+    private JButton refresh;
 
     @Override
     public String getOptionName() {
@@ -26,13 +29,7 @@ public class ViewListOfDoctors extends MenuOptionController {
 
 
     // Contractor
-    ViewListOfDoctors(ArrayList<Doctor> doctors){
-
-        // Copy consoleSystem_v2 doctor ArrayList Objs in to New Local ArrayList
-        ArrayList<Doctor> doctorsArrayList = new ArrayList<>();
-        for(int i=0;i<doctors.size();i++){
-            doctorsArrayList.add(doctors.get(i));
-        }
+    ViewListOfDoctors(SkinConsultationManager SCM,JFrame jFrame){
 
         // Set Window
         setWindow(800,400,"View List Of Doctors");
@@ -45,8 +42,8 @@ public class ViewListOfDoctors extends MenuOptionController {
         add("North",optionNamePnl);
 
         // Set Table
-        JScrollPane firstNameSort = new JScrollPane(sortFirstName(doctorsArrayList));
-        JScrollPane surnameSort = new JScrollPane(sortSurname(doctorsArrayList));
+        JScrollPane firstNameSort = new JScrollPane(sortFirstName(SCM));
+        JScrollPane surnameSort = new JScrollPane(sortSurname(SCM));
         add("Center",surnameSort);
 
         // Set Sort Button Types
@@ -73,6 +70,18 @@ public class ViewListOfDoctors extends MenuOptionController {
             }
         });
 
+        refresh = new JButton("Refresh");
+        refresh.setFont(new Font("SansSerif",Font.BOLD,15));
+        refresh.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                jFrame.setVisible(false);
+
+            }
+        });
+
+
         JPanel pnl = new JPanel(new FlowLayout());
         pnl.add(firstNameBtn);
         pnl.add(surnameBtn);
@@ -83,7 +92,13 @@ public class ViewListOfDoctors extends MenuOptionController {
     // Methords
 
     // First Name Sort Method
-    private JTable sortFirstName(ArrayList<Doctor> doctorsArrayList){
+    private JTable sortFirstName(SkinConsultationManager SCM){
+
+        // Copy consoleSystem_v2 doctor ArrayList Objs in to New Local ArrayList
+        ArrayList<Doctor> doctorsArrayList = new ArrayList<>();
+        for(int i=0;i<SCM.getDoctors().size();i++){
+            doctorsArrayList.add(SCM.getDoctors().get(i));
+        }
 
         String[] columnNames = {"First Name","Surname","Date Of Birth","Mobile Number","Medical Licence Number","Specialisation"};
         String[][] doctorsArray = new String[doctorsArrayList.size()][columnNames.length];
@@ -150,7 +165,13 @@ public class ViewListOfDoctors extends MenuOptionController {
     }
 
     // Surname Sort Method
-    private JTable sortSurname(ArrayList<Doctor> doctorsArrayList){
+    private JTable sortSurname(SkinConsultationManager SCM){
+
+        // Copy consoleSystem_v2 doctor ArrayList Objs in to New Local ArrayList
+        ArrayList<Doctor> doctorsArrayList = new ArrayList<>();
+        for(int i=0;i<SCM.getDoctors().size();i++){
+            doctorsArrayList.add(SCM.getDoctors().get(i));
+        }
 
         String[] columnNames = {"Surname","First Name","Date Of Birth","Mobile Number","Medical Licence Number","Specialisation"};
         String[][] doctorsArray = new String[doctorsArrayList.size()][columnNames.length];

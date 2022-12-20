@@ -17,7 +17,7 @@ public class MainMenu extends JFrame {
 
 
     // Contractor
-    public MainMenu(ArrayList<Doctor> doctors, SkinConsultationManager SCM){
+    public MainMenu(SkinConsultationManager SCM){
         setWindow(600,400,"Westminster Skin Consultation Manager");
 
         // Set Main Menu Name
@@ -28,8 +28,8 @@ public class MainMenu extends JFrame {
         add("North",mainMenuNamePnl);
 
         // Menu Options
-        MOC.add(new ViewListOfDoctors(doctors));
-        MOC.add(new AddConsultation(doctors));
+        MOC.add(new ViewListOfDoctors(SCM,this));
+        MOC.add(new AddConsultation(SCM));
         MOC.add(new CheckConsultations());
         MOC.add(new Refresh());
         MOC.add(new Exit());
@@ -45,20 +45,10 @@ public class MainMenu extends JFrame {
 
 
         // 1 - View List of Doctors -> (sort)
-        btn.get(0).addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MOC.get(0).setVisible(true);
-            }
-        });
+        btn.get(0).addActionListener((e)->MOC.get(0).setVisible(true));
 
-        // 2 - Add Consultation -> (select doctor -> (check consultations, add consultation -> (add patient) ) )
-        btn.get(1).addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                MOC.get(1).setVisible(true);
-            }
-        });
+        // 2 - Add Consultation -> (select doctor -> (check consultations, add consultation -> (add patient) ))
+        btn.get(1).addActionListener((e)->MOC.get(1).setVisible(true));
 
         // 3 - Check Consultations -> (sort)
 
@@ -72,12 +62,7 @@ public class MainMenu extends JFrame {
         });
 
         // 5 - Exit
-        btn.get(4).addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.exit(0);
-            }
-        });
+        btn.get(4).addActionListener((e)->System.exit(0));
 
 
         add("Center",mainMenuOptionsPnl);
@@ -102,5 +87,10 @@ public class MainMenu extends JFrame {
         pnl.add(lbl);
         pnl.add(btn);
         return pnl;
+    }
+
+    // Open option
+    public void openMenuOption(int menuOptionPosition){
+        MOC.get(menuOptionPosition).setVisible(true);
     }
 }

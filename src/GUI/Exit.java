@@ -13,4 +13,5 @@ public class Exit extends MenuOptionController {
     public String getOptionNumber() {
         return optionNumber;
     }
+
 }
