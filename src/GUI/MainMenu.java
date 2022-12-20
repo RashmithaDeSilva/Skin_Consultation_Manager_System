@@ -2,6 +2,8 @@ package GUI;
 
 import consoleSystem_v2.Doctor;
 import consoleSystem_v2.SkinConsultationManager;
+import consoleSystem_v2.WestminsterSkinConsultationManager;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -18,12 +20,14 @@ public class MainMenu extends JFrame {
 
     // Contractor
     public MainMenu(SkinConsultationManager SCM){
+
+        // Set Window
         setWindow(600,400,"Westminster Skin Consultation Manager");
 
         // Set Main Menu Name
         JPanel mainMenuNamePnl = new JPanel(new FlowLayout());
         mainMenuNameLbl.setText("Westminster Skin Consultation Manager");
-        mainMenuNameLbl.setFont(new Font("",1,25));
+        mainMenuNameLbl.setFont(new Font("SansSerif",Font.BOLD,25));
         mainMenuNamePnl.add(mainMenuNameLbl);
         add("North",mainMenuNamePnl);
 
@@ -31,7 +35,6 @@ public class MainMenu extends JFrame {
         MOC.add(new ViewListOfDoctors(SCM,this));
         MOC.add(new AddConsultation(SCM));
         MOC.add(new CheckConsultations());
-        MOC.add(new Refresh());
         MOC.add(new Exit());
         JPanel mainMenuOptionsPnl = new JPanel(new GridLayout(MOC.size(),1));
         for(int i=0;i<MOC.size();i++){
@@ -43,7 +46,6 @@ public class MainMenu extends JFrame {
         }
 
 
-
         // 1 - View List of Doctors -> (sort)
         btn.get(0).addActionListener((e)->MOC.get(0).setVisible(true));
 
@@ -52,22 +54,13 @@ public class MainMenu extends JFrame {
 
         // 3 - Check Consultations -> (sort)
 
-        // 4 - Refresh
-        btn.get(3).addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                SCM.openGUI();
-            }
-        });
 
-        // 5 - Exit
-        btn.get(4).addActionListener((e)->System.exit(0));
+        // 4 - Exit
+        btn.get(3).addActionListener((e)->dispose());
 
 
         add("Center",mainMenuOptionsPnl);
     }
-
 
     // Set Window
     private void setWindow(int width, int height, String name){
@@ -89,8 +82,8 @@ public class MainMenu extends JFrame {
         return pnl;
     }
 
-    // Open option
-    public void openMenuOption(int menuOptionPosition){
-        MOC.get(menuOptionPosition).setVisible(true);
+    // Open Main Menu Option
+    public void openMainMenuOption(int optionNumber){
+        MOC.get(optionNumber-1).setVisible(true);
     }
 }

@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+
 public class ViewListOfDoctors extends MenuOptionController {
     private String optionNumber = "[1]";
     private String optionName = "View List Of Doctors";
@@ -16,7 +17,7 @@ public class ViewListOfDoctors extends MenuOptionController {
     private JTable doctorsTable;
     private JButton firstNameBtn;
     private JButton surnameBtn;
-    private JButton refresh;
+    private JButton refreshBtn;
 
     @Override
     public String getOptionName() {
@@ -29,7 +30,7 @@ public class ViewListOfDoctors extends MenuOptionController {
 
 
     // Contractor
-    ViewListOfDoctors(SkinConsultationManager SCM,JFrame jFrame){
+    ViewListOfDoctors(SkinConsultationManager SCM,MainMenu mainMenu){
 
         // Set Window
         setWindow(800,400,"View List Of Doctors");
@@ -41,43 +42,56 @@ public class ViewListOfDoctors extends MenuOptionController {
         optionNamePnl.add(optionNameLbl);
         add("North",optionNamePnl);
 
+        // Copy consoleSystem_v2 doctor ArrayList Objs in to New Local ArrayList
+        ArrayList<Doctor> doctorsArrayList = new ArrayList<>();
+        for(int i = 0; i< SCM.getDoctors().size(); i++){
+            doctorsArrayList.add(SCM.getDoctors().get(i));
+        }
+
         // Set Table
-        JScrollPane firstNameSort = new JScrollPane(sortFirstName(SCM));
-        JScrollPane surnameSort = new JScrollPane(sortSurname(SCM));
-        add("Center",surnameSort);
+        JScrollPane docList = new JScrollPane(doctorList(doctorsArrayList));
+        JScrollPane firstNameSort = new JScrollPane(sortFirstName(doctorsArrayList));
+        JScrollPane surnameSort = new JScrollPane(sortSurname(doctorsArrayList));
+        add("Center",docList);
 
         // Set Sort Button Types
+        // Sort By First Name Button
         firstNameBtn = new JButton("Sort First Name");
         firstNameBtn.setFont(new Font("SansSerif",Font.BOLD,15));
         firstNameBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
+                remove(docList);
                 remove(surnameSort);
                 add("Center",firstNameSort);
                 setVisible(true);
             }
         });
+
+        // Sort By Surname Button
         surnameBtn = new JButton("Sort Surname");
         surnameBtn.setFont(new Font("SansSerif",Font.BOLD,15));
         surnameBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
+                remove(docList);
                 remove(firstNameSort);
                 add("Center",surnameSort);
                 setVisible(true);
             }
         });
 
-        refresh = new JButton("Refresh");
-        refresh.setFont(new Font("SansSerif",Font.BOLD,15));
-        refresh.addActionListener(new ActionListener() {
+        // Refresh Button
+        refreshBtn = new JButton("Refresh");
+        refreshBtn.setFont(new Font("SansSerif",Font.BOLD,15));
+        refreshBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                jFrame.setVisible(false);
-
+                dispose();
+                mainMenu.dispose();
+                SCM.openGUIWithOption(1);
             }
         });
 
@@ -85,69 +99,85 @@ public class ViewListOfDoctors extends MenuOptionController {
         JPanel pnl = new JPanel(new FlowLayout());
         pnl.add(firstNameBtn);
         pnl.add(surnameBtn);
+        pnl.add(refreshBtn);
         add("South",pnl);
     }
 
 
     // Methords
 
-    // First Name Sort Method
-    private JTable sortFirstName(SkinConsultationManager SCM){
-
-        // Copy consoleSystem_v2 doctor ArrayList Objs in to New Local ArrayList
-        ArrayList<Doctor> doctorsArrayList = new ArrayList<>();
-        for(int i=0;i<SCM.getDoctors().size();i++){
-            doctorsArrayList.add(SCM.getDoctors().get(i));
-        }
+    // Set Doctor List
+    private JTable doctorList(ArrayList<Doctor> doctorsArrayList){
 
         String[] columnNames = {"First Name","Surname","Date Of Birth","Mobile Number","Medical Licence Number","Specialisation"};
         String[][] doctorsArray = new String[doctorsArrayList.size()][columnNames.length];
-        String[] firstName = new String[doctorsArrayList.size()];
-        int[] potion = new int[firstName.length];
 
-        // Copy First Names
-        for(int i=0;i<firstName.length;i++){
-            firstName[i] = doctorsArrayList.get(i).getName();
-        }
 
-        // Sort First Names
-        for(int i=0;i<firstName.length-1;i++){
-            for(int j=0;j<firstName.length-1;j++){
-                //Compares Each Elements Of The Array To All The Remaining Elements
-                if(firstName[i].compareToIgnoreCase(firstName[j+1])>0){
-                    //Swapping Array Elements
-                    String temp = firstName[i];
-                    firstName[i] = firstName[j];
-                    firstName[j] = temp;
+        // Set Doctors Values In To 2D Array
+        for(int i=0;i<doctorsArrayList.size();i++){
+            for(int j=0;j<columnNames.length;j++){
+                if (j == 0) {
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getName();
+                } else if (j == 1) {
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getSurname();
+                } else if (j == 2) {
+                    doctorsArray[i][j] = String.valueOf(doctorsArrayList.get(i).getDateOfBirth());
+                } else if (j == 3) {
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getMobileNumber();
+                } else if (j == 4) {
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getMedicalLicenceNumber();
+                } else {
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getSpecialisation();
                 }
             }
         }
 
-        // After Sort Check New Potions
-        for(int i=0;i<potion.length;i++){
-            for(int j=0;j<potion.length;j++){
-                if(firstName[i].equals(doctorsArrayList.get(j).getName())){
-                    potion[i] = j;
+        // Set Table
+        doctorsTable = new JTable(doctorsArray,columnNames);
+
+        // Set Table Data Font
+        doctorsTable.setFont(new Font("SansSerif",1,15));
+
+        // Set Table Column Font
+        doctorsTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 15));
+
+        return doctorsTable;
+    }
+
+    // First Name Sort Method
+    private JTable sortFirstName(ArrayList<Doctor> doctorsArrayList){
+
+        String[] columnNames = {"First Name","Surname","Date Of Birth","Mobile Number","Medical Licence Number","Specialisation"};
+        String[][] doctorsArray = new String[doctorsArrayList.size()][columnNames.length];
+
+        // Sort First Names
+        for(int i=0;i<doctorsArrayList.size()-1;i++){
+            for(int j=i+1;j<doctorsArrayList.size();j++){
+                //Compares Each Elements Of The Array To All The Remaining Elements
+                if(doctorsArrayList.get(i).getName().compareToIgnoreCase(doctorsArrayList.get(j).getName()) > 0){
+                    //Swapping Array Elements
+                    Doctor temp = doctorsArrayList.get(i);
+                    doctorsArrayList.set(i,doctorsArrayList.get(j));
+                    doctorsArrayList.set(j,temp);
                 }
             }
         }
 
         // Set Doctors Values In To 2D Array
-        for(int i=0;i<potion.length;i++){
+        for(int i=0;i<doctorsArrayList.size();i++){
             for(int j=0;j<columnNames.length;j++){
-                //doctorsArray[i][j] =
                 if (j == 0) {
-                    doctorsArray[i][j] = doctorsArrayList.get(potion[i]).getName();
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getName();
                 } else if (j == 1) {
-                    doctorsArray[i][j] = doctorsArrayList.get(potion[i]).getSurname();
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getSurname();
                 } else if (j == 2) {
-                    doctorsArray[i][j] = String.valueOf(doctorsArrayList.get(potion[i]).getDateOfBirth());
+                    doctorsArray[i][j] = String.valueOf(doctorsArrayList.get(i).getDateOfBirth());
                 } else if (j == 3) {
-                    doctorsArray[i][j] = doctorsArrayList.get(potion[i]).getMobileNumber();
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getMobileNumber();
                 } else if (j == 4) {
-                    doctorsArray[i][j] = doctorsArrayList.get(potion[i]).getMedicalLicenceNumber();
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getMedicalLicenceNumber();
                 } else {
-                    doctorsArray[i][j] = doctorsArrayList.get(potion[i]).getSpecialisation();
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getSpecialisation();
                 }
             }
         }
@@ -165,62 +195,39 @@ public class ViewListOfDoctors extends MenuOptionController {
     }
 
     // Surname Sort Method
-    private JTable sortSurname(SkinConsultationManager SCM){
-
-        // Copy consoleSystem_v2 doctor ArrayList Objs in to New Local ArrayList
-        ArrayList<Doctor> doctorsArrayList = new ArrayList<>();
-        for(int i=0;i<SCM.getDoctors().size();i++){
-            doctorsArrayList.add(SCM.getDoctors().get(i));
-        }
+    private JTable sortSurname(ArrayList<Doctor> doctorsArrayList){
 
         String[] columnNames = {"Surname","First Name","Date Of Birth","Mobile Number","Medical Licence Number","Specialisation"};
         String[][] doctorsArray = new String[doctorsArrayList.size()][columnNames.length];
-        String[] surname = new String[doctorsArrayList.size()];
-        int[] potion = new int[surname.length];
-
-        // Copy First Names
-        for(int i=0;i<surname.length;i++){
-            surname[i] = doctorsArrayList.get(i).getSurname();
-        }
 
         // Sort First Names
-        for(int i=0;i<surname.length-1;i++){
-            for(int j=i+1;j<surname.length;j++){
+        for(int i=0;i<doctorsArrayList.size()-1;i++){
+            for(int j=i+1;j<doctorsArrayList.size();j++){
                 //Compares Each Elements Of The Array To All The Remaining Elements
-                if(surname[i].compareToIgnoreCase(surname[j])>0){
+                if(doctorsArrayList.get(i).getSurname().compareToIgnoreCase(doctorsArrayList.get(j).getSurname()) > 0){
                     //Swapping Array Elements
-                    String temp = surname[i];
-                    surname[i] = surname[j];
-                    surname[j] = temp;
-                }
-            }
-        }
-
-        // After Sort Check New Potions
-        for(int i=0;i<potion.length;i++){
-            for(int j=0;j<potion.length;j++){
-                if(surname[i].equals(doctorsArrayList.get(j).getSurname())){
-                    potion[i] = j;
+                    Doctor temp = doctorsArrayList.get(i);
+                    doctorsArrayList.set(i,doctorsArrayList.get(j));
+                    doctorsArrayList.set(j,temp);
                 }
             }
         }
 
         // Set Doctors Values In To 2D Array
-        for(int i=0;i<potion.length;i++){
+        for(int i=0;i<doctorsArrayList.size();i++){
             for(int j=0;j<columnNames.length;j++){
-                //doctorsArray[i][j] =
                 if (j == 0) {
-                    doctorsArray[i][j] = doctorsArrayList.get(potion[i]).getSurname();
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getSurname();
                 } else if (j == 1) {
-                    doctorsArray[i][j] = doctorsArrayList.get(potion[i]).getName();
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getName();
                 } else if (j == 2) {
-                    doctorsArray[i][j] = String.valueOf(doctorsArrayList.get(potion[i]).getDateOfBirth());
+                    doctorsArray[i][j] = String.valueOf(doctorsArrayList.get(i).getDateOfBirth());
                 } else if (j == 3) {
-                    doctorsArray[i][j] = doctorsArrayList.get(potion[i]).getMobileNumber();
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getMobileNumber();
                 } else if (j == 4) {
-                    doctorsArray[i][j] = doctorsArrayList.get(potion[i]).getMedicalLicenceNumber();
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getMedicalLicenceNumber();
                 } else {
-                    doctorsArray[i][j] = doctorsArrayList.get(potion[i]).getSpecialisation();
+                    doctorsArray[i][j] = doctorsArrayList.get(i).getSpecialisation();
                 }
             }
         }

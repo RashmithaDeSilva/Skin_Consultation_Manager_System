@@ -45,6 +45,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                     WSCM.openGUI();
                     break;
                 case 6:
+                    System.exit(0);
                     loopBreak = false;
                     break;
                 default:
@@ -87,6 +88,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
         return intInput();
     }
 
+    // Menu Option Methods
     @Override
     public void addNewDoctor() {
 
@@ -102,12 +104,20 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
 
             System.out.println("\t\t\tAdd New Doctor\n");
 
-            System.out.print("Enter Doctor Name > ");
-            name = strInput().trim();
+            do{
+                System.out.print("Enter Doctor Name > ");
+                name = strInput().trim();
+                loopBreak = (name.equals("")) ? true : false;
+            }while(loopBreak);
 
-            System.out.print("Enter Doctor Surname > ");
-            surname = strInput().trim();
+            loopBreak = true;
+            do{
+                System.out.print("Enter Doctor Surname > ");
+                surname = strInput().trim();
+                loopBreak = (name.equals("")) ? true : false;
+            }while(loopBreak);
 
+            loopBreak = true;
             do{
                 System.out.println("Enter Doctor Date of Birth > ");
                 String year, month, date;
@@ -143,8 +153,12 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 }
             }while(loopBreak);
 
-            System.out.print("Enter Doctor Mobile Number > ");
-            mobileNumber = strInput();
+            loopBreak = true;
+            do{
+                System.out.print("Enter Doctor Mobile Number > ");
+                mobileNumber = strInput();
+                loopBreak = (name.equals("")) ? true : false;
+            }while(loopBreak);
 
             loopBreak = true;
             do {
@@ -162,9 +176,12 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 }
             }while(loopBreak);
 
-
-            System.out.print("Enter Doctor Specialisation > ");
-            specialisation = strInput().trim();
+            loopBreak = true;
+            do{
+                System.out.print("Enter Doctor Specialisation > ");
+                specialisation = strInput().trim();
+                loopBreak = (name.equals("")) ? true : false;
+            }while(loopBreak);
 
             doctors.add(new Doctor(name, surname, DOB, mobileNumber, medicalLicenceNumber, specialisation));
             spase();
@@ -280,10 +297,10 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
 
 
     // Other Methods
-    public void openGUIWithOption(int GUI_MenuOptionPosition){
-        MainMenu GUI = new MainMenu(this);
-        GUI.setVisible(true);
-        GUI.openMenuOption(GUI_MenuOptionPosition);
+    public void openGUIWithOption(int GUI_MenuOptionNumber){
+        MainMenu mainMenu = new MainMenu(this);
+        mainMenu.setVisible(true);
+        mainMenu.openMainMenuOption(GUI_MenuOptionNumber);
     }
 
 

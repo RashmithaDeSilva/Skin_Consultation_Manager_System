@@ -1,6 +1,8 @@
 package consoleSystem_v2;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+
 
 public class Doctor extends Person {
 
@@ -10,8 +12,7 @@ public class Doctor extends Person {
     private String mobileNumber;
     private String medicalLicenceNumber;
     private String specialisation;
-
-    private Consultation consultation = new Consultation();
+    private ArrayList<Consultation> consultations = new ArrayList<>();
 
 
     // Constructors
@@ -51,6 +52,10 @@ public class Doctor extends Person {
     public void setSpecialisation(String specialisation) {
         this.specialisation = specialisation;
     }
+    public void setConsultation(Consultation consultation) {
+        this.consultations.add(consultation);
+    }
+
 
     // Get Methods
     @Override
@@ -77,6 +82,9 @@ public class Doctor extends Person {
     }
     public String getFullName(){
         return name+" "+surname;
+    }
+    public Consultation getConsultation(int position) {
+        return consultations.get(position);
     }
 
 }

@@ -2,7 +2,7 @@ package GUI;
 
 public class Exit extends MenuOptionController {
 
-    private String optionNumber = "[5]";
+    private String optionNumber = "[4]";
     private String optionName = "Exit";
 
     @Override

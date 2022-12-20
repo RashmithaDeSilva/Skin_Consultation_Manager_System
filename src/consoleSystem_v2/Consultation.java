@@ -2,48 +2,63 @@ package consoleSystem_v2;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
+
 
 public class Consultation {
-    private ArrayList<LocalDate> date = new ArrayList<LocalDate>();
-    private ArrayList<LocalTime> time = new ArrayList<LocalTime>();
-    private ArrayList<String> cost = new ArrayList<String>();
-    private ArrayList<String> note = new ArrayList<String>();
-    private ArrayList<Patient> patients = new ArrayList<Patient>();
+
+    private LocalDate date;
+    private LocalTime time;
+    private double cost;
+    private String note;
+    private Patient patient;
+
+
+    // Constructors
+    public Consultation(){
+        //The compiler will add default values
+    }
+    public Consultation(LocalDate date, LocalTime time, double cost, String note, Patient patient) {
+        this.date = date;
+        this.time = time;
+        this.cost = cost;
+        this.note = note;
+        this.patient = patient;
+    }
 
 
     // Set Methods
     public void setDate(LocalDate date) {
-        this.date.add(date);
+        this.date = date;
     }
     public void setTime(LocalTime time) {
-        this.time.add(time);
+        this.time = time;
     }
     public void setCost(double cost) {
-        this.cost.add(String.valueOf(cost));
+        this.cost = cost;
     }
     public void setNote(String note) {
-        this.note.add(note);
+        this.note = note;
     }
-    public void setPatients(Patient patients) {
-        this.patients.add(patients);
+    public void setPatient(Patient patient) {
+        this.patient = patient;
     }
 
+
     // Get Methods
-    public LocalDate getDate(int position) {
-        return date.get(position);
+    public LocalDate getDate() {
+        return date;
     }
-    public LocalTime getTime(int position) {
-        return time.get(position);
+    public LocalTime getTime() {
+        return time;
     }
-    public double getCost(int position) {
-        return Double.valueOf(this.cost.get(position));
+    public double getCost() {
+        return cost;
     }
-    public String getNote(int position) {
-        return note.get(position);
+    public String getNote() {
+        return note;
     }
-    public Patient getPatients(int position) {
-        return patients.get(position);
+    public Patient getPatient() {
+        return patient;
     }
 
 }

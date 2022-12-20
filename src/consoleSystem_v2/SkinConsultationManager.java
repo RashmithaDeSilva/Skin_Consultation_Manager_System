@@ -10,4 +10,5 @@ public interface SkinConsultationManager {
     public void saveFile();
     public void openGUI();
     public ArrayList<Doctor> getDoctors();
+    public void openGUIWithOption(int GUI_MenuOptionPosition);
 }

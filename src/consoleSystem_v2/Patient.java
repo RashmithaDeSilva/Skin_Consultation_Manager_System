@@ -2,6 +2,7 @@ package consoleSystem_v2;
 
 import java.time.LocalDate;
 
+
 public class Patient extends Person {
 
     private String name;
@@ -12,10 +13,10 @@ public class Patient extends Person {
 
 
     // Constructors
-    Patient(){
+    public Patient(){
         //The compiler will add default values
     }
-    Patient(String name, String surname, LocalDate dateOfBirth, String mobileNumber, String patientID){
+    public Patient(String name, String surname, LocalDate dateOfBirth, String mobileNumber, String patientID){
         this.name = name;
         this.surname = surname;
         this.dateOfBirth = dateOfBirth;
@@ -44,6 +45,7 @@ public class Patient extends Person {
     public void setPatientID(String patientID) {
         this.patientID = patientID;
     }
+
 
     // Get Methods
     @Override
