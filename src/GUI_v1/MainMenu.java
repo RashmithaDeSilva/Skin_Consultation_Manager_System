@@ -1,8 +1,6 @@
-package GUI;
+package GUI_v1;
 
-import consoleSystem_v2.Doctor;
 import consoleSystem_v2.SkinConsultationManager;
-import consoleSystem_v2.WestminsterSkinConsultationManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,7 +54,15 @@ public class MainMenu extends JFrame {
 
 
         // 4 - Exit
-        btn.get(3).addActionListener((e)->dispose());
+        btn.get(3).addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+                for (int i=0;i<MOC.size();i++) {
+                    MOC.get(i).dispose();
+                }
+            }
+        });
 
 
         add("Center",mainMenuOptionsPnl);

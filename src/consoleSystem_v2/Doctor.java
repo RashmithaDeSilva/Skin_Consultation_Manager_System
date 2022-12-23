@@ -13,6 +13,7 @@ public class Doctor extends Person {
     private String medicalLicenceNumber;
     private String specialisation;
     private ArrayList<Consultation> consultations = new ArrayList<>();
+    private ArrayList<String> onlyThisDoctorsPatientIDs = new ArrayList<>();
 
 
     // Constructors
@@ -55,6 +56,9 @@ public class Doctor extends Person {
     public void setConsultation(Consultation consultation) {
         this.consultations.add(consultation);
     }
+    public void setOnlyThisDoctorsPatientIDs(String ID){
+        this.onlyThisDoctorsPatientIDs.add(ID);
+    }
 
 
     // Get Methods
@@ -85,6 +89,15 @@ public class Doctor extends Person {
     }
     public Consultation getConsultation(int position) {
         return consultations.get(position);
+    }
+    public ArrayList<Consultation> getConsultationsArrayList(){
+        return consultations;
+    }
+    public String getOnlyThisDoctorsPatientID(int position){
+        return onlyThisDoctorsPatientIDs.get(position);
+    }
+    public ArrayList<String > getOnlyThisDoctorsPatientIDs(){
+        return onlyThisDoctorsPatientIDs;
     }
 
 }

@@ -1,4 +1,4 @@
-package GUI;
+package GUI_v1;
 
 import consoleSystem_v2.SkinConsultationManager;
 
@@ -12,6 +12,10 @@ public class AddConsultation extends MenuOptionController {
     private String optionName = "Add Consultation";
     private JLabel optionNameLbl;
 
+    // Create Doctors Full Name Buttons And Labels
+    private ArrayList<JButton> btns = new ArrayList<>();
+    private ArrayList<JLabel> lbls = new ArrayList<>();
+
     @Override
     public String getOptionName() {
         return optionName;
@@ -24,9 +28,6 @@ public class AddConsultation extends MenuOptionController {
 
     // Contractor
     AddConsultation(SkinConsultationManager SCM){
-        // Create Doctors Full Name Buttons And Labels
-        ArrayList<JButton> btns = new ArrayList<>();
-        ArrayList<JLabel> lbls = new ArrayList<>();
         JPanel doctorsNameOptionPnl = new JPanel(new GridLayout(5,2));
 
         for(int i = 0; i< SCM.getDoctors().size(); i++){
@@ -63,4 +64,5 @@ public class AddConsultation extends MenuOptionController {
 
         add("Center",doctorsNameOptionPnl);
     }
+
 }

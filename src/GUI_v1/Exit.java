@@ -1,4 +1,4 @@
-package GUI;
+package GUI_v1;
 
 public class Exit extends MenuOptionController {
 

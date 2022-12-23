@@ -1,4 +1,4 @@
-package GUI;
+package GUI_v1;
 
 public class CheckConsultations extends MenuOptionController {
     private String optionNumber = "[3]";

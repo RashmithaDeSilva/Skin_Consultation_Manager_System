@@ -1,8 +1,8 @@
-package GUI;
+package GUI_v2;
+
 
 import consoleSystem_v2.Doctor;
 import consoleSystem_v2.SkinConsultationManager;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -30,7 +30,7 @@ public class ViewListOfDoctors extends MenuOptionController {
 
 
     // Contractor
-    ViewListOfDoctors(SkinConsultationManager SCM,MainMenu mainMenu){
+    ViewListOfDoctors(SkinConsultationManager SCM, MainMenu mainMenu){
 
         // Set Window
         setWindow(800,400,"View List Of Doctors");
@@ -89,9 +89,9 @@ public class ViewListOfDoctors extends MenuOptionController {
         refreshBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                dispose();
-                mainMenu.dispose();
                 SCM.openGUIWithOption(1);
+                mainMenu.dispose();
+                dispose();
             }
         });
 

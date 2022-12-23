@@ -7,7 +7,8 @@ import java.time.LocalTime;
 public class Consultation {
 
     private LocalDate date;
-    private LocalTime time;
+    private LocalTime consultationStartTime;
+    private LocalTime consultationEndTime;
     private double cost;
     private String note;
     private Patient patient;
@@ -17,9 +18,10 @@ public class Consultation {
     public Consultation(){
         //The compiler will add default values
     }
-    public Consultation(LocalDate date, LocalTime time, double cost, String note, Patient patient) {
+    public Consultation(LocalDate date, LocalTime consultationStartTime, LocalTime consultationEndTime, double cost, String note, Patient patient) {
         this.date = date;
-        this.time = time;
+        this.consultationStartTime = consultationStartTime;
+        this.consultationEndTime = consultationEndTime;
         this.cost = cost;
         this.note = note;
         this.patient = patient;
@@ -30,8 +32,11 @@ public class Consultation {
     public void setDate(LocalDate date) {
         this.date = date;
     }
-    public void setTime(LocalTime time) {
-        this.time = time;
+    public void setConsultationStartTime(LocalTime consultationStartTime) {
+        this.consultationStartTime = consultationStartTime;
+    }
+    public void setConsultationEndTime(LocalTime consultationEndTime) {
+        this.consultationEndTime = consultationEndTime;
     }
     public void setCost(double cost) {
         this.cost = cost;
@@ -48,8 +53,11 @@ public class Consultation {
     public LocalDate getDate() {
         return date;
     }
-    public LocalTime getTime() {
-        return time;
+    public LocalTime getConsultationStartTime() {
+        return consultationStartTime;
+    }
+    public LocalTime getConsultationEndTime() {
+        return consultationEndTime;
     }
     public double getCost() {
         return cost;

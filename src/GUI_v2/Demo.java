@@ -1,22 +1,16 @@
-package GUI;
+package GUI_v2;
 
 import consoleSystem_v2.Doctor;
 import consoleSystem_v2.WestminsterSkinConsultationManager;
 
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
 
-public class Test {
+public class Demo {
     public static void main(String[] args) {
-        //WestminsterSkinConsultationManager.Hello hello = new WestminsterSkinConsultationManager().new Hello();
 
         WestminsterSkinConsultationManager w = new WestminsterSkinConsultationManager();
         LocalDate DOB = LocalDate.parse("2000-11-20");
-        w.setDoctor(new Doctor("Lahiru","De silva",DOB,"+94769874188","S001","Super Doctor"));
+        w.setDoctor(new Doctor("Ravindu","De silva",DOB,"+94769874188","S001","Super Doctor"));
         w.setDoctor(new Doctor("Rashmitha","De silva",DOB,"+94769874188","S002","Super Doctor"));
         w.setDoctor(new Doctor("Thamasha","De silva",DOB,"+94769874188","S003","Super Doctor"));
         w.setDoctor(new Doctor("Dewindi","silva",DOB,"+94769874188","S004","Super Doctor"));
@@ -28,6 +22,5 @@ public class Test {
         w.setDoctor(new Doctor("Sellahandi","De silva",DOB,"+94769874188","S010","Super Doctor"));
 
         new MainMenu(w).setVisible(true);
-
     }
 }

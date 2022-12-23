@@ -1,9 +1,7 @@
 package consoleSystem_v2;
 
-import GUI.MainMenu;
+import GUI_v2.MainMenu;
 
-import javax.swing.*;
-import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.text.SimpleDateFormat;
@@ -16,6 +14,7 @@ import java.util.Scanner;
 public class WestminsterSkinConsultationManager implements SkinConsultationManager {
 
     private ArrayList<Doctor> doctors = new ArrayList<Doctor>(10);
+    private ArrayList<String> allPatientIDs = new ArrayList<>();
 
 
     public static void main(String[] args) {
@@ -66,8 +65,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     }
     public String strInput(){
         Scanner user = new Scanner(System.in);
-        String input = user.nextLine();
-        return input;
+        return user.nextLine();
     }
     public void spase(){
         System.out.println("\n");
@@ -92,7 +90,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     @Override
     public void addNewDoctor() {
 
-        boolean docSize = (doctors.size() == 10) ? false : true;
+        boolean docSize = doctors.size() != 10;
 
         if(docSize){
 
@@ -107,14 +105,14 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
             do{
                 System.out.print("Enter Doctor Name > ");
                 name = strInput().trim();
-                loopBreak = (name.equals("")) ? true : false;
+                loopBreak = name.equals("");
             }while(loopBreak);
 
             loopBreak = true;
             do{
                 System.out.print("Enter Doctor Surname > ");
                 surname = strInput().trim();
-                loopBreak = (name.equals("")) ? true : false;
+                loopBreak = name.equals("");
             }while(loopBreak);
 
             loopBreak = true;
@@ -126,12 +124,12 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 year = strInput();
                 System.out.print("\tMonth > ");
                 month = strInput();
-                if(Integer.valueOf(month) < 10){
+                if(Integer.parseInt(month) < 10){
                     month = "0"+String.valueOf(Integer.valueOf(month));
                 }
                 System.out.print("\tDate > ");
                 date = strInput();
-                if(Integer.valueOf(date) < 10){
+                if(Integer.parseInt(date) < 10){
                     date = "0"+String.valueOf(Integer.valueOf(date));
                 }
 
@@ -139,10 +137,10 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                     DOB = LocalDate.parse(year+"-"+month+"-"+date);
                     SimpleDateFormat dateForm = new SimpleDateFormat("yyyy");
                     Date today = new Date();
-                    int befor_25Years = (Integer.valueOf(dateForm.format(today)))-(25);
-                    int befor_60Years = (Integer.valueOf(dateForm.format(today)))-(60);
+                    int befor_25Years = (Integer.parseInt(dateForm.format(today)))-(25);
+                    int befor_60Years = (Integer.parseInt(dateForm.format(today)))-(60);
 
-                    if(befor_25Years >= Integer.valueOf(year) && befor_60Years <= Integer.valueOf(year)){
+                    if(befor_25Years >= Integer.parseInt(year) && befor_60Years <= Integer.parseInt(year)){
                         loopBreak = false;
                     } else {
                         System.out.println("Age Cannot be Entered in this \nThe Doctor Should be Between 25-60 Years of Age .....!\n");
@@ -157,7 +155,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
             do{
                 System.out.print("Enter Doctor Mobile Number > ");
                 mobileNumber = strInput();
-                loopBreak = (name.equals("")) ? true : false;
+                loopBreak = name.equals("");
             }while(loopBreak);
 
             loopBreak = true;
@@ -165,12 +163,12 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 System.out.print("Enter Doctor Medical Licence Number > ");
                 medicalLicenceNumber = strInput().trim();
 
-                loopBreak = (doctors.size() == 0) ? false : true;
-                for(int i=0;i<doctors.size();i++){
-                    if(doctors.get(i).getMedicalLicenceNumber().equals(medicalLicenceNumber)){
+                loopBreak = doctors.size() != 0;
+                for (Doctor doctor : doctors) {
+                    if (doctor.getMedicalLicenceNumber().equals(medicalLicenceNumber)) {
                         System.out.println("This Medical Licence Number is already Entered .....!\n");
                         break;
-                    }else{
+                    } else {
                         loopBreak = false;
                     }
                 }
@@ -180,7 +178,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
             do{
                 System.out.print("Enter Doctor Specialisation > ");
                 specialisation = strInput().trim();
-                loopBreak = (name.equals("")) ? true : false;
+                loopBreak = name.equals("");
             }while(loopBreak);
 
             doctors.add(new Doctor(name, surname, DOB, mobileNumber, medicalLicenceNumber, specialisation));
@@ -297,6 +295,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
 
 
     // Other Methods
+    @Override
     public void openGUIWithOption(int GUI_MenuOptionNumber){
         MainMenu mainMenu = new MainMenu(this);
         mainMenu.setVisible(true);
@@ -308,13 +307,27 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     public void setDoctor(Doctor doctor) {
         this.doctors.add(doctor);
     }
+    @Override
+    public void setAllPatientID(String ID){
+        this.allPatientIDs.add(ID);
+    }
 
     // Get Methods
+    @Override
     public Doctor getDoctor(int position) {
         return doctors.get(position);
     }
+    @Override
     public ArrayList<Doctor> getDoctors(){
         return doctors;
+    }
+    @Override
+    public String getAllPatientID(int position){
+        return allPatientIDs.get(position);
+    }
+    @Override
+    public ArrayList<String> getAllPatientIDs(){
+        return allPatientIDs;
     }
 
 }
