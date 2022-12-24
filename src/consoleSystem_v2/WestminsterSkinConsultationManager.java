@@ -134,7 +134,6 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 }
 
                 try{
-                    DOB = LocalDate.parse(year+"-"+month+"-"+date);
                     SimpleDateFormat dateForm = new SimpleDateFormat("yyyy");
                     Date today = new Date();
                     int befor_25Years = (Integer.parseInt(dateForm.format(today)))-(25);
@@ -142,6 +141,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
 
                     if(befor_25Years >= Integer.parseInt(year) && befor_60Years <= Integer.parseInt(year)){
                         loopBreak = false;
+                        DOB = LocalDate.parse(year+"-"+month+"-"+date);
                     } else {
                         System.out.println("Age Cannot be Entered in this \nThe Doctor Should be Between 25-60 Years of Age .....!\n");
                     }

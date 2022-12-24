@@ -14,6 +14,7 @@ public class Consultation {
     private Patient patient;
 
 
+
     // Constructors
     public Consultation(){
         //The compiler will add default values

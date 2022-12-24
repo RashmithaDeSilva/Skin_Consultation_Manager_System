@@ -10,25 +10,6 @@ import java.util.ArrayList;
 
 public class Consultation extends MenuOptionController{
 
-    private String optionNumber = "[2]";
-    private String optionName = "Consultation";
-    private JLabel consultationMenuNameLbl;
-    private JPanel consultationMenuNamePnl;
-    private JPanel consultationMenuOptionsPnl;
-    private ArrayList<MenuOptionController> MOC = new ArrayList<>();
-    private ArrayList<JLabel> lbl = new ArrayList<>();
-    private ArrayList<JButton> btn = new ArrayList<>();
-
-    @Override
-    public String getOptionName() {
-        return optionName;
-    }
-    @Override
-    public String getOptionNumber() {
-        return optionNumber;
-    }
-
-
     Consultation(SkinConsultationManager SCM,MainMenu mainMenu){
 
         // Set Window
@@ -43,7 +24,7 @@ public class Consultation extends MenuOptionController{
         add("North",consultationMenuNamePnl);
 
         // Menu Options
-        //MOC.add();
+        MOC.add(new CheckDoctorAvailability(SCM,this));
         //MOC.add();
         consultationMenuOptionsPnl = new JPanel(new GridLayout(MOC.size()+1,1));
 
@@ -55,8 +36,11 @@ public class Consultation extends MenuOptionController{
             btn.get(i).addActionListener( (e) -> MOC.get(count).setVisible(true));
         }
 
+        // 1 - Add Consultation
+        btn.get(0).addActionListener( (e) -> setVisible(false));
+
         // 3 - Back
-        lbl.add(new JLabel("["+lbl.size()+1+"]"));
+        lbl.add(new JLabel("["+(lbl.size()+1)+"]"));
         btn.add(new JButton("Back"));
         btn.get(btn.size()-1).addActionListener(new ActionListener() {
             @Override
@@ -64,6 +48,9 @@ public class Consultation extends MenuOptionController{
                 /*
                     This button again shows Main Window and hides this window
                 */
+                for (MenuOptionController menuOptionController : MOC) {
+                    menuOptionController.dispose();
+                }
                 setVisible(false);
                 mainMenu.setVisible(true);
             }
@@ -78,6 +65,15 @@ public class Consultation extends MenuOptionController{
     }
 
 
+    @Override
+    public String getOptionName() {
+        return optionName;
+    }
+    @Override
+    public String getOptionNumber() {
+        return optionNumber;
+    }
+
     // Set Main Menu Options
     private JPanel consultationMenuPotion(JLabel lbl,JButton btn){
         JPanel pnl = new JPanel(new FlowLayout());
@@ -87,5 +83,15 @@ public class Consultation extends MenuOptionController{
         pnl.add(btn);
         return pnl;
     }
+
+
+    private String optionNumber = "[2]";
+    private String optionName = "Consultation";
+    private JLabel consultationMenuNameLbl;
+    private JPanel consultationMenuNamePnl;
+    private JPanel consultationMenuOptionsPnl;
+    private ArrayList<MenuOptionController> MOC = new ArrayList<>();
+    private ArrayList<JLabel> lbl = new ArrayList<>();
+    private ArrayList<JButton> btn = new ArrayList<>();
 
 }

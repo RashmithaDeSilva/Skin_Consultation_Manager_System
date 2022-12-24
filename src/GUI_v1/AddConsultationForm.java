@@ -217,7 +217,6 @@ public class AddConsultationForm extends JFrame {
                     try {
                         warningLbl.setText("");
 
-                        consultationDate = LocalDate.parse(yearTxt.getText()+"-"+monthTxt.getText()+"-"+dayTxt.getText());
                         SimpleDateFormat dateForm = new SimpleDateFormat("yyyyMMdd");
 
                         // Get Today Date
@@ -230,6 +229,8 @@ public class AddConsultationForm extends JFrame {
 
                         int tdy = Integer.parseInt(dateForm.format(today)),aftYear = Integer.parseInt(dateForm.format(after_1_Year));
                         int userInputDate = Integer.parseInt(yearTxt.getText()+monthTxt.getText()+dayTxt.getText());
+
+                        consultationDate = LocalDate.parse(yearTxt.getText()+"-"+monthTxt.getText()+"-"+dayTxt.getText());
 
                         if (tdy < userInputDate && aftYear > userInputDate) {
                             warningLbl.setText("");

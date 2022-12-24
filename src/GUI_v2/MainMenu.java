@@ -11,14 +11,6 @@ import java.util.ArrayList;
 
 public class MainMenu extends JFrame {
 
-    private JLabel mainMenuNameLbl = new JLabel();
-    private JPanel mainMenuNamePnl;
-    private JPanel mainMenuOptionsPnl;
-    private ArrayList<MenuOptionController> MOC = new ArrayList<>();
-    private ArrayList<JLabel> lbl = new ArrayList<>();
-    private ArrayList<JButton> btn = new ArrayList<>();
-
-
     // Contractor
     public MainMenu(SkinConsultationManager SCM){
 
@@ -27,7 +19,7 @@ public class MainMenu extends JFrame {
 
         // Set Main Menu Name
         mainMenuNamePnl = new JPanel(new FlowLayout());
-        mainMenuNameLbl.setText("Westminster Skin Consultation Manager");
+        mainMenuNameLbl = new JLabel("Westminster Skin Consultation Manager");
         mainMenuNameLbl.setFont(new Font("SansSerif",Font.BOLD,25));
         mainMenuNamePnl.add(mainMenuNameLbl);
         add("North",mainMenuNamePnl);
@@ -49,7 +41,7 @@ public class MainMenu extends JFrame {
         btn.get(1).addActionListener( (e) -> setVisible(false));
 
         // 3 - Refresh
-        lbl.add(new JLabel("["+lbl.size()+1+"]"));
+        lbl.add(new JLabel("["+(lbl.size()+1)+"]"));
         btn.add(new JButton("Refresh"));
         btn.get(btn.size()-1).addActionListener(new ActionListener() {
             @Override
@@ -70,7 +62,7 @@ public class MainMenu extends JFrame {
         });
 
         // 4 - Exit
-        lbl.add(new JLabel("["+lbl.size()+1+"]"));
+        lbl.add(new JLabel("["+(lbl.size()+1)+"]"));
         btn.add(new JButton("Exit"));
         btn.get(btn.size()-1).addActionListener(new ActionListener() {
             @Override
@@ -119,5 +111,13 @@ public class MainMenu extends JFrame {
     public void openMainMenuOption(int optionNumber){
         MOC.get(optionNumber-1).setVisible(true);
     }
+
+
+    private JLabel mainMenuNameLbl;
+    private JPanel mainMenuNamePnl;
+    private JPanel mainMenuOptionsPnl;
+    private ArrayList<MenuOptionController> MOC = new ArrayList<>();
+    private ArrayList<JLabel> lbl = new ArrayList<>();
+    private ArrayList<JButton> btn = new ArrayList<>();
 
 }
