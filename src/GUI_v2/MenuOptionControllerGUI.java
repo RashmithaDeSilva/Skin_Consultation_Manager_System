@@ -3,7 +3,7 @@ package GUI_v2;
 import javax.swing.*;
 import java.awt.*;
 
-abstract class MenuOptionController extends JFrame {
+abstract class MenuOptionControllerGUI extends JFrame {
 
     public abstract String getOptionName();
     public abstract String getOptionNumber();

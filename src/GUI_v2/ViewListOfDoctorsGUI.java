@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
-public class ViewListOfDoctors extends MenuOptionController {
+public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
     private String optionNumber = "[1]";
     private String optionName = "View List Of Doctors";
     private JLabel optionNameLbl;
@@ -30,7 +30,7 @@ public class ViewListOfDoctors extends MenuOptionController {
 
 
     // Contractor
-    ViewListOfDoctors(SkinConsultationManager SCM, MainMenu mainMenu){
+    ViewListOfDoctorsGUI(SkinConsultationManager SCM, MainMenuGUI mainMenu){
 
         // Set Window
         setWindow(800,400,"View List Of Doctors");

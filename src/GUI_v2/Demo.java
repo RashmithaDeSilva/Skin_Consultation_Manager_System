@@ -1,12 +1,12 @@
 package GUI_v2;
 
+import consoleSystem_v2.Consultation;
 import consoleSystem_v2.Doctor;
 import consoleSystem_v2.WestminsterSkinConsultationManager;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Random;
 
 public class Demo {
@@ -25,10 +25,11 @@ public class Demo {
         w.setDoctor(new Doctor("Dewindi","De silva",DOB,"+94769874188","S009","Super Doctor"));
         w.setDoctor(new Doctor("Sellahandi","De silva",DOB,"+94769874188","S010","Super Doctor"));
 
-        new MainMenu(w).setVisible(true);
+        //new MainMenuGUI(w).setVisible(true);
+        new AddConsultationGUI().setVisible(true);
 
         //Random random = new Random();
-        //int doctorPosition = random.nextInt(w.getDoctors().size());
+        //int doctorPosition = random.nextInt(1);
         //System.out.println(doctorPosition);
 
         //System.out.println(checkDoctorAvailability(w.getDoctor(3),LocalDate.parse("2022-02-03"),LocalTime.parse("20:00")));
@@ -37,39 +38,27 @@ public class Demo {
 
 
     private static int checkRandomlyAvailableDoctor(ArrayList<Doctor> doctors, LocalDate date, LocalTime time){
-        System.out.println(doctors.size()+"\t"+String.valueOf(date)+"\t"+String.valueOf(time)); //
 
-        Random random = new Random();
-        int doctorPosition, count = 0;
-        boolean loopBreak;
-        int[] docPositions = new int[doctors.size()];
+        int doctorRandomPosition =-1;
+        int[] doctorAvailablePositionArray = new int[0];
 
-        // Set All Doctors Positions In to "docPositions" Int Array
-        for (int i=0;i<docPositions.length;i++) {
-            docPositions[i] = count++;
-        }
-        System.out.println(Arrays.toString(docPositions)); //
-
-        // Randomly Select Available Doctor
-        do {
-            doctorPosition = random.nextInt(doctors.size());
-            loopBreak = checkDoctorAvailability(doctors.get(doctorPosition),date,time);
-            System.out.println(doctorPosition+"\t"+loopBreak); //
-            for (int i = 0; true; i++) {
-                // If Random Position Is Equal In Array Position It Will Set -1
-                if(docPositions[i] == doctorPosition){
-                    docPositions[i] = -1;
-                    break;
-                } else { // After Generate All Random Doctor Positions And If All Doctors Are Available It returns -1
-                    // If All Doctors Are Not Available It returns -1
-                    doctorPosition = -1;
-                    loopBreak = false;
-                    break;
+        for (int i=0;i<doctors.size();i++) {
+            if (checkDoctorAvailability(doctors.get(i),date,time)) {
+                int[] temp = new int[doctorAvailablePositionArray.length+1];
+                for (int j=0;j<doctorAvailablePositionArray.length;j++) {
+                    temp[j] = doctorAvailablePositionArray[j];
                 }
+                temp[temp.length-1] = i;
+                doctorAvailablePositionArray = temp;
             }
-        } while (loopBreak);
+        }
 
-        return doctorPosition;
+        if(doctorAvailablePositionArray.length > 0){
+            Random random = new Random();
+            doctorRandomPosition = random.nextInt(doctorAvailablePositionArray.length);
+        }
+
+        return doctorRandomPosition;
     }
 
     private static boolean checkDoctorAvailability(Doctor doctor, LocalDate date, LocalTime time){

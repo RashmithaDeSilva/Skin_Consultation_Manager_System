@@ -1,5 +1,6 @@
 package GUI_v2;
 
+import consoleSystem_v2.Consultation;
 import consoleSystem_v2.Doctor;
 import consoleSystem_v2.SkinConsultationManager;
 
@@ -15,10 +16,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
 
-public class CheckDoctorAvailability extends MenuOptionController{
+public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
 
-    CheckDoctorAvailability(SkinConsultationManager SCM,MenuOptionController MOC){
+    CheckDoctorAvailabilityGUI(SkinConsultationManager SCM, MenuOptionControllerGUI MOC){
 
         // Set Window
         setWindow(600,400,"Check Doctor Availability");
@@ -97,18 +98,19 @@ public class CheckDoctorAvailability extends MenuOptionController{
             // Back Button
         btnPnl = new JPanel(new FlowLayout());
         backBtn = new JButton("Back");
-        warningLbl.setFont(new Font("SansSerif",Font.BOLD,14));
+        backBtn.setFont(new Font("SansSerif",Font.BOLD,14));
         backBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //This button again shows Consultation Window and hides this window
+
                 setVisible(false);
                 MOC.setVisible(true);
             }
         });
         btnPnl.add(backBtn);
 
-        // Check Button
+            // Check Button
         checkBtn = new JButton("Check");
         checkBtn.setFont(new Font("SansSerif",Font.BOLD,14));
         checkBtn.addActionListener(new ActionListener() {
@@ -118,6 +120,7 @@ public class CheckDoctorAvailability extends MenuOptionController{
                 LocalDate consultationDate;
                 LocalTime consultationStartTime;
                 boolean doctorAvailability;
+                Consultation consultation;
 
                 try {
                     // Select Doctor Validation
@@ -162,6 +165,7 @@ public class CheckDoctorAvailability extends MenuOptionController{
                                         hoursTxt.setText((hoursTxt.getText().length() != 2) ? "0"+hoursTxt.getText() : hoursTxt.getText());
                                     }
 
+                                    // All Doctors Are Available in 9am - 21pm Only
                                     if (Integer.parseInt(hoursTxt.getText()) >= 9 && Integer.parseInt(hoursTxt.getText()) <= 21) {
                                         warningLbl.setText("");
                                         consultationStartTime = LocalTime.parse(hoursTxt.getText()+":00");
@@ -170,20 +174,59 @@ public class CheckDoctorAvailability extends MenuOptionController{
                                         doctorAvailability = checkDoctorAvailability(SCM.getDoctor(selectDoctorNumber-1),
                                                                                         consultationDate,
                                                                                         consultationStartTime);
+
+                                        // If This Doctor Is Available It Opens Add Consultation Form With Patient Details
                                         if(doctorAvailability){
+
+                                            // Create New Consultation Object And Add Date And Time
+                                            consultation = new Consultation();
+                                            consultation.setDate(consultationDate);
+                                            consultation.setConsultationStartTime(consultationStartTime);
+
+                                            // Reset Check Doctor Availability Object(GUI)
+                                            selectDoctorCmBx.setSelectedIndex(0);
+                                            yearTxt.setText("");
+                                            monthTxt.setText("");
+                                            dayTxt.setText("");
+                                            hoursTxt.setText("");
+
+                                            // Pars That Consultation Object With Correct Doctor Object
+                                            new AddConsultationGUI(SCM.getDoctor(selectDoctorNumber-1),consultation).setVisible(true);
+
+                                        } else {
+                                            // If This Doctor Is Not Available Programme Will Shows Alert Box
+                                            // And It Ask Dou you Want To Continue With Another Doctor
                                             int alertBox = JOptionPane.showConfirmDialog(null,
                                                     "This Doctor Is Not Available\nOn This Date And Time\nDo You Want To Continue With Another Doctor?",
                                                     "Continue With Another Doctor", JOptionPane.YES_NO_OPTION);
 
-                                            if (alertBox == 0) { // IF Alert Is Yes
+                                            // If User Enter Yes It Wil Continue with Another Available Random Doctor
+                                            if (alertBox == 0) {
 
+                                                // Set Random Doctor
                                                 int newDoctorPosition = checkRandomlyAvailableDoctor(SCM.getDoctors(),consultationDate,consultationStartTime);
-                                                System.out.println(newDoctorPosition);
-                                                if (newDoctorPosition != -1) {
 
-                                                    //////////////////////
+                                                // But If All Doctors Are Available In This Time Programme Will Shows Another Alert Box
+                                                if (newDoctorPosition != -1) { // If Another Doctor Is Available
+                                                                                // Programme Continue With That New Doctor
 
-                                                } else {
+                                                    // Create New Consultation Object And Add Date And Time
+                                                    consultation = new Consultation();
+                                                    consultation.setDate(consultationDate);
+                                                    consultation.setConsultationStartTime(consultationStartTime);
+
+                                                    // Reset Check Doctor Availability Object(GUI)
+                                                    selectDoctorCmBx.setSelectedIndex(0);
+                                                    yearTxt.setText("");
+                                                    monthTxt.setText("");
+                                                    dayTxt.setText("");
+                                                    hoursTxt.setText("");
+
+                                                    // Pars That Consultation Object With Correct Doctor Object
+                                                    new AddConsultationGUI(SCM.getDoctor(newDoctorPosition),consultation).setVisible(true);
+
+                                                } else { // And All Doctors Are Not Available
+                                                        // After Show Alert Box Auto Reset Consultation Forme
                                                     JOptionPane.showConfirmDialog(null,
                                                             "All Doctors Are Not Available On This Date And Time!\nSelect Another Date And Time .....",
                                                             "Sorry!", JOptionPane.CLOSED_OPTION);
@@ -194,14 +237,13 @@ public class CheckDoctorAvailability extends MenuOptionController{
                                                     hoursTxt.setText("");
                                                 }
 
-                                            } else { // IF Alert Is No
+                                            } else { // IF Alert Is No Add Consultation Form Will Reset
                                                 selectDoctorCmBx.setSelectedIndex(0);
                                                 yearTxt.setText("");
                                                 monthTxt.setText("");
                                                 dayTxt.setText("");
                                                 hoursTxt.setText("");
                                             }
-
                                         }
 
                                     } else {
@@ -234,8 +276,6 @@ public class CheckDoctorAvailability extends MenuOptionController{
         bodyPartPnl.add(btnPnl);
 
 
-
-
         add("Center",bodyPartPnl);
     }
 
@@ -258,40 +298,32 @@ public class CheckDoctorAvailability extends MenuOptionController{
                 }
             }
         }
-        // True = Doctor Is Not Available
-        // False = Doctor Is Available
+        // True = Doctor Is Available
+        // False = Doctor Is Not Available
         return check;
     }
     private int checkRandomlyAvailableDoctor(ArrayList<Doctor> doctors, LocalDate date, LocalTime time){
-        Random random = new Random();
-        int doctorPosition, count = 0;
-        boolean loopBreak;
-        int[] docPositions = new int[doctors.size()];
 
-        // Set All Doctors Positions In to "docPositions" Int Array
-        for (int i=0;i<docPositions.length;i++) {
-            docPositions[i] = count++;
+        int doctorRandomPosition =-1;
+        int[] doctorAvailablePositionArray = new int[0];
+
+        for (int i=0;i<doctors.size();i++) {
+            if (checkDoctorAvailability(doctors.get(i),date,time)) {
+                int[] temp = new int[doctorAvailablePositionArray.length+1];
+                for (int j=0;j<doctorAvailablePositionArray.length;j++) {
+                    temp[j] = doctorAvailablePositionArray[j];
+                }
+                temp[temp.length-1] = i;
+                doctorAvailablePositionArray = temp;
+            }
         }
 
-        // Randomly Select Available Doctor
-        do {
-            doctorPosition = random.nextInt(doctors.size());
-            loopBreak = checkDoctorAvailability(doctors.get(doctorPosition),date,time);
-            for (int i = 0; true; i++) {
-                // If Random Position Is Equal In Array Position It Will Set -1
-                if(docPositions[i] == doctorPosition){
-                    docPositions[i] = -1;
-                    break;
-                } else { // After Generate All Random Doctor Positions And If All Doctors Are Available It returns -1
-                        // If All Doctors Are Not Available It returns -1
-                    doctorPosition = -1;
-                    loopBreak = false;
-                    break;
-                }
-            }
-        } while (loopBreak);
+        if(doctorAvailablePositionArray.length > 0){
+            Random random = new Random();
+            doctorRandomPosition = random.nextInt(doctorAvailablePositionArray.length);
+        }
 
-        return doctorPosition;
+        return doctorRandomPosition;
     }
 
 

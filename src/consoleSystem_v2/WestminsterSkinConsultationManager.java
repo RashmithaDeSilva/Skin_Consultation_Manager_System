@@ -1,6 +1,6 @@
 package consoleSystem_v2;
 
-import GUI_v2.MainMenu;
+import GUI_v2.MainMenuGUI;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;
@@ -290,14 +290,14 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     }
     @Override
     public void openGUI() {
-        new MainMenu(this).setVisible(true);
+        new MainMenuGUI(this).setVisible(true);
     }
 
 
     // Other Methods
     @Override
     public void openGUIWithOption(int GUI_MenuOptionNumber){
-        MainMenu mainMenu = new MainMenu(this);
+        MainMenuGUI mainMenu = new MainMenuGUI(this);
         mainMenu.setVisible(true);
         mainMenu.openMainMenuOption(GUI_MenuOptionNumber);
     }

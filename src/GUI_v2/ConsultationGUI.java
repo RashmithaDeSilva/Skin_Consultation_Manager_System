@@ -8,9 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class Consultation extends MenuOptionController{
+public class ConsultationGUI extends MenuOptionControllerGUI {
 
-    Consultation(SkinConsultationManager SCM,MainMenu mainMenu){
+    ConsultationGUI(SkinConsultationManager SCM, MainMenuGUI mainMenu){
 
         // Set Window
         setWindow(600,400,"Consultation");
@@ -24,7 +24,7 @@ public class Consultation extends MenuOptionController{
         add("North",consultationMenuNamePnl);
 
         // Menu Options
-        MOC.add(new CheckDoctorAvailability(SCM,this));
+        MOC.add(new CheckDoctorAvailabilityGUI(SCM,this));
         //MOC.add();
         consultationMenuOptionsPnl = new JPanel(new GridLayout(MOC.size()+1,1));
 
@@ -48,7 +48,7 @@ public class Consultation extends MenuOptionController{
                 /*
                     This button again shows Main Window and hides this window
                 */
-                for (MenuOptionController menuOptionController : MOC) {
+                for (MenuOptionControllerGUI menuOptionController : MOC) {
                     menuOptionController.dispose();
                 }
                 setVisible(false);
@@ -90,7 +90,7 @@ public class Consultation extends MenuOptionController{
     private JLabel consultationMenuNameLbl;
     private JPanel consultationMenuNamePnl;
     private JPanel consultationMenuOptionsPnl;
-    private ArrayList<MenuOptionController> MOC = new ArrayList<>();
+    private ArrayList<MenuOptionControllerGUI> MOC = new ArrayList<>();
     private ArrayList<JLabel> lbl = new ArrayList<>();
     private ArrayList<JButton> btn = new ArrayList<>();
 

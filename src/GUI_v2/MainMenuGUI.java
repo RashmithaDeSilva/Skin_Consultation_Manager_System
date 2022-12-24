@@ -9,10 +9,10 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
-public class MainMenu extends JFrame {
+public class MainMenuGUI extends JFrame {
 
     // Contractor
-    public MainMenu(SkinConsultationManager SCM){
+    public MainMenuGUI(SkinConsultationManager SCM){
 
         // Set Window
         setWindow(600,400,"Westminster Skin Consultation Manager");
@@ -25,8 +25,8 @@ public class MainMenu extends JFrame {
         add("North",mainMenuNamePnl);
 
         // Menu Options
-        MOC.add(new ViewListOfDoctors(SCM,this)); // 1 - View List of Doctors
-        MOC.add(new Consultation(SCM,this)); // 2 - Consultation
+        MOC.add(new ViewListOfDoctorsGUI(SCM,this)); // 1 - View List of Doctors
+        MOC.add(new ConsultationGUI(SCM,this)); // 2 - Consultation
         mainMenuOptionsPnl = new JPanel(new GridLayout(MOC.size()+2,1));
 
         // Set Other Option Buttons, Labels And Events
@@ -53,7 +53,7 @@ public class MainMenu extends JFrame {
                     with WestminsterSkinConsultationManager Object
                     then this new MainMenu object is updated with a new doctor ArrayList
                  */
-                for (MenuOptionController menuOptionController : MOC) {
+                for (MenuOptionControllerGUI menuOptionController : MOC) {
                     menuOptionController.dispose();
                 }
                 dispose();
@@ -70,7 +70,7 @@ public class MainMenu extends JFrame {
                 /*
                     This exit button is close all windows
                 */
-                for (MenuOptionController menuOptionController : MOC) {
+                for (MenuOptionControllerGUI menuOptionController : MOC) {
                     menuOptionController.dispose();
                 }
                 dispose();
@@ -116,7 +116,7 @@ public class MainMenu extends JFrame {
     private JLabel mainMenuNameLbl;
     private JPanel mainMenuNamePnl;
     private JPanel mainMenuOptionsPnl;
-    private ArrayList<MenuOptionController> MOC = new ArrayList<>();
+    private ArrayList<MenuOptionControllerGUI> MOC = new ArrayList<>();
     private ArrayList<JLabel> lbl = new ArrayList<>();
     private ArrayList<JButton> btn = new ArrayList<>();
 
