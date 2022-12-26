@@ -8,26 +8,26 @@ public class Consultation {
 
     private LocalDate date;
     private LocalTime consultationStartTime;
+    private int requestedTime;
     private LocalTime consultationEndTime;
     private double cost;
     private String note;
     private Patient patient;
 
 
-
     // Constructors
     public Consultation(){
         //The compiler will add default values
     }
-    public Consultation(LocalDate date, LocalTime consultationStartTime, LocalTime consultationEndTime, double cost, String note, Patient patient) {
+    public Consultation(LocalDate date, LocalTime consultationStartTime, int requestedTime, LocalTime consultationEndTime, double cost, String note, Patient patient) {
         this.date = date;
         this.consultationStartTime = consultationStartTime;
+        this.requestedTime = requestedTime;
         this.consultationEndTime = consultationEndTime;
         this.cost = cost;
         this.note = note;
         this.patient = patient;
     }
-
 
     // Set Methods
     public void setDate(LocalDate date) {
@@ -35,6 +35,9 @@ public class Consultation {
     }
     public void setConsultationStartTime(LocalTime consultationStartTime) {
         this.consultationStartTime = consultationStartTime;
+    }
+    public void setRequestedTime(int requestedTime) {
+        this.requestedTime = requestedTime;
     }
     public void setConsultationEndTime(LocalTime consultationEndTime) {
         this.consultationEndTime = consultationEndTime;
@@ -56,6 +59,9 @@ public class Consultation {
     }
     public LocalTime getConsultationStartTime() {
         return consultationStartTime;
+    }
+    public int getRequestedTime() {
+        return requestedTime;
     }
     public LocalTime getConsultationEndTime() {
         return consultationEndTime;

@@ -13,8 +13,9 @@ import java.util.Scanner;
 
 public class WestminsterSkinConsultationManager implements SkinConsultationManager {
 
-    private ArrayList<Doctor> doctors = new ArrayList<Doctor>(10);
+    private ArrayList<Doctor> doctors = new ArrayList<>();
     private ArrayList<String> allPatientIDs = new ArrayList<>();
+    private Validations validations = new Validations();
 
 
     public static void main(String[] args) {
@@ -45,8 +46,6 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                     break;
                 case 6:
                     System.exit(0);
-                    loopBreak = false;
-                    break;
                 default:
                     System.out.println("Invalid Value .....!\n");
             }
@@ -90,9 +89,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     @Override
     public void addNewDoctor() {
 
-        boolean docSize = doctors.size() != 10;
-
-        if(docSize){
+        if(doctors.size() != 10){
 
             spase();
 
@@ -105,17 +102,19 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
             do{
                 System.out.print("Enter Doctor Name > ");
                 name = strInput().trim();
-                loopBreak = name.equals("");
-            }while(loopBreak);
+                if (validations.nameValidator(name)) {
+                    System.out.println("Enter Correct Name .....!\n");
+                }
+            }while(!validations.nameValidator(name));
 
-            loopBreak = true;
             do{
                 System.out.print("Enter Doctor Surname > ");
                 surname = strInput().trim();
-                loopBreak = name.equals("");
-            }while(loopBreak);
+                if (validations.nameValidator(name)) {
+                    System.out.println("Enter Correct Name .....!\n");
+                }
+            }while(!validations.nameValidator(surname));
 
-            loopBreak = true;
             do{
                 System.out.println("Enter Doctor Date of Birth > ");
                 String year, month, date;
@@ -133,30 +132,19 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                     date = "0"+String.valueOf(Integer.valueOf(date));
                 }
 
-                try{
-                    SimpleDateFormat dateForm = new SimpleDateFormat("yyyy");
-                    Date today = new Date();
-                    int befor_25Years = (Integer.parseInt(dateForm.format(today)))-(25);
-                    int befor_60Years = (Integer.parseInt(dateForm.format(today)))-(60);
-
-                    if(befor_25Years >= Integer.parseInt(year) && befor_60Years <= Integer.parseInt(year)){
-                        loopBreak = false;
-                        DOB = LocalDate.parse(year+"-"+month+"-"+date);
-                    } else {
-                        System.out.println("Age Cannot be Entered in this \nThe Doctor Should be Between 25-60 Years of Age .....!\n");
-                    }
-
-                }catch(Exception e){
-                    System.out.println("Invalid Date .....!\n");
+                loopBreak = !validations.ageValidator(year,month,date);
+                if (!loopBreak){
+                    DOB = LocalDate.parse(year+"-"+month+"-"+date);
                 }
             }while(loopBreak);
 
-            loopBreak = true;
             do{
                 System.out.print("Enter Doctor Mobile Number > ");
                 mobileNumber = strInput();
-                loopBreak = name.equals("");
-            }while(loopBreak);
+                if (validations.mobileNumberValidator(mobileNumber)) {
+                    System.out.println("Enter Correct Mobile Number .....!\n");
+                }
+            }while(!validations.mobileNumberValidator(mobileNumber));
 
             loopBreak = true;
             do {
@@ -174,12 +162,13 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 }
             }while(loopBreak);
 
-            loopBreak = true;
             do{
                 System.out.print("Enter Doctor Specialisation > ");
                 specialisation = strInput().trim();
-                loopBreak = name.equals("");
-            }while(loopBreak);
+                if (validations.nameValidator(specialisation)) {
+                    System.out.println("Ente Specialisation Correctly .....!\n");
+                }
+            }while(!validations.nameValidator(specialisation));
 
             doctors.add(new Doctor(name, surname, DOB, mobileNumber, medicalLicenceNumber, specialisation));
             spase();
@@ -279,7 +268,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
 
         // Create File
         try {
-            BufferedWriter saveData = new BufferedWriter(new FileWriter("Save_Data.txt"));
+            BufferedWriter saveData = new BufferedWriter(new FileWriter("Save_Data_File.txt"));
 
         }catch (Exception e){
             System.out.println(e);
@@ -311,6 +300,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     public void setAllPatientID(String ID){
         this.allPatientIDs.add(ID);
     }
+
 
     // Get Methods
     @Override

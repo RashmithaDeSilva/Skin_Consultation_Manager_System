@@ -17,6 +17,23 @@ public class MainMenuGUI extends JFrame {
         // Set Window
         setWindow(600,400,"Westminster Skin Consultation Manager");
 
+        // Set Body
+        GUIBody(SCM);
+    }
+
+
+    // Set Window
+    private void setWindow(int width, int height, String name){
+        setSize(width,height);
+        setTitle(name);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE); // DISPOSE_ON_CLOSE or 2
+        setLocationRelativeTo(null);
+        setResizable(false);
+        setLayout(new BorderLayout());
+    }
+
+    // Set Body
+    private void GUIBody(SkinConsultationManager SCM){
         // Set Main Menu Name
         mainMenuNamePnl = new JPanel(new FlowLayout());
         mainMenuNameLbl = new JLabel("Westminster Skin Consultation Manager");
@@ -43,38 +60,31 @@ public class MainMenuGUI extends JFrame {
         // 3 - Refresh
         lbl.add(new JLabel("["+(lbl.size()+1)+"]"));
         btn.add(new JButton("Refresh"));
-        btn.get(btn.size()-1).addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                /*
+        btn.get(btn.size()-1).addActionListener( (e) -> {
+             /*
                     This refresh button close all menu option windows and it closes itself also
                     here I use dispose() method in that work
                     because I want to kill all objects and open this object again
                     with WestminsterSkinConsultationManager Object
                     then this new MainMenu object is updated with a new doctor ArrayList
                  */
-                for (MenuOptionControllerGUI menuOptionController : MOC) {
-                    menuOptionController.dispose();
-                }
-                dispose();
-                SCM.openGUI();
+            for (MenuOptionControllerGUI menuOptionController : MOC) {
+                menuOptionController.dispose();
             }
+            dispose();
+            SCM.openGUI();
         });
 
         // 4 - Exit
         lbl.add(new JLabel("["+(lbl.size()+1)+"]"));
         btn.add(new JButton("Exit"));
-        btn.get(btn.size()-1).addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                /*
-                    This exit button is close all windows
-                */
-                for (MenuOptionControllerGUI menuOptionController : MOC) {
-                    menuOptionController.dispose();
-                }
-                dispose();
+        btn.get(btn.size()-1).addActionListener( (e) -> {
+            // This exit button is close all windows
+            // All Visible False Object eligible for garbage collector
+            for (MenuOptionControllerGUI menuOptionController : MOC) {
+                menuOptionController.dispose();
             }
+            dispose();
         });
 
         // Add All Buttons And Labels Into Panel
@@ -84,17 +94,6 @@ public class MainMenuGUI extends JFrame {
 
 
         add("Center",mainMenuOptionsPnl);
-    }
-
-
-    // Set Window
-    private void setWindow(int width, int height, String name){
-        setSize(width,height);
-        setTitle(name);
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // EXIT_ON_CLOSE or 3
-        setLocationRelativeTo(null);
-        setResizable(false);
-        setLayout(new BorderLayout());
     }
 
     // Set Main Menu Options

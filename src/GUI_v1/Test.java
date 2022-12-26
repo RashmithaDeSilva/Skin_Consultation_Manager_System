@@ -22,7 +22,7 @@ public class Test {
         w.setDoctor(new Doctor("Dewindi","De silva",DOB,"+94769874188","S009","Super Doctor"));
         w.setDoctor(new Doctor("Sellahandi","De silva",DOB,"+94769874188","S010","Super Doctor"));
 
-        w.openGUI();
+        //w.openGUI();
 
     }
 }

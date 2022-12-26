@@ -11,10 +11,19 @@ import java.awt.event.ActionListener;
 
 public class AddConsultationGUI extends MenuOptionControllerGUI {
 
-    AddConsultationGUI(){
+    // Constructor
+    AddConsultationGUI(Doctor doctor, Consultation consultation){
         // Set Window
-        setWindow(600,580,"Add Consultation");
+        setWindow(600,500,"Add Consultation");
 
+        // Set Body
+        GUIBody(doctor,consultation);
+
+    }
+
+
+    // Set Body
+    private void GUIBody(Doctor doctor, Consultation consultation){
         // Set Main Menu Name
         addConsultationPnl = new JPanel(new FlowLayout());
         addConsultationLbl = new JLabel("Add Consultation");
@@ -23,173 +32,196 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         add("North",addConsultationPnl);
 
         // Main Body
-        bodyPartPnl = new JPanel(new GridLayout(2,1));
+        bodyPartPnl = new JPanel(new FlowLayout());
+        font = new Font("SansSerif",Font.BOLD,14);
 
-            // Patient Details
-        patientDetailsPnl = new JPanel(new GridLayout(3,1));
+
+        // Doctor Details
+        doctorDetailsPnl = new JPanel(new GridBagLayout());
+        doctorDetailsPnl.setBorder(BorderFactory.createTitledBorder("Doctor Details"));
+        doctorDetailsPnl.setFont(new Font("SansSerif",Font.BOLD,14));
+        GBC = new GridBagConstraints();
+
+        // Doctor Name
+        GBC.insets = new Insets(5,5,5,5);
+        GBC.gridx = 0;
+        GBC.gridy = 0;
+        doctorNameLbl = new JLabel("Doctor Name >   "+doctor.getFullName());
+        doctorNameLbl.setFont(font);
+        doctorDetailsPnl.add(doctorNameLbl,GBC);
+        GBC.insets = new Insets(5,20,5,20);
+        GBC.gridx = 1;
+        GBC.gridy = 0;
+        doctorNameLbl = new JLabel("Requested Time >   "+String.valueOf(consultation.getRequestedTime()));
+        doctorNameLbl.setFont(font);
+        doctorDetailsPnl.add(doctorNameLbl,GBC);
+        GBC.insets = new Insets(5,5,5,5);
+        GBC.gridx = 0;
+        GBC.gridy = 1;
+        consultationDateLbl = new JLabel("Consultation Date >   "+String.valueOf(consultation.getDate()));
+        consultationDateLbl.setFont(font);
+        doctorDetailsPnl.add(consultationDateLbl,GBC);
+        GBC.insets = new Insets(5,20,5,20);
+        GBC.gridx = 1;
+        GBC.gridy = 1;
+        consultationTimeLbl = new JLabel("Consultation Start Time >   "+String.valueOf(consultation.getConsultationStartTime()));
+        consultationTimeLbl.setFont(font);
+        doctorDetailsPnl.add(consultationTimeLbl,GBC);
+        bodyPartPnl.add(doctorDetailsPnl);
+
+
+        // Patient Details
+        patientDetailsPnl = new JPanel(new GridBagLayout());
         patientDetailsPnl.setBorder(BorderFactory.createTitledBorder("Patient Details"));
         patientDetailsPnl.setFont(new Font("SansSerif",Font.BOLD,14));
 
-                // First name
-        namePnl = new JPanel(new GridLayout(1,2));
+        // First name
+        GBC.insets = new Insets(5,-55,5,0);
+        GBC.gridx = 0;
+        GBC.gridy = 0;
         firstNamePnl = new JPanel(new FlowLayout());
         firstNameLbl = new JLabel("First Name");
-        firstNameLbl.setFont(new Font("SansSerif",Font.BOLD,12));
-        firstNameTxt = new JTextField(6);
-        firstNameTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        firstNameLbl.setFont(font);
         firstNamePnl.add(firstNameLbl);
+        firstNameTxt = new JTextField(6);
+        firstNameTxt.setFont(font);
         firstNamePnl.add(firstNameTxt);
-        namePnl.add(firstNamePnl);
+        patientDetailsPnl.add(firstNamePnl,GBC);
 
-                // Surname
+        // Surname
+        GBC.insets = new Insets(5,-40,5,0);
+        GBC.gridx = 1;
+        GBC.gridy = 0;
         surnamePnl = new JPanel(new FlowLayout());
         surnameLbl = new JLabel("Surname");
-        surnameLbl.setFont(new Font("SansSerif",Font.BOLD,12));
-        surnameTxt = new JTextField(10);
-        surnameTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        surnameLbl.setFont(font);
         surnamePnl.add(surnameLbl);
+        surnameTxt = new JTextField(10);
+        surnameTxt.setFont(font);
         surnamePnl.add(surnameTxt);
-        namePnl.add(surnamePnl);
-        patientDetailsPnl.add(namePnl);
+        patientDetailsPnl.add(surnamePnl,GBC);
 
-                // Date Of Birth
-        dateOfBirthPnl = new JPanel(new GridLayout(1,4));
-        dateOfBirthNamepnl = new JPanel(new FlowLayout());
+        // Date Of Birth
+        GBC.insets = new Insets(5,-120,5,0);
+        GBC.gridx = 0;
+        GBC.gridy = 1;
+        dateOfBirthPnl = new JPanel(new FlowLayout());
         dateOfBirthLbl = new JLabel("Date Of Birth");
-        dateOfBirthLbl.setFont(new Font("SansSerif",Font.BOLD,12));
-        dateOfBirthNamepnl.add(dateOfBirthLbl);
-        dateOfBirthPnl.add(dateOfBirthNamepnl);
+        dateOfBirthLbl.setFont(font);
+        dateOfBirthPnl.add(dateOfBirthLbl);
+        patientDetailsPnl.add(dateOfBirthPnl,GBC);
 
-                    // Year
+        // Year
+        GBC.insets = new Insets(5,-280,5,0);
+        GBC.gridx = 1;
+        GBC.gridy = 1;
         yearPnl = new JPanel(new FlowLayout());
         yearLbl = new JLabel("Y");
-        yearLbl.setFont(new Font("SansSerif",Font.BOLD,12));
+        yearLbl.setFont(font);
         yearPnl.add(yearLbl);
         yearTxt = new JTextField(5);
-        yearTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        yearTxt.setFont(font);
         yearPnl.add(yearTxt);
-        dateOfBirthPnl.add(yearPnl);
-                    // Month
+        patientDetailsPnl.add(yearPnl,GBC);
+        // Month
+        GBC.insets = new Insets(5,-280,5,0);
+        GBC.gridx = 2;
+        GBC.gridy = 1;
         monthPnl = new JPanel(new FlowLayout());
         monthLbl = new JLabel("M");
-        monthLbl.setFont(new Font("SansSerif",Font.BOLD,12));
+        monthLbl.setFont(font);
         monthPnl.add(monthLbl);
         monthTxt = new JTextField(3);
-        monthTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        monthTxt.setFont(font);
         monthPnl.add(monthTxt);
-        dateOfBirthPnl.add(monthPnl);
-                    // Date
+        patientDetailsPnl.add(monthPnl,GBC);
+        // Date
+        GBC.insets = new Insets(5,-100,5,150);
+        GBC.gridx = 3;
+        GBC.gridy = 1;
         dayPnl = new JPanel(new FlowLayout());
         dayLbl = new JLabel("D");
-        dayLbl.setFont(new Font("SansSerif",Font.BOLD,12));
+        dayLbl.setFont(font);
         dayPnl.add(dayLbl);
         dayTxt = new JTextField(3);
-        dayTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        dayTxt.setFont(font);
         dayPnl.add(dayTxt);
-        dateOfBirthPnl.add(dayPnl);
-        patientDetailsPnl.add(dateOfBirthPnl);
+        patientDetailsPnl.add(dayPnl,GBC);
 
-                // Mobile Number
-        mobiAndIDPnl = new JPanel(new GridLayout(1,2));
+        // Mobile Number
+        GBC.insets = new Insets(5,3,5,0);
+        GBC.gridx = 0;
+        GBC.gridy = 2;
         mobileNumberPnl = new JPanel(new FlowLayout());
         mobileNumberLbl = new JLabel("Mobile Number");
-        mobileNumberLbl.setFont(new Font("SansSerif",Font.BOLD,12));
+        mobileNumberLbl.setFont(font);
         mobileNumberPnl.add(mobileNumberLbl);
         mobileNumberTxt = new JTextField(8);
-        mobileNumberTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        mobileNumberTxt.setFont(font);
         mobileNumberPnl.add(mobileNumberTxt);
-        mobiAndIDPnl.add(mobileNumberPnl);
+        patientDetailsPnl.add(mobileNumberPnl,GBC);
 
-                // Patient ID
+        // Patient ID
+        GBC.insets = new Insets(5,20,5,10);
+        GBC.gridx = 1;
+        GBC.gridy = 2;
         patientIDPnl = new JPanel(new FlowLayout());
         patientIDLbl = new JLabel("Patient ID");
-        patientIDLbl.setFont(new Font("SansSerif",Font.BOLD,12));
+        patientIDLbl.setFont(font);
         patientIDPnl.add(patientIDLbl);
         patientIDTxt = new JTextField(5);
-        patientIDTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        patientIDTxt.setFont(font);
         patientIDPnl.add(patientIDTxt);
-        mobiAndIDPnl.add(patientIDPnl);
-        patientDetailsPnl.add(mobiAndIDPnl);
+        patientDetailsPnl.add(patientIDPnl,GBC);
         bodyPartPnl.add(patientDetailsPnl);
 
-            // Other Details
-        otherPnl = new JPanel(new GridLayout(2,1));
+        // Other Details
+        otherPnl = new JPanel(new GridBagLayout());
         otherPnl.setBorder(BorderFactory.createTitledBorder("Other Details"));
         otherPnl.setFont(new Font("SansSerif",Font.BOLD,14));
 
-                // Cost
-        costAndNotyPnl = new JPanel(new GridLayout(1,2));
+        // Cost
+        GBC.insets = new Insets(5,5,5,0);
+        GBC.gridx = 0;
+        GBC.gridy = 0;
         costPnl = new JPanel(new FlowLayout());
         costLbl = new JLabel("Cost");
-        costLbl.setFont(new Font("SansSerif",Font.BOLD,12));
+        costLbl.setFont(font);
         costPnl.add(costLbl);
         costTxt = new JTextField(5);
-        costTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        costTxt.setFont(font);
         costPnl.add(costTxt);
-        costAndNotyPnl.add(costPnl);
+        otherPnl.add(costPnl,GBC);
+        // Cost Notification
+        GBC.insets = new Insets(5,10,5,355);
+        GBC.gridx = 1;
+        GBC.gridy = 0;
         notyPnl = new JPanel(new FlowLayout());
-        notyLbl = new JLabel("               ");
-        notyLbl.setFont(new Font("SansSerif",Font.BOLD,12));
+        notyLbl = new JLabel("$15");
+        notyLbl.setFont(font);
         notyPnl.add(notyLbl);
-        costAndNotyPnl.add(notyPnl);
-        otherPnl.add(costAndNotyPnl);
+        otherPnl.add(notyPnl,GBC);
+        bodyPartPnl.add(otherPnl);
 
-            // Submit Button
+
+        // Submit Button
         btnPnl = new JPanel(new FlowLayout());
         submitBtn = new JButton("Submit");
-        submitBtn.setFont(new Font("SansSerif",Font.BOLD,12));
-        submitBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
+        submitBtn.setFont(font);
+        submitBtn.addActionListener( event -> submitBtnAddAction(doctor,consultation));
         btnPnl.add(submitBtn);
 
 
-        bodyPartPnl.add(otherPnl);
+
         add("West",new JLabel("          "));
         add("Center",bodyPartPnl);
         add("East",new JLabel("          "));
         add("South",btnPnl);
     }
-    AddConsultationGUI(Doctor doctor, Consultation consultation){
-        // Set Window
-        setWindow(600,580,"Add Consultation");
 
-        // Set Main Menu Name
-        addConsultationPnl = new JPanel(new FlowLayout());
-        addConsultationLbl = new JLabel("Westminster Skin Consultation Manager");
-        addConsultationLbl.setFont(new Font("SansSerif",Font.BOLD,25));
-        addConsultationPnl.add(addConsultationLbl);
-        add("North",addConsultationPnl);
+    // Submit Button Add Action Listener
+    private void submitBtnAddAction(Doctor doctor, Consultation consultation){
 
-        // Main Body
-        bodyPartPnl = new JPanel(new GridLayout(2,1));
-            // Patient Details
-        patientDetailsPnl = new JPanel(new FlowLayout());
-        patientDetailsPnl.setBorder(BorderFactory.createTitledBorder("Patient Details"));
-        patientDetailsPnl.setFont(new Font("SansSerif",Font.BOLD,14));
-                // First name
-        namePnl = new JPanel(new GridLayout(1,2));
-        firstNamePnl = new JPanel(new FlowLayout());
-        firstNameLbl = new JLabel("First Name");
-        firstNameLbl.setFont(new Font("SansSerif",Font.BOLD,12));
-        firstNameTxt = new JTextField(10);
-        firstNameTxt.setFont(new Font("SansSerif",Font.BOLD,12));
-        firstNamePnl.add(firstNameLbl);
-        firstNamePnl.add(firstNameTxt);
-        namePnl.add(firstNamePnl);
-
-        patientDetailsPnl.add(namePnl);
-
-        bodyPartPnl.add(patientDetailsPnl);
-
-
-
-        add("West",new JLabel("          "));
-        add("Center",bodyPartPnl);
-        add("East",new JLabel("          "));
     }
 
 
@@ -202,12 +234,11 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         return null;
     }
 
-
+    private Font font;
     private JPanel addConsultationPnl;
     private JLabel addConsultationLbl;
     private JPanel bodyPartPnl;
     private JPanel patientDetailsPnl;
-    private JPanel namePnl;
     private JPanel firstNamePnl;
     private JLabel firstNameLbl;
     private JTextField firstNameTxt;
@@ -222,7 +253,6 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
     private JTextField monthTxt;
     private JLabel dayLbl;
     private JTextField dayTxt;
-    private JPanel dateOfBirthNamepnl;
     private JPanel yearPnl;
     private JPanel monthPnl;
     private JPanel dayPnl;
@@ -232,9 +262,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
     private JPanel patientIDPnl;
     private JLabel patientIDLbl;
     private JTextField patientIDTxt;
-    private JPanel mobiAndIDPnl;
     private JPanel otherPnl;
-    private JPanel costAndNotyPnl;
     private JPanel costPnl;
     private JLabel costLbl;
     private JTextField costTxt;
@@ -242,6 +270,10 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
     private JLabel notyLbl;
     private JPanel btnPnl;
     private JButton submitBtn;
-
+    private JPanel doctorDetailsPnl;
+    private JLabel doctorNameLbl;
+    private JLabel consultationDateLbl;
+    private JLabel consultationTimeLbl;
+    private GridBagConstraints GBC;
 
 }

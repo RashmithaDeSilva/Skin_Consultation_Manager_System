@@ -1,15 +1,20 @@
 package GUI_v2;
 
+import Test.DragAndDropPanel;
 import consoleSystem_v2.Consultation;
 import consoleSystem_v2.Doctor;
 import consoleSystem_v2.WestminsterSkinConsultationManager;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class Demo {
+public class Demo extends JFrame {
     public static void main(String[] args) {
 
         WestminsterSkinConsultationManager w = new WestminsterSkinConsultationManager();
@@ -25,16 +30,49 @@ public class Demo {
         w.setDoctor(new Doctor("Dewindi","De silva",DOB,"+94769874188","S009","Super Doctor"));
         w.setDoctor(new Doctor("Sellahandi","De silva",DOB,"+94769874188","S010","Super Doctor"));
 
+
+        Doctor doc = new Doctor("Ravindu","De silva",DOB,"+94769874188","S001","Super Doctor");
+        Consultation con = new Consultation();
+        con.setDate(DOB);
+        con.setConsultationStartTime(LocalTime.parse("19:20"));
+        con.setRequestedTime(5);
+
         //new MainMenuGUI(w).setVisible(true);
-        new AddConsultationGUI().setVisible(true);
+        new AddConsultationGUI(doc,con).setVisible(true);
 
-        //Random random = new Random();
-        //int doctorPosition = random.nextInt(1);
-        //System.out.println(doctorPosition);
+        //new Demo().drag();g
+        //new DragAndDropPanel();
 
-        //System.out.println(checkDoctorAvailability(w.getDoctor(3),LocalDate.parse("2022-02-03"),LocalTime.parse("20:00")));
-        //System.out.println(checkRandomlyAvailableDoctor(w.getDoctors(),LocalDate.parse("2022-02-03"),LocalTime.parse("20:00")));
+        for (int i=0;i<5;i++) {
+            System.out.println(i + " i");
+            for (int j=0;j<5;j++) {
+                System.out.println(j + " j");
+                if(j==3){
+                    i=5;
+                    break;
+                }
+            }
+        }
     }
+
+    /*private void drag(){
+        setSize(400,400);
+        setTitle("kjfchnsd");
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE); // DISPOSE_ON_CLOSE or 2
+        setLocationRelativeTo(null);
+        //setResizable(false);
+        setLayout(new FlowLayout());
+
+        JLabel label = new JLabel();
+        JButton button = new JButton("iidhihsis");
+
+        button.addActionListener( (e) -> System.exit(0));
+
+
+        add(label);
+        add(button);
+        setVisible(true);
+    }*/
 
 
     private static int checkRandomlyAvailableDoctor(ArrayList<Doctor> doctors, LocalDate date, LocalTime time){

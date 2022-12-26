@@ -4,18 +4,24 @@ import consoleSystem_v2.SkinConsultationManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 public class ConsultationGUI extends MenuOptionControllerGUI {
 
+    // Constructor
     ConsultationGUI(SkinConsultationManager SCM, MainMenuGUI mainMenu){
 
         // Set Window
         setWindow(600,400,"Consultation");
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // EXIT_ON_CLOSE or 3
 
+        // Set Body
+        GUIBody(SCM,mainMenu);
+
+    }
+
+
+    // Set Body
+    private void GUIBody(SkinConsultationManager SCM, MainMenuGUI mainMenu){
         // Set Consultation Menu Name
         consultationMenuNamePnl = new JPanel(new FlowLayout());
         consultationMenuNameLbl = new JLabel("Consultation");
@@ -33,26 +39,23 @@ public class ConsultationGUI extends MenuOptionControllerGUI {
             int count = i;
             lbl.add(new JLabel(MOC.get(i).getOptionNumber()));
             btn.add(new JButton(MOC.get(i).getOptionName()));
-            btn.get(i).addActionListener( (e) -> MOC.get(count).setVisible(true));
+            btn.get(i).addActionListener( (e) -> {
+                MOC.get(count).setVisible(true);
+                setVisible(false);
+            });
         }
 
-        // 1 - Add Consultation
-        btn.get(0).addActionListener( (e) -> setVisible(false));
 
         // 3 - Back
         lbl.add(new JLabel("["+(lbl.size()+1)+"]"));
         btn.add(new JButton("Back"));
-        btn.get(btn.size()-1).addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                /*
-                    This button again shows Main Window and hides this window
-                */
-                for (MenuOptionControllerGUI menuOptionController : MOC) {
-                    menuOptionController.dispose();
-                }
-                setVisible(false);
-                mainMenu.setVisible(true);
+        btn.get(btn.size()-1).addActionListener( (e) -> {
+            //This button again shows Main Window and hides this window
+            mainMenu.setVisible(true);
+            setVisible(false);
+            // All Visible False Object eligible for garbage collector
+            for (MenuOptionControllerGUI menuOptionController : MOC) {
+                menuOptionController.dispose();
             }
         });
 
@@ -62,16 +65,6 @@ public class ConsultationGUI extends MenuOptionControllerGUI {
         }
 
         add("Center",consultationMenuOptionsPnl);
-    }
-
-
-    @Override
-    public String getOptionName() {
-        return optionName;
-    }
-    @Override
-    public String getOptionNumber() {
-        return optionNumber;
     }
 
     // Set Main Menu Options
@@ -93,5 +86,14 @@ public class ConsultationGUI extends MenuOptionControllerGUI {
     private ArrayList<MenuOptionControllerGUI> MOC = new ArrayList<>();
     private ArrayList<JLabel> lbl = new ArrayList<>();
     private ArrayList<JButton> btn = new ArrayList<>();
+
+    @Override
+    public String getOptionName() {
+        return optionName;
+    }
+    @Override
+    public String getOptionNumber() {
+        return optionNumber;
+    }
 
 }

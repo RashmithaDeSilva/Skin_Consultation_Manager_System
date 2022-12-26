@@ -7,33 +7,28 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.security.Guard;
 import java.util.ArrayList;
 
 
 public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
-    private String optionNumber = "[1]";
-    private String optionName = "View List Of Doctors";
-    private JLabel optionNameLbl;
-    private JTable doctorsTable;
-    private JButton firstNameBtn;
-    private JButton surnameBtn;
-    private JButton refreshBtn;
-
-    @Override
-    public String getOptionName() {
-        return optionName;
-    }
-    @Override
-    public String getOptionNumber() {
-        return optionNumber;
-    }
-
 
     // Contractor
     ViewListOfDoctorsGUI(SkinConsultationManager SCM, MainMenuGUI mainMenu){
 
         // Set Window
         setWindow(800,400,"View List Of Doctors");
+
+        // Set Body
+        GUIBody(SCM,mainMenu);
+
+    }
+
+
+    // Set Body
+    private void GUIBody(SkinConsultationManager SCM, MainMenuGUI mainMenu){
+
+        font = new Font("SansSerif",Font.BOLD,15);
 
         // Set Option Name
         JPanel optionNamePnl = new JPanel(new FlowLayout());
@@ -57,7 +52,7 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
         // Set Sort Button Types
         // Sort By First Name Button
         firstNameBtn = new JButton("Sort First Name");
-        firstNameBtn.setFont(new Font("SansSerif",Font.BOLD,15));
+        firstNameBtn.setFont(font);
         firstNameBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -71,7 +66,7 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
 
         // Sort By Surname Button
         surnameBtn = new JButton("Sort Surname");
-        surnameBtn.setFont(new Font("SansSerif",Font.BOLD,15));
+        surnameBtn.setFont(font);
         surnameBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,7 +80,7 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
 
         // Refresh Button
         refreshBtn = new JButton("Refresh");
-        refreshBtn.setFont(new Font("SansSerif",Font.BOLD,15));
+        refreshBtn.setFont(font);
         refreshBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,9 +97,6 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
         pnl.add(refreshBtn);
         add("South",pnl);
     }
-
-
-    // Methords
 
     // Set Doctor List
     private JTable doctorList(ArrayList<Doctor> doctorsArrayList){
@@ -242,5 +234,24 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
         doctorsTable.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 15));
 
         return doctorsTable;
+    }
+
+
+    private String optionNumber = "[1]";
+    private String optionName = "View List Of Doctors";
+    private JLabel optionNameLbl;
+    private JTable doctorsTable;
+    private JButton firstNameBtn;
+    private JButton surnameBtn;
+    private JButton refreshBtn;
+    private Font font;
+
+    @Override
+    public String getOptionName() {
+        return optionName;
+    }
+    @Override
+    public String getOptionNumber() {
+        return optionNumber;
     }
 }

@@ -11,19 +11,26 @@ import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.Random;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
-
+    // Constructor
     CheckDoctorAvailabilityGUI(SkinConsultationManager SCM, MenuOptionControllerGUI MOC){
 
         // Set Window
         setWindow(600,400,"Check Doctor Availability");
-        setDefaultCloseOperation(EXIT_ON_CLOSE); // EXIT_ON_CLOSE or 3
+
+        // Set Body
+        GUIBody(SCM,MOC);
+    }
+
+
+    // Set Body
+    private void GUIBody(SkinConsultationManager SCM, MenuOptionControllerGUI MOC){
+
+        font = new Font("SansSerif",Font.BOLD,14);
 
         // Set Consultation Menu Name
         CheckDoctorAvailabilityNamePnl = new JPanel(new FlowLayout());
@@ -33,9 +40,9 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
         add("North",CheckDoctorAvailabilityNamePnl);
 
         // Body Parts
-        bodyPartPnl = new JPanel(new GridLayout(5,1));
+        bodyPartPnl = new JPanel(new GridLayout(7,1));
 
-            // Show Doctors Name And Select Doctor
+        // Show Doctors Name And Select Doctor
         doctorsNamePnl = new JPanel(new FlowLayout());
         doctorNames = new String[SCM.getDoctors().size()+1];
         doctorNames[0] = "Select Doctor";
@@ -46,232 +53,90 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
         doctorsNamePnl.add(selectDoctorCmBx);
         bodyPartPnl.add(doctorsNamePnl);
 
-            // Consultation Date
+        // Consultation Date
         datePnl = new JPanel(new FlowLayout());
         dateLbl = new JLabel("Date  ");
-        dateLbl.setFont(new Font("SansSerif",Font.BOLD,14));
+        dateLbl.setFont(font);
         datePnl.add(dateLbl);
 
         yearLbl = new JLabel("Y");
-        yearLbl.setFont(new Font("SansSerif",Font.BOLD,12));
+        yearLbl.setFont(font);
         datePnl.add(yearLbl);
         yearTxt = new JTextField(5);
-        yearTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        yearTxt.setFont(font);
         datePnl.add(yearTxt);
 
         monthLbl = new JLabel("M");
-        monthLbl.setFont(new Font("SansSerif",Font.BOLD,12));
+        monthLbl.setFont(font);
         datePnl.add(monthLbl);
         monthTxt = new JTextField(3);
-        monthTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        monthTxt.setFont(font);
         datePnl.add(monthTxt);
 
         dayLbl = new JLabel("D");
-        dayLbl.setFont(new Font("SansSerif",Font.BOLD,12));
+        dayLbl.setFont(font);
         datePnl.add(dayLbl);
         dayTxt = new JTextField(3);
-        dayTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        dayTxt.setFont(font);
         datePnl.add(dayTxt);
         bodyPartPnl.add(datePnl);
 
-            // Time
+        // Time
         timePnl = new JPanel(new FlowLayout());
         timeLbl = new JLabel("Time (24 Clock)   ");
-        timeLbl.setFont(new Font("SansSerif",Font.BOLD,14));
+        timeLbl.setFont(font);
         timePnl.add(timeLbl);
 
         hoursLbl = new JLabel("H");
-        hoursLbl.setFont(new Font("SansSerif",Font.BOLD,12));
+        hoursLbl.setFont(font);
         timePnl.add(hoursLbl);
         hoursTxt = new JTextField(5);
-        hoursTxt.setFont(new Font("SansSerif",Font.BOLD,12));
+        hoursTxt.setFont(font);
         timePnl.add(hoursTxt);
         bodyPartPnl.add(timePnl);
 
-            // Warning
+        //Hours Count
+        hoursCountPnl = new JPanel(new FlowLayout());
+        hoursCountNameLbl = new JLabel("Select Hours You Want > ");
+        hoursCountLbl = new JLabel("   1 Hours");
+        hoursCountNameLbl.setFont(font);
+        hoursCountLbl.setFont(font);
+        hoursCountPnl.add(hoursCountNameLbl);
+        hoursCountPnl.add(hoursCountLbl);
+        bodyPartPnl.add(hoursCountPnl);
+
+        hoursCountSldPnl = new JPanel(new FlowLayout());
+        hoursCountSld = new JSlider(1,12,1);
+        hoursCountSld.addChangeListener( (e) -> {
+            hoursCountLbl.setText("   "+hoursCountSld.getValue()+" Hours");
+            hoursCountLbl.setFont(font);
+        });
+        hoursCountSldPnl.add(hoursCountSld);
+        bodyPartPnl.add(hoursCountSldPnl);
+
+        // Warning
         warningPnl = new JPanel(new FlowLayout());
         warningLbl = new JLabel("");
-        warningLbl.setFont(new Font("SansSerif",Font.BOLD,14));
+        warningLbl.setFont(font);
         warningPnl.add(warningLbl);
         bodyPartPnl.add(warningPnl);
 
-            // Back Button
+        // Back Button
         btnPnl = new JPanel(new FlowLayout());
         backBtn = new JButton("Back");
-        backBtn.setFont(new Font("SansSerif",Font.BOLD,14));
-        backBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //This button again shows Consultation Window and hides this window
-
-                setVisible(false);
-                MOC.setVisible(true);
-            }
+        backBtn.setFont(font);
+        backBtn.addActionListener( (e) -> {
+            //This button again shows Consultation Window and hides this window
+            MOC.setVisible(true);
+            setVisible(false);
         });
         btnPnl.add(backBtn);
 
-            // Check Button
+        // Check Button
         checkBtn = new JButton("Check");
-        checkBtn.setFont(new Font("SansSerif",Font.BOLD,14));
-        checkBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                LocalDate consultationDate;
-                LocalTime consultationStartTime;
-                boolean doctorAvailability;
-                Consultation consultation;
-
-                try {
-                    // Select Doctor Validation
-                    int selectDoctorNumber = 0;
-                    selectDoctorNumber = selectDoctorCmBx.getSelectedIndex();
-                        // If the doctor's checkBox output value is 0 it will show a warning message
-                    if(selectDoctorNumber != 0){
-                        warningLbl.setText("");
-
-                        try {
-                            warningLbl.setText("");
-
-                            // Date Validation
-                            // If the user will enter a single number this code line will set that number with 0
-                            // Because LocalDate requests values like this (2022-12-24)
-                            if (Integer.parseInt(monthTxt.getText()) < 10 || Integer.parseInt(dayTxt.getText()) < 10) {
-                                monthTxt.setText((monthTxt.getText().length() != 2) ? "0"+monthTxt.getText() : monthTxt.getText());
-                                dayTxt.setText((dayTxt.getText().length() != 2) ? "0"+dayTxt.getText() : dayTxt.getText());
-                            }
-                            // Get Today Date
-                            Calendar cal = Calendar.getInstance();
-                            Date today = cal.getTime();
-                            // Get After One Year
-                            cal.add(Calendar.YEAR, 1);
-                            Date after_1_Year = cal.getTime();
-                            // Checking user input date is between today and the after one year
-                            SimpleDateFormat dateForm = new SimpleDateFormat("yyyyMMdd");
-                            int tdy = Integer.parseInt(dateForm.format(today)),aftYear = Integer.parseInt(dateForm.format(after_1_Year));
-                            int userInputDate = Integer.parseInt(yearTxt.getText()+monthTxt.getText()+dayTxt.getText());
-
-                            if (tdy < userInputDate && aftYear > userInputDate){
-                                warningLbl.setText("");
-                                consultationDate = LocalDate.parse(yearTxt.getText()+"-"+monthTxt.getText()+"-"+dayTxt.getText());
-
-                                try {
-                                    warningLbl.setText("");
-
-                                    // Time Validation
-                                    // If the user will enter a single number this code line will set that number with 0
-                                    // Because LocalTime requests values like this (09:12)
-                                    if (Integer.parseInt(hoursTxt.getText()) < 10) {
-                                        hoursTxt.setText((hoursTxt.getText().length() != 2) ? "0"+hoursTxt.getText() : hoursTxt.getText());
-                                    }
-
-                                    // All Doctors Are Available in 9am - 21pm Only
-                                    if (Integer.parseInt(hoursTxt.getText()) >= 9 && Integer.parseInt(hoursTxt.getText()) <= 21) {
-                                        warningLbl.setText("");
-                                        consultationStartTime = LocalTime.parse(hoursTxt.getText()+":00");
-
-                                        // Check This Doctor Is Available Or Not
-                                        doctorAvailability = checkDoctorAvailability(SCM.getDoctor(selectDoctorNumber-1),
-                                                                                        consultationDate,
-                                                                                        consultationStartTime);
-
-                                        // If This Doctor Is Available It Opens Add Consultation Form With Patient Details
-                                        if(doctorAvailability){
-
-                                            // Create New Consultation Object And Add Date And Time
-                                            consultation = new Consultation();
-                                            consultation.setDate(consultationDate);
-                                            consultation.setConsultationStartTime(consultationStartTime);
-
-                                            // Reset Check Doctor Availability Object(GUI)
-                                            selectDoctorCmBx.setSelectedIndex(0);
-                                            yearTxt.setText("");
-                                            monthTxt.setText("");
-                                            dayTxt.setText("");
-                                            hoursTxt.setText("");
-
-                                            // Pars That Consultation Object With Correct Doctor Object
-                                            new AddConsultationGUI(SCM.getDoctor(selectDoctorNumber-1),consultation).setVisible(true);
-
-                                        } else {
-                                            // If This Doctor Is Not Available Programme Will Shows Alert Box
-                                            // And It Ask Dou you Want To Continue With Another Doctor
-                                            int alertBox = JOptionPane.showConfirmDialog(null,
-                                                    "This Doctor Is Not Available\nOn This Date And Time\nDo You Want To Continue With Another Doctor?",
-                                                    "Continue With Another Doctor", JOptionPane.YES_NO_OPTION);
-
-                                            // If User Enter Yes It Wil Continue with Another Available Random Doctor
-                                            if (alertBox == 0) {
-
-                                                // Set Random Doctor
-                                                int newDoctorPosition = checkRandomlyAvailableDoctor(SCM.getDoctors(),consultationDate,consultationStartTime);
-
-                                                // But If All Doctors Are Available In This Time Programme Will Shows Another Alert Box
-                                                if (newDoctorPosition != -1) { // If Another Doctor Is Available
-                                                                                // Programme Continue With That New Doctor
-
-                                                    // Create New Consultation Object And Add Date And Time
-                                                    consultation = new Consultation();
-                                                    consultation.setDate(consultationDate);
-                                                    consultation.setConsultationStartTime(consultationStartTime);
-
-                                                    // Reset Check Doctor Availability Object(GUI)
-                                                    selectDoctorCmBx.setSelectedIndex(0);
-                                                    yearTxt.setText("");
-                                                    monthTxt.setText("");
-                                                    dayTxt.setText("");
-                                                    hoursTxt.setText("");
-
-                                                    // Pars That Consultation Object With Correct Doctor Object
-                                                    new AddConsultationGUI(SCM.getDoctor(newDoctorPosition),consultation).setVisible(true);
-
-                                                } else { // And All Doctors Are Not Available
-                                                        // After Show Alert Box Auto Reset Consultation Forme
-                                                    JOptionPane.showConfirmDialog(null,
-                                                            "All Doctors Are Not Available On This Date And Time!\nSelect Another Date And Time .....",
-                                                            "Sorry!", JOptionPane.CLOSED_OPTION);
-                                                    selectDoctorCmBx.setSelectedIndex(0);
-                                                    yearTxt.setText("");
-                                                    monthTxt.setText("");
-                                                    dayTxt.setText("");
-                                                    hoursTxt.setText("");
-                                                }
-
-                                            } else { // IF Alert Is No Add Consultation Form Will Reset
-                                                selectDoctorCmBx.setSelectedIndex(0);
-                                                yearTxt.setText("");
-                                                monthTxt.setText("");
-                                                dayTxt.setText("");
-                                                hoursTxt.setText("");
-                                            }
-                                        }
-
-                                    } else {
-                                        warningLbl.setText("All Doctors Are Available In 9am - 9pm !");
-                                    }
-
-                                } catch (NumberFormatException ex){
-                                    warningLbl.setText("Fill All Time Details Correctly !");
-                                }
-
-                            } else {
-                                warningLbl.setText("Enter Date Between Today And After One Year !");
-                            }
-
-                        } catch (NumberFormatException ex){
-                            warningLbl.setText("Fill All Date Details Correctly !");
-                        }
-
-                    } else {
-                        warningLbl.setText("Select Doctor !");
-                    }
-
-                } catch (Exception ex){
-                    warningLbl.setText("Fill All Details Correctly !");
-                }
-
-            }
-        });
+        checkBtn.setFont(font);
+        // Check Button validation And It On Action Event
+        checkBtn.addActionListener( (e) -> checkBtnAddAction(SCM));
         btnPnl.add(checkBtn);
         bodyPartPnl.add(btnPnl);
 
@@ -279,36 +144,212 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
         add("Center",bodyPartPnl);
     }
 
+    // Check Button On Action Listener
+    private void checkBtnAddAction(SkinConsultationManager SCM){
+        Consultation consultation;
+        LocalDate consultationDate;
+        LocalTime consultationStartTime;
+        LocalTime consultationEndTime;
+        String endTime;
+        int hoursCount;
 
-    @Override
-    public String getOptionName() {
-        return optionName;
+        try {
+            // Select Doctor Validation
+            int selectDoctorNumber = selectDoctorCmBx.getSelectedIndex();
+            // If the doctor's checkBox output value is 0 it will show a warning message
+            if(selectDoctorNumber != 0){
+                warningLbl.setText("");
+
+                try {
+                    warningLbl.setText("");
+
+                    // Date Validation
+                    // If the user will enter a single number this code line will set that number with 0
+                    // Because LocalDate requests values like this (2022-12-24)
+                    if (Integer.parseInt(monthTxt.getText()) < 10 || Integer.parseInt(dayTxt.getText()) < 10) {
+                        monthTxt.setText((monthTxt.getText().length() != 2) ? "0"+monthTxt.getText() : monthTxt.getText());
+                        dayTxt.setText((dayTxt.getText().length() != 2) ? "0"+dayTxt.getText() : dayTxt.getText());
+                    }
+                    // Get Today Date
+                    Calendar cal = Calendar.getInstance();
+                    Date today = cal.getTime();
+                    // Get After One Year
+                    cal.add(Calendar.YEAR, 1);
+                    Date after_1_Year = cal.getTime();
+                    // Checking user input date is between today and the after one year
+                    SimpleDateFormat dateForm = new SimpleDateFormat("yyyyMMdd");
+                    int tdy = Integer.parseInt(dateForm.format(today)),aftYear = Integer.parseInt(dateForm.format(after_1_Year));
+                    int userInputDate = Integer.parseInt(yearTxt.getText()+monthTxt.getText()+dayTxt.getText());
+
+                    if (tdy < userInputDate && aftYear > userInputDate){
+                        warningLbl.setText("");
+                        consultationDate = LocalDate.parse(yearTxt.getText()+"-"+monthTxt.getText()+"-"+dayTxt.getText());
+
+                        try {
+                            warningLbl.setText("");
+
+                            // Time Validation
+                            // If the user will enter a single number this code line will set that number with 0
+                            // Because LocalTime requests values like this (09:12)
+                            if (Integer.parseInt(hoursTxt.getText()) < 10) {
+                                hoursTxt.setText((hoursTxt.getText().length() != 2) ? "0"+hoursTxt.getText() : hoursTxt.getText());
+                            }
+
+                            // All Doctors Are Available in 9am - 21pm Only
+                            if (Integer.parseInt(hoursTxt.getText()) >= 9 && Integer.parseInt(hoursTxt.getText()) < 21) {
+                                warningLbl.setText("");
+
+                                consultationStartTime = LocalTime.parse(hoursTxt.getText()+":00");
+
+                                // Checking Hours Count Is Right Or Wrong
+                                if (hoursCountSld.getValue() <= (21 - Integer.parseInt(hoursTxt.getText()))) {
+                                    warningLbl.setText("");
+
+                                    // Check This Doctor Is Available Or Not
+                                    hoursCount = hoursCountSld.getValue();
+                                    boolean doctorAvailability = checkDoctorAvailability(SCM.getDoctor(selectDoctorNumber-1),
+                                            consultationDate,
+                                            hoursTxt.getText(),hoursCount);
+
+                                    // If This Doctor Is Available It Opens Add Consultation Form With Patient Details
+                                    if (doctorAvailability) {
+
+                                        // Create New Consultation Object And Add Date And Time
+                                        consultation = new Consultation();
+                                        consultation.setDate(consultationDate);
+                                        consultation.setConsultationStartTime(consultationStartTime);
+                                        endTime = String.valueOf(Integer.parseInt(hoursTxt.getText())+hoursCountSld.getValue());
+                                        endTime = (endTime.length() != 2) ? "0"+endTime : endTime;
+                                        consultationEndTime = LocalTime.parse(String.valueOf(endTime+":00"));
+                                        consultation.setConsultationEndTime(consultationEndTime);
+                                        consultation.setRequestedTime(hoursCountSld.getValue());
+
+                                        // Reset Check Doctor Availability Object(GUI)
+                                        selectDoctorCmBx.setSelectedIndex(0);
+                                        yearTxt.setText("");
+                                        monthTxt.setText("");
+                                        dayTxt.setText("");
+                                        hoursTxt.setText("");
+
+                                        // Pars That Consultation Object With Correct Doctor Object
+                                        new AddConsultationGUI(SCM.getDoctor(selectDoctorNumber-1),consultation).setVisible(true);
+
+                                    } else {
+                                        // If This Doctor Is Not Available Programme Will Shows Alert Box
+                                        // And It Ask Dou you Want To Continue With Another Doctor
+                                        int alertBox = JOptionPane.showConfirmDialog(null,
+                                                "This Doctor Is Not Available\nOn This Date And Time\nDo You Want To Continue With Another Doctor?",
+                                                "Continue With Another Doctor", JOptionPane.YES_NO_OPTION);
+
+                                        // If User Enter Yes It Wil Continue with Another Available Random Doctor
+                                        if (alertBox == 0) {
+
+                                            // Set Random Doctor
+                                            int newDoctorPosition = checkRandomlyAvailableDoctor(SCM.getDoctors(),consultationDate,hoursTxt.getText(),hoursCount);
+
+                                            // But If All Doctors Are Available In This Time Programme Will Shows Another Alert Box
+                                            if (newDoctorPosition != -1) { // If Another Doctor Is Available
+                                                // Programme Continue With That New Doctor
+
+                                                // Create New Consultation Object And Add Date And Time
+                                                consultation = new Consultation();
+                                                consultation.setDate(consultationDate);
+                                                consultation.setConsultationStartTime(consultationStartTime);
+                                                endTime = String.valueOf(Integer.parseInt(hoursTxt.getText())+hoursCountSld.getValue());
+                                                endTime = (endTime.length() != 2) ? "0"+endTime : endTime;
+                                                consultationEndTime = LocalTime.parse(String.valueOf(endTime+":00"));
+                                                consultation.setConsultationEndTime(consultationEndTime);
+                                                consultation.setRequestedTime(hoursCountSld.getValue());
+
+                                                // Reset Check Doctor Availability Object(GUI)
+                                                selectDoctorCmBx.setSelectedIndex(0);
+                                                yearTxt.setText("");
+                                                monthTxt.setText("");
+                                                dayTxt.setText("");
+                                                hoursTxt.setText("");
+
+                                                // Pars That Consultation Object With Correct Doctor Object
+                                                new AddConsultationGUI(SCM.getDoctor(newDoctorPosition),consultation).setVisible(true);
+
+                                            } else { // And All Doctors Are Not Available
+                                                // After Show Alert Box Auto Reset Consultation Forme
+                                                JOptionPane.showConfirmDialog(null,
+                                                        "All Doctors Are Not Available On This Date And Time!\nSelect Another Date And Time .....",
+                                                        "Sorry!", JOptionPane.CLOSED_OPTION);
+                                                selectDoctorCmBx.setSelectedIndex(0);
+                                                yearTxt.setText("");
+                                                monthTxt.setText("");
+                                                dayTxt.setText("");
+                                                hoursTxt.setText("");
+                                            }
+
+                                        } else { // IF Alert Is No Add Consultation Form Will Reset
+                                            selectDoctorCmBx.setSelectedIndex(0);
+                                            yearTxt.setText("");
+                                            monthTxt.setText("");
+                                            dayTxt.setText("");
+                                            hoursTxt.setText("");
+                                        }
+                                    }
+
+                                } else {
+                                    warningLbl.setText("You Can Select Maximum Hour Count Is " + (21 - Integer.parseInt(hoursTxt.getText()))+" .....!");
+                                }
+
+                            } else {
+                                warningLbl.setText("All Doctors Are Available In 9am - 9pm !");
+                            }
+
+                        } catch (NumberFormatException ex){
+                            warningLbl.setText("Fill Time Details Correctly !");
+                        }
+
+                    } else {
+                        warningLbl.setText("Enter Date Between Today And After One Year !");
+                    }
+
+                } catch (NumberFormatException ex){
+                    warningLbl.setText("Fill All Date Details Correctly !");
+                }
+
+            } else {
+                warningLbl.setText("Select Doctor !");
+            }
+
+        } catch (Exception ex){
+            warningLbl.setText("Fill All Details Correctly !");
+        }
     }
-    @Override
-    public String getOptionNumber() {
-        return optionNumber;
-    }
-    private boolean checkDoctorAvailability(Doctor doctor, LocalDate date, LocalTime time){
+
+    // Chack Doctor AAvailability
+    private boolean checkDoctorAvailability(Doctor doctor, LocalDate date, String hoursTxt,int hoursCount){
         boolean check = true;
-        for (int i=0;i<doctor.getConsultationsArrayList().size();i++) {
-            if (doctor.getConsultation(i).getDate().equals(date)) {
-                if (doctor.getConsultation(i).getConsultationStartTime().equals(time)) {
-                    check = false;
-                    break;
+        LocalTime time = LocalTime.parse(hoursTxt+":00");
+        for (int j=0;j<hoursCount;j++) {
+            for (int i=0;i<doctor.getConsultationsArrayList().size();i++) {
+                if (doctor.getConsultation(i).getDate().equals(date)) {
+                    if (doctor.getConsultation(i).getConsultationStartTime().equals(time)) {
+                        check = false;
+                        j = hoursCount;
+                        break;
+                    }
                 }
             }
+            time = LocalTime.parse(String.valueOf(Integer.parseInt(hoursTxt)+1)+":00");
         }
         // True = Doctor Is Available
         // False = Doctor Is Not Available
         return check;
     }
-    private int checkRandomlyAvailableDoctor(ArrayList<Doctor> doctors, LocalDate date, LocalTime time){
+
+    // Select And Check Randomly Available Doctor
+    private int checkRandomlyAvailableDoctor(ArrayList<Doctor> doctors, LocalDate date, String hoursTxt,int hoursCount){
 
         int doctorRandomPosition =-1;
         int[] doctorAvailablePositionArray = new int[0];
 
         for (int i=0;i<doctors.size();i++) {
-            if (checkDoctorAvailability(doctors.get(i),date,time)) {
+            if (checkDoctorAvailability(doctors.get(i),date,hoursTxt,hoursCount)) {
                 int[] temp = new int[doctorAvailablePositionArray.length+1];
                 for (int j=0;j<doctorAvailablePositionArray.length;j++) {
                     temp[j] = doctorAvailablePositionArray[j];
@@ -326,6 +367,15 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
         return doctorRandomPosition;
     }
 
+
+    @Override
+    public String getOptionName() {
+        return optionName;
+    }
+    @Override
+    public String getOptionNumber() {
+        return optionNumber;
+    }
 
     private String optionNumber = "[1]";
     private String optionName = "Add Consultation";
@@ -352,5 +402,11 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
     private JPanel warningPnl;
     private JLabel warningLbl;
     private JButton checkBtn;
+    private JPanel hoursCountPnl;
+    private JLabel hoursCountNameLbl;
+    private JLabel hoursCountLbl;
+    private JPanel hoursCountSldPnl;
+    private JSlider hoursCountSld;
+    private Font font;
 
 }
