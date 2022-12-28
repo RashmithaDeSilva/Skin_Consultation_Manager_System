@@ -6,7 +6,7 @@ import java.io.File;
 import javax.swing.*;
 
 public class DragAndDropPanel extends JPanel {
-    private Image img;
+    private Image img = new Image();
 
     public static void main(String[] args) {
         JFrame frame = new JFrame("Drag and Drop Panel Example");
@@ -41,7 +41,7 @@ public class DragAndDropPanel extends JPanel {
                     @SuppressWarnings("unchecked")
                     java.util.List<File> files = (java.util.List<File>) t.getTransferData(DataFlavor.javaFileListFlavor);
                     File file = files.get(0);
-                    img = new ImageIcon(file.getAbsolutePath()).getImage();
+                    //img = new ImageIcon(file.getAbsolutePath()).getImage();
                     repaint();
                     return true;
                 } catch (Exception e) {
@@ -55,7 +55,7 @@ public class DragAndDropPanel extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         if (img != null) {
-            g.drawImage(img, 0, 0, null);
+            //g.drawImage(img, 0, 0, null);
         }
     }
 }

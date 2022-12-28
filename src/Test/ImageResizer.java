@@ -7,7 +7,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class ImageResizer {
-    public BufferedImage resizeImage(File imageFile, int width, int height) throws IOException {
+    private BufferedImage resizeImage(File imageFile, int width, int height) throws IOException {
+
         // Read the image file into a BufferedImage object
         BufferedImage originalImage = ImageIO.read(imageFile);
 
@@ -15,14 +16,15 @@ public class ImageResizer {
         BufferedImage resizedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
         // Get the graphics context for the resized image
-        Graphics g = resizedImage.getGraphics();
+        Graphics graphics = resizedImage.getGraphics();
 
         // Draw the original image on the resized image
-        g.drawImage(originalImage, 0, 0, width, height, null);
-        g.dispose();
+        graphics.drawImage(originalImage, 0, 0, width, height, null);
+        graphics.dispose();
 
         return resizedImage;
     }
+
 
 
 }

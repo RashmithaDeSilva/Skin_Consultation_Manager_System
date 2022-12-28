@@ -21,6 +21,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
         // Set Window
         setWindow(600,400,"Check Doctor Availability");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Set Body
         GUIBody(SCM,MOC);
@@ -28,7 +29,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
 
     // Set Body
-    private void GUIBody(SkinConsultationManager SCM, MenuOptionControllerGUI MOC){
+    public void GUIBody(SkinConsultationManager SCM, MenuOptionControllerGUI MOC){
 
         font = new Font("SansSerif",Font.BOLD,14);
 
@@ -47,7 +48,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
         doctorNames = new String[SCM.getDoctors().size()+1];
         doctorNames[0] = "Select Doctor";
         for (int i=1;i<SCM.getDoctors().size()+1;i++) {
-            doctorNames[i] = "["+i+"] "+SCM.getDoctor(i-1).getFullName();
+            doctorNames[i] = "  ["+i+"] "+SCM.getDoctor(i-1).getFullName();
         }
         selectDoctorCmBx = new JComboBox<>(doctorNames);
         doctorsNamePnl.add(selectDoctorCmBx);
@@ -145,7 +146,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
     }
 
     // Check Button On Action Listener
-    private void checkBtnAddAction(SkinConsultationManager SCM){
+    public void checkBtnAddAction(SkinConsultationManager SCM){
         Consultation consultation;
         LocalDate consultationDate;
         LocalTime consultationStartTime;
@@ -170,12 +171,14 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
                         monthTxt.setText((monthTxt.getText().length() != 2) ? "0"+monthTxt.getText() : monthTxt.getText());
                         dayTxt.setText((dayTxt.getText().length() != 2) ? "0"+dayTxt.getText() : dayTxt.getText());
                     }
+
                     // Get Today Date
                     Calendar cal = Calendar.getInstance();
                     Date today = cal.getTime();
                     // Get After One Year
                     cal.add(Calendar.YEAR, 1);
                     Date after_1_Year = cal.getTime();
+
                     // Checking user input date is between today and the after one year
                     SimpleDateFormat dateForm = new SimpleDateFormat("yyyyMMdd");
                     int tdy = Integer.parseInt(dateForm.format(today)),aftYear = Integer.parseInt(dateForm.format(after_1_Year));
@@ -321,7 +324,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
         }
     }
 
-    // Chack Doctor AAvailability
+    // Chack Doctor Availability
     private boolean checkDoctorAvailability(Doctor doctor, LocalDate date, String hoursTxt,int hoursCount){
         boolean check = true;
         LocalTime time = LocalTime.parse(hoursTxt+":00");

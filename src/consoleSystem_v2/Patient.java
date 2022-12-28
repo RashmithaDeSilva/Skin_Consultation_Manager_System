@@ -1,5 +1,6 @@
 package consoleSystem_v2;
 
+import java.io.File;
 import java.time.LocalDate;
 
 
@@ -10,6 +11,9 @@ public class Patient extends Person {
     private LocalDate dateOfBirth;
     private String mobileNumber;
     private String patientID;
+    private String skinEncryptImage;
+    private String key;
+
 
 
     // Constructors
@@ -23,7 +27,15 @@ public class Patient extends Person {
         this.mobileNumber = mobileNumber;
         this.patientID = patientID;
     }
-
+    public Patient(String name, String surname, LocalDate dateOfBirth, String mobileNumber, String patientID, String skinEncryptImage, String key) {
+        this.name = name;
+        this.surname = surname;
+        this.dateOfBirth = dateOfBirth;
+        this.mobileNumber = mobileNumber;
+        this.patientID = patientID;
+        this.skinEncryptImage = skinEncryptImage;
+        this.key = key;
+    }
 
     // Set Methods
     @Override
@@ -44,6 +56,12 @@ public class Patient extends Person {
     }
     public void setPatientID(String patientID) {
         this.patientID = patientID;
+    }
+    public void setSkinEncryptImage(String skinEncryptImage) {
+        this.skinEncryptImage = skinEncryptImage;
+    }
+    public void setKey(String key) {
+        this.key = key;
     }
 
 
@@ -66,6 +84,12 @@ public class Patient extends Person {
     }
     public String getPatientID() {
         return patientID;
+    }
+    public String getSkinEncryptImage() {
+        return skinEncryptImage;
+    }
+    public String getKey() {
+        return key;
     }
 
 }

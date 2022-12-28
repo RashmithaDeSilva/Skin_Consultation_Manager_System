@@ -17,7 +17,7 @@ public class Doctor extends Person {
 
 
     // Constructors
-    Doctor(){
+    public Doctor(){
         //The compiler will add default values
     }
     public Doctor(String name, String surname, LocalDate dateOfBirth, String mobileNumber, String medicalLicenceNumber, String specialisation){

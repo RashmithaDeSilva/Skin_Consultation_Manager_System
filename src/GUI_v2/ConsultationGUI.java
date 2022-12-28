@@ -13,6 +13,7 @@ public class ConsultationGUI extends MenuOptionControllerGUI {
 
         // Set Window
         setWindow(600,400,"Consultation");
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Set Body
         GUIBody(SCM,mainMenu);
