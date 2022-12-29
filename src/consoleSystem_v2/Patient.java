@@ -20,6 +20,13 @@ public class Patient extends Person {
     public Patient(){
         //The compiler will add default values
     }
+    public Patient(Patient patient){
+        this.name = patient.getName();
+        this.surname = patient.getSurname();
+        this.dateOfBirth = patient.getDateOfBirth();
+        this.mobileNumber = patient.getMobileNumber();
+        this.patientID = patient.getPatientID();
+    }
     public Patient(String name, String surname, LocalDate dateOfBirth, String mobileNumber, String patientID){
         this.name = name;
         this.surname = surname;

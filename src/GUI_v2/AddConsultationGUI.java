@@ -1,43 +1,40 @@
 package GUI_v2;
 
-import consoleSystem_v2.Consultation;
-import consoleSystem_v2.Doctor;
-import consoleSystem_v2.Patient;
+import consoleSystem_v2.*;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.security.Key;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Random;
 
 public class AddConsultationGUI extends MenuOptionControllerGUI {
 
     // Constructor
-    AddConsultationGUI(Doctor doctor, Consultation consultation) throws IOException {
+    AddConsultationGUI(int doctorPosition, Consultation consultation, SkinConsultationManager SCM) throws IOException {
         // Set Window
-        setWindow(600,680,"Add Consultation");
+        setWindow(600,685,"Add Consultation");
 
         // Set Empty Patient
         consultation.setPatient(new Patient());
 
         // Set Body
-        GUIBody(doctor,consultation);
+        GUIBody(doctorPosition,consultation,SCM);
 
     }
 
 
     // Set Body
-    private void GUIBody(Doctor doctor, Consultation consultation) throws IOException {
+    private void GUIBody(int doctorPosition, Consultation consultation,SkinConsultationManager SCM) throws IOException {
         // Set Main Menu Name
         addConsultationPnl = new JPanel(new FlowLayout());
         addConsultationLbl = new JLabel("Add Consultation");
@@ -60,7 +57,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.insets = new Insets(5,5,5,5);
         GBC.gridx = 0;
         GBC.gridy = 0;
-        doctorNameLbl = new JLabel("Doctor Name >   "+doctor.getFullName());
+        doctorNameLbl = new JLabel("Doctor Name >   "+SCM.getDoctor(doctorPosition).getFullName());
         doctorNameLbl.setFont(font);
         doctorDetailsPnl.add(doctorNameLbl,GBC);
         GBC.insets = new Insets(5,20,5,20);
@@ -150,7 +147,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         monthPnl.add(monthTxt);
         patientDetailsPnl.add(monthPnl,GBC);
         // Date
-        GBC.insets = new Insets(5,-100,5,150);
+        GBC.insets = new Insets(5,-100,5,115);
         GBC.gridx = 3;
         GBC.gridy = 1;
         dayPnl = new JPanel(new FlowLayout());
@@ -170,7 +167,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         mobileNumberLbl = new JLabel("Mobile Number");
         mobileNumberLbl.setFont(font);
         mobileNumberPnl.add(mobileNumberLbl);
-        mobileNumberTxt = new JTextField(8);
+        mobileNumberTxt = new JTextField(10);
         mobileNumberTxt.setFont(font);
         mobileNumberPnl.add(mobileNumberTxt);
         patientDetailsPnl.add(mobileNumberPnl,GBC);
@@ -183,7 +180,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         patientIDLbl = new JLabel("Patient ID");
         patientIDLbl.setFont(font);
         patientIDPnl.add(patientIDLbl);
-        patientIDTxt = new JTextField(5);
+        patientIDTxt = new JTextField(6);
         patientIDTxt.setFont(font);
         patientIDPnl.add(patientIDTxt);
         patientDetailsPnl.add(patientIDPnl,GBC);
@@ -199,7 +196,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 0;
         GBC.gridy = 0;
         costPnl = new JPanel(new FlowLayout());
-        costLbl = new JLabel("Cost");
+        costLbl = new JLabel("Cost £ ");
         costLbl.setFont(font);
         costPnl.add(costLbl);
         costTxt = new JTextField(5);
@@ -211,7 +208,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 1;
         GBC.gridy = 0;
         notyPnl = new JPanel(new FlowLayout());
-        notyLbl = new JLabel("$15");
+        notyLbl = new JLabel("£15 Per Hour Firs Time After £25");
         notyLbl.setFont(font);
         notyPnl.add(notyLbl);
         otherPnl.add(notyPnl,GBC);
@@ -226,11 +223,11 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         notePnl.add(noteLbl);
         otherPnl.add(notePnl,GBC);
         // Note Text Area
-        GBC.insets = new Insets(0,10,0,5);
+        GBC.insets = new Insets(0,10,0,2);
         GBC.gridx = 1;
         GBC.gridy = 1;
         noteTxtPnl = new JPanel(new FlowLayout());
-        noteTxtAr = new JTextArea(4,31);
+        noteTxtAr = new JTextArea(4,30);
         noteTxtAr.setFont(font);
         noteSclPn = new JScrollPane(noteTxtAr);
         noteTxtPnl.add(noteSclPn);
@@ -246,7 +243,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         imageLblPnl.add(imageLbl);
         otherPnl.add(imageLblPnl,GBC);
         // Get Image Input
-        GBC.insets = new Insets(0,-260,5,0);
+        GBC.insets = new Insets(0,-250,5,0);
         GBC.gridx = 1;
         GBC.gridy = 2;
         imageSelectBtn = new JButton("Select Image");
@@ -258,7 +255,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
             }
         });
         otherPnl.add(imageSelectBtn,GBC);
-        GBC.insets = new Insets(0,-270,5,0);
+        GBC.insets = new Insets(0,-280,5,0);
         GBC.gridx = 2;
         GBC.gridy = 2;
         photoLbl = new JLabel();
@@ -274,9 +271,18 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         wanPnl.add(warningLbl);
         wanAndSubPnl.add(wanPnl);
         btnPnl = new JPanel(new FlowLayout());
+        clearBtn = new JButton("Clear");
+        clearBtn.setFont(font);
+        clearBtn.addActionListener((e)->{});
+        checkBtn = new JButton("Check");
+        checkBtn.setFont(font);
+        checkBtn.addActionListener((e)->{checkBtnAddAction(SCM,consultation);});
         submitBtn = new JButton("Submit");
+        submitBtn.addActionListener( event -> submitAddAction(SCM,consultation,doctorPosition));
+        submitBtn.setEnabled(false);
         submitBtn.setFont(font);
-        submitBtn.addActionListener( event -> submitBtnAddAction(doctor,consultation));
+        btnPnl.add(clearBtn);
+        btnPnl.add(checkBtn);
         btnPnl.add(submitBtn);
         wanAndSubPnl.add(btnPnl);
 
@@ -289,10 +295,9 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
 
 
     // File Selector
-    private JPanel fileSelector(Patient patient) throws IOException {
+    private void fileSelector(Patient patient) throws IOException {
 
         // This Programme Working With Windows And macOS
-        JPanel panel = new JPanel(new FlowLayout());
 
         if (os.startsWith("Windows")) { // Code to execute on Windows
 
@@ -319,7 +324,6 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                     warningLbl.setText("This Is Not Image");
                 }
             }
-            panel.add(fileChooser);
 
         } else if (os.startsWith("Mac")) { // Code to execute on macOS
 
@@ -346,13 +350,10 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                     warningLbl.setText("This Is Not Image");
                 }
             }
-            panel.add(fileChooser);
 
         } else {
             warningLbl.setText("try with windows or macOS");
         }
-
-        return new JPanel();
     }
 
     // Check Select File Is Image Or Not
@@ -363,13 +364,11 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         boolean returnValue = false;
 
         // Check This Image Path Is Correct Or Not
-        if (!tempFile.exists()) { // If It Incorrect Return False
-            returnValue = false;
-
-        } else {
+        if (tempFile.exists()) { // If It Incorrect Return False
             String fileName = tempFile.getName();
             String fileExtension = "";
-            // Get Last . Point Value For Get Extension
+
+            // Get Last '.' Point Value For Get Extension
             int lastIndex = fileName.lastIndexOf(".");
 
             if (lastIndex >= 0) {
@@ -383,11 +382,12 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                 }
             }
         }
+
         return returnValue;
     }
 
     // Resizer Image
-    private BufferedImage resizeImage(File imageFile, int width, int height) throws IOException {
+    private static BufferedImage resizeImage(File imageFile, int width, int height) throws IOException {
 
         // Read the image file into a BufferedImage object
         BufferedImage originalImage = ImageIO.read(imageFile);
@@ -406,17 +406,22 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
     }
 
     // Secret Key Generate
-    public static String generateSecretKey(){
+    private static String generateSecretKey(){
         Random random = new Random();
-        String key = "";
+        StringBuilder key = new StringBuilder();
         for (int i=0;i<16;i++) {
-            key += (random.nextInt(32,127) != 46) ? (char)random.nextInt(32,127) : "!";
+            int randNum = random.nextInt(97,123);
+            if(randNum == 92 || randNum == 47 || randNum == 46 || randNum == 34) {
+                key.append("!");
+            } else {
+                key.append(String.valueOf((char)randNum));
+            }
         }
-        return key;
+        return key.toString();
     }
 
     // Image Encrypting
-    private void imageEncrypting(String absolutePath,Patient patient) {
+    private void imageEncrypting(String absolutePath,Patient patient) throws IOException {
 
         // This Programme Working With Windows And macOS
         String key = generateSecretKey();
@@ -455,7 +460,8 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                 patient.setKey(key);
 
             } catch (Exception e){
-                warningLbl.setText(e.getMessage());
+                photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Images\\Empty.jpg"),200,120)));
+                warningLbl.setText("Select Image Again");
             }
 
         } else if (os.startsWith("Mac")) { // Code to execute on macOS
@@ -489,13 +495,222 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                 patient.setKey(key);
 
             } catch (Exception e){
-                warningLbl.setText(e.getMessage());
+                photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Images\\Empty.jpg"),200,120)));
+                warningLbl.setText("Select Image Again");
             }
         }
     }
 
     // Submit Button Add Action Listener
-    private void submitBtnAddAction(Doctor doctor, Consultation consultation){
+    private void checkBtnAddAction(SkinConsultationManager SCM, Consultation consultation){
+
+        Validations validations = new Validations();
+
+        if (validations.nameValidator(firstNameTxt.getText(),0)) {
+            warningLbl.setText("");
+            if (validations.nameValidator(surnameTxt.getText(),0)) {
+                warningLbl.setText("");
+                if (validations.ageValidatorForPatient(yearTxt.getText(),monthTxt.getText(),dayTxt.getText())) {
+                    warningLbl.setText("");
+                    if (validations.mobileNumberValidator(mobileNumberTxt.getText())) {
+                        warningLbl.setText("");
+                        if (!patientIDTxt.getText().equals("")) {
+                            warningLbl.setText("");
+                            if (!costTxt.getText().equals("")) {
+                                warningLbl.setText("");
+
+                                // Check All Patients List
+                                int response = -1;
+                                boolean patientIDCheck = false;
+                                for (int i=0;i<SCM.getPatients().size();i++) {
+                                    if (SCM.getPatient(i).getPatientID().equals(patientIDTxt.getText())) {
+                                        patientIDCheck = true;
+                                        response = JOptionPane.showConfirmDialog(null,
+                                                "This patient ID already exist\ndo you want to continue with that patient",
+                                                "Warning",
+                                                JOptionPane.YES_NO_OPTION);
+                                        if (response == 0) {
+                                            firstNameTxt.setText(SCM.getPatient(i).getName());
+                                            surnameTxt.setText(SCM.getPatient(i).getSurname());
+                                            SimpleDateFormat format = new SimpleDateFormat("yyyy");
+                                            yearTxt.setText(format.format(SCM.getPatient(i).getDateOfBirth()));
+                                            format = new SimpleDateFormat("MM");
+                                            monthTxt.setText(format.format(SCM.getPatient(i).getDateOfBirth()));
+                                            format = new SimpleDateFormat("dd");
+                                            dayTxt.setText(format.format(SCM.getPatient(i).getDateOfBirth()));
+                                            mobileNumberTxt.setText(SCM.getPatient(i).getMobileNumber());
+
+                                            firstNameTxt.setEditable(false);
+                                            firstNameTxt.setBackground(Color.LIGHT_GRAY);
+                                            surnameTxt.setEditable(false);
+                                            surnameTxt.setBackground(Color.LIGHT_GRAY);
+                                            yearTxt.setEditable(false);
+                                            yearTxt.setBackground(Color.LIGHT_GRAY);
+                                            monthTxt.setEditable(false);
+                                            monthTxt.setBackground(Color.LIGHT_GRAY);
+                                            dayTxt.setEditable(false);
+                                            dayTxt.setBackground(Color.LIGHT_GRAY);
+                                            mobileNumberTxt.setEditable(false);
+                                            mobileNumberTxt.setBackground(Color.LIGHT_GRAY);
+                                            patientIDTxt.setEditable(false);
+                                            patientIDTxt.setBackground(Color.LIGHT_GRAY);
+
+                                            // Check Cost And Set
+                                            notyLbl.setText("£25 Per Hour :  h"+consultation.getRequestedTime()+"  x  £25  =  £"+(consultation.getRequestedTime()*25));
+                                            submitBtn.setEnabled(true);
+                                        }
+                                        break;
+                                    }
+                                }
+
+                                if (!patientIDCheck) {
+                                    // Check Cost And Set
+                                    notyLbl.setText("£15 Per Hour :  h"+consultation.getRequestedTime()+"  x  £15  =  £"+(consultation.getRequestedTime()*15));
+                                    patientIDTxt.setEditable(false);
+                                    submitBtn.setEnabled(true);
+                                }
+
+                            } else {
+                                warningLbl.setText("Enter Cost Correctly");
+                            }
+                        } else {
+                            warningLbl.setText("Enter Patient ID");
+                        }
+                    } else {
+                        warningLbl.setText("Enter Mobile Number Correctly");
+                    }
+                } else {
+                    warningLbl.setText("Enter Age Correctly > It Must Be In Today And Before 125 Years");
+                }
+            } else {
+                warningLbl.setText("Enter Surname Name Correctly");
+            }
+        } else {
+            warningLbl.setText("Enter First Name Correctly");
+        }
+    }
+
+    private void submitAddAction(SkinConsultationManager SCM,Consultation consultation,int doctorPosition){
+
+        Validations validations = new Validations();
+
+        if (validations.nameValidator(firstNameTxt.getText(),0)) {
+            warningLbl.setText("");
+            if (validations.nameValidator(surnameTxt.getText(),0)) {
+                warningLbl.setText("");
+                if (validations.ageValidatorForPatient(yearTxt.getText(),monthTxt.getText(),dayTxt.getText())) {
+                    warningLbl.setText("");
+                    if (validations.mobileNumberValidator(mobileNumberTxt.getText())) {
+                        warningLbl.setText("");
+                        if (!patientIDTxt.getText().equals("")) {
+                            warningLbl.setText("");
+                            if (!costTxt.getText().equals("")) {
+                                warningLbl.setText("");
+
+                                boolean checkID = false;
+                                for (int i=0;i<SCM.getPatients().size();i++) {
+                                    if (SCM.getPatient(i).getPatientID().equals(patientIDTxt.getText())) {
+                                        checkID = true;
+                                        // Create New Patient And Set All Details With In to Consultation
+                                        Patient patient = new Patient(SCM.getPatient(i));
+                                        try {
+                                            patient.setKey(consultation.getPatient().getKey());
+                                            patient.setSkinEncryptImage(consultation.getPatient().getSkinEncryptImage());
+                                        } catch (Exception e) {
+                                            warningLbl.setText("You Can Add Patient Skin Image To");
+                                        }
+                                        consultation.setPatient(patient);
+                                        try {
+                                            consultation.setCost(Integer.parseInt(costTxt.getText()));
+                                            consultation.setNote(noteTxtAr.getText());
+                                        } catch (Exception e){
+                                            warningLbl.setText("Enter Cost Correctly");
+                                        }
+                                        SCM.getDoctor(doctorPosition).setConsultation(consultation);
+
+                                        // Successfully Massage
+                                        JOptionPane.showMessageDialog(null,
+                                                "Consultation Is Added Successfully",
+                                                "Successfully",JOptionPane.INFORMATION_MESSAGE);
+                                        dispose();
+                                        break;
+                                    }
+                                }
+
+                                if (!checkID) {
+                                    // Set All Consultation Details And Patient Details
+                                    consultation.getPatient().setName(firstNameTxt.getText());
+                                    consultation.getPatient().setSurname(surnameTxt.getText());
+                                    try {
+                                        LocalDate DOB = LocalDate.parse(yearTxt.getText()+"-"+monthTxt.getText()+"-"+dayTxt.getText());
+                                        consultation.getPatient().setDateOfBirth(DOB);
+                                    } catch (Exception e) {
+                                        warningLbl.setText("Enter Date Of Birth Correctly");
+                                    }
+                                    consultation.getPatient().setMobileNumber(mobileNumberTxt.getText());
+                                    consultation.getPatient().setPatientID(patientIDTxt.getText());
+                                    consultation.setNote(noteTxtAr.getText());
+                                    SCM.getDoctor(doctorPosition).setConsultation(consultation);
+
+                                    // Set New Patient In To WestminsterSkinConsultationManager Main Patient Array List
+                                    Patient patient = new Patient(consultation.getPatient());
+                                    SCM.setPatient(patient);
+
+                                    // Successfully Massage
+                                    JOptionPane.showMessageDialog(null,
+                                            "Consultation Is Added Successfully",
+                                            "Successfully",JOptionPane.INFORMATION_MESSAGE);
+                                    dispose();
+                                }
+
+                            } else {
+                                warningLbl.setText("Enter Cost Correctly");
+                            }
+                        } else {
+                            warningLbl.setText("Enter Patient ID");
+                        }
+                    } else {
+                        warningLbl.setText("Enter Mobile Number Correctly");
+                    }
+                } else {
+                    warningLbl.setText("Enter Age Correctly > It Must Be In Today And Before 125 Years");
+                }
+            } else {
+                warningLbl.setText("Enter Surname Name Correctly");
+            }
+        } else {
+            warningLbl.setText("Enter First Name Correctly");
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     }
 
@@ -564,5 +779,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
     private JButton imageSelectBtn;
     private JPanel wanAndSubPnl;
     private JPanel wanPnl;
+    private JButton checkBtn;
+    private JButton clearBtn;
 
 }

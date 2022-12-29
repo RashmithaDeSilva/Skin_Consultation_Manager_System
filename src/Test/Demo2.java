@@ -1,13 +1,18 @@
 package Test;
 
+import GUI_v2.AddConsultationGUI;
+
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Random;
 
 public class Demo2 extends JFrame {
-    public void frame(){
+    public void frame() {
         setSize(300,300);
         setLayout(new FlowLayout());
         JButton btn = new JButton("Add Image");
@@ -80,19 +85,37 @@ public class Demo2 extends JFrame {
     }
 
     // Encrypting
-    private static void imageEncrypting(File img){
+    private static String generateSecretKey(){
         Random random = new Random();
-        int generateRandomEncryptKey = random.nextInt(2,5);
+        StringBuilder key = new StringBuilder();
+        for (int i=0;i<16;i++) {
+            int randNum = random.nextInt(32,127);
+            if(randNum == 92 || randNum == 47 || randNum == 46) {
+                System.out.println((char) randNum);
+                key.append("!");
+                System.out.println(key.toString());
+            } else {
 
-        char[] imgCharArray = img.getAbsolutePath().toCharArray();
-        for (char c: imgCharArray) {
-
+                key.append(String.valueOf((char)randNum));
+            }
         }
-
+        return key.toString();
     }
 
 
     public static void main(String[] args) {
-        new Demo2().frame();
+        //new Demo2().frame();
+        for (int i=0;i<100;i++) {
+            generateSecretKey();
+        }
+
+        //3+uKs'_!']G_-Q&!
+        //Ryv9a(>+8jd+?54
+        // #_3M`}Xez*N-dur[
+        // C[)Mi_?Mm0%z-FTl
+
     }
+
+
+
 }

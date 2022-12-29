@@ -40,7 +40,7 @@ public class Demo extends JFrame {
         con.setRequestedTime(5);
 
         //new MainMenuGUI(w).setVisible(true);
-        new AddConsultationGUI(doc,con).setVisible(true);
+        new AddConsultationGUI(5,con,w).setVisible(true);
 
         //new Demo().drag();g
         //new DragAndDropPanel();

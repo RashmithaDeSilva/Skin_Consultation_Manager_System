@@ -14,14 +14,13 @@ import java.util.Scanner;
 public class WestminsterSkinConsultationManager implements SkinConsultationManager {
 
     private ArrayList<Doctor> doctors = new ArrayList<>();
-    private ArrayList<String> allPatientIDs = new ArrayList<>();
+    private ArrayList<Patient> patients = new ArrayList<>();
     private Validations validations = new Validations();
 
 
     public static void main(String[] args) {
 
         WestminsterSkinConsultationManager WSCM = new WestminsterSkinConsultationManager();
-        boolean loopBreak = true;
         System.out.println("\n");
 
         do{
@@ -49,7 +48,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 default:
                     System.out.println("Invalid Value .....!\n");
             }
-        }while(loopBreak);
+        }while(true);
     }
 
     public int intInput(){
@@ -95,25 +94,25 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
 
             String name, surname, medicalLicenceNumber, specialisation, mobileNumber;
             boolean loopBreak = true;
-            LocalDate DOB = LocalDate.parse("2000-11-20");
+            LocalDate DOB = LocalDate.parse("2023-02-25");
 
             System.out.println("\t\t\tAdd New Doctor\n");
 
             do{
                 System.out.print("Enter Doctor Name > ");
                 name = strInput().trim();
-                if (validations.nameValidator(name)) {
+                if (!validations.nameValidator(name,0)) {
                     System.out.println("Enter Correct Name .....!\n");
                 }
-            }while(!validations.nameValidator(name));
+            } while (!validations.nameValidator(name,0));
 
             do{
                 System.out.print("Enter Doctor Surname > ");
                 surname = strInput().trim();
-                if (validations.nameValidator(name)) {
+                if (!validations.nameValidator(surname,0)) {
                     System.out.println("Enter Correct Name .....!\n");
                 }
-            }while(!validations.nameValidator(surname));
+            } while (!validations.nameValidator(surname,0));
 
             do{
                 System.out.println("Enter Doctor Date of Birth > ");
@@ -132,16 +131,18 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                     date = "0"+String.valueOf(Integer.valueOf(date));
                 }
 
-                loopBreak = !validations.ageValidator(year,month,date);
+                loopBreak = !validations.ageValidatorForDoctor(year,month,date);
                 if (!loopBreak){
                     DOB = LocalDate.parse(year+"-"+month+"-"+date);
                 }
+
             }while(loopBreak);
 
             do{
                 System.out.print("Enter Doctor Mobile Number > ");
                 mobileNumber = strInput();
-                if (validations.mobileNumberValidator(mobileNumber)) {
+                System.out.println(validations.mobileNumberValidator(mobileNumber));
+                if (!validations.mobileNumberValidator(mobileNumber)) {
                     System.out.println("Enter Correct Mobile Number .....!\n");
                 }
             }while(!validations.mobileNumberValidator(mobileNumber));
@@ -165,10 +166,10 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
             do{
                 System.out.print("Enter Doctor Specialisation > ");
                 specialisation = strInput().trim();
-                if (validations.nameValidator(specialisation)) {
+                if (!validations.nameValidator(specialisation,1)) {
                     System.out.println("Ente Specialisation Correctly .....!\n");
                 }
-            }while(!validations.nameValidator(specialisation));
+            }while(!validations.nameValidator(specialisation,1));
 
             doctors.add(new Doctor(name, surname, DOB, mobileNumber, medicalLicenceNumber, specialisation));
             spase();
@@ -297,8 +298,8 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
         this.doctors.add(doctor);
     }
     @Override
-    public void setAllPatientID(String ID){
-        this.allPatientIDs.add(ID);
+    public void setPatient(Patient patient) {
+        this.patients.add(patient);
     }
 
 
@@ -312,12 +313,11 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
         return doctors;
     }
     @Override
-    public String getAllPatientID(int position){
-        return allPatientIDs.get(position);
+    public ArrayList<Patient> getPatients() {
+        return patients;
     }
     @Override
-    public ArrayList<String> getAllPatientIDs(){
-        return allPatientIDs;
+    public Patient getPatient(int position) {
+        return patients.get(position);
     }
-
 }

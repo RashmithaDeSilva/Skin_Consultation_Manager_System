@@ -235,7 +235,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
                                         hoursTxt.setText("");
 
                                         // Pars That Consultation Object With Correct Doctor Object
-                                        new AddConsultationGUI(SCM.getDoctor(selectDoctorNumber-1),consultation).setVisible(true);
+                                        new AddConsultationGUI(selectDoctorNumber-1,consultation,SCM).setVisible(true);
 
                                     } else {
                                         // If This Doctor Is Not Available Programme Will Shows Alert Box
@@ -272,7 +272,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
                                                 hoursTxt.setText("");
 
                                                 // Pars That Consultation Object With Correct Doctor Object
-                                                new AddConsultationGUI(SCM.getDoctor(newDoctorPosition),consultation).setVisible(true);
+                                                new AddConsultationGUI(newDoctorPosition,consultation,SCM).setVisible(true);
 
                                             } else { // And All Doctors Are Not Available
                                                 // After Show Alert Box Auto Reset Consultation Forme

@@ -12,7 +12,7 @@ public interface SkinConsultationManager {
     public Doctor getDoctor(int position);
     public ArrayList<Doctor> getDoctors();
     public void openGUIWithOption(int GUI_MenuOptionPosition);
-    public void setAllPatientID(String ID);
-    public String getAllPatientID(int position);
-    public ArrayList<String> getAllPatientIDs();
+    public void setPatient(Patient patient);
+    public ArrayList<Patient> getPatients();
+    public Patient getPatient(int position);
 }

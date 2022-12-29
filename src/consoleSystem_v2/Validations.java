@@ -23,9 +23,25 @@ public class Validations {
 
 
 
-    public boolean nameValidator(String name){
+    public boolean nameValidator(String name,int validatePaton){
         // Validate the name using the regular expression
-        return NAME_PATTERN.matcher(name).matches();
+        // 0 = Name  Validations
+        // 1 = Other String Validations
+
+        boolean returnValue = false;
+
+        if (validatePaton == 0) {
+            int nameLength = name.length();
+            if (nameLength >= 4 && nameLength <= 30 && NAME_PATTERN.matcher(name).matches()) {
+                returnValue = true;
+            }
+        } else if (validatePaton == 1) {
+            int nameLength = name.length();
+            if (nameLength >= 4 && nameLength <= 100 && NAME_PATTERN.matcher(name).matches()) {
+                returnValue = true;
+            }
+        }
+        return returnValue;
     }
 
     public boolean mobileNumberValidator(String mobileNumber) {
@@ -33,7 +49,7 @@ public class Validations {
         return MOBILE_NUMBER_PATTERN.matcher(mobileNumber).matches();
     }
 
-    public boolean ageValidator(String year,String month,String date){
+    public boolean ageValidatorForDoctor(String year,String month,String date){
         boolean returnBool = false;
         try{
             SimpleDateFormat dateForm = new SimpleDateFormat("yyyy");
@@ -50,6 +66,41 @@ public class Validations {
 
         }catch(Exception e){
             System.out.println("Invalid Date .....!\n");
+        }
+        return returnBool;
+    }
+
+    public boolean ageValidatorForPatient(String year,String month,String date){
+        boolean returnBool = false;
+        try{
+            SimpleDateFormat dateForm = new SimpleDateFormat("yyyy");
+            Date today = new Date();
+
+            // World Oldest Person Age Is 118 So Only Input Age Range Is 125
+            int befor_125Years = (Integer.parseInt(dateForm.format(today)))-(125);
+
+            // Check For This Date
+            dateForm = new SimpleDateFormat("yyyyMMdd");
+            int thisYear = Integer.parseInt(dateForm.format(today));
+            String tempInputDate = year+month+date;
+            int inputDate = Integer.parseInt(tempInputDate);
+
+            if(Integer.parseInt(month) < 10){
+                month = "0"+String.valueOf(Integer.valueOf(month));
+            }
+            if(Integer.parseInt(date) < 10){
+                date = "0"+String.valueOf(Integer.valueOf(date));
+            }
+
+            // The Patient Should be Between This Date And Before 125 Years Only
+            if(thisYear >= inputDate && befor_125Years <= Integer.parseInt(year)){
+                LocalDate DOB = LocalDate.parse(year+"-"+month+"-"+date);
+                returnBool = true;
+            }
+
+        }catch(Exception e){
+            //Invalid Date .....!
+            System.out.println(e);
         }
         return returnBool;
     }

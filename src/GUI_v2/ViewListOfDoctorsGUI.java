@@ -39,7 +39,7 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
 
         // Copy consoleSystem_v2 doctor ArrayList Objs in to New Local ArrayList
         ArrayList<Doctor> doctorsArrayList = new ArrayList<>();
-        for(int i = 0; i< SCM.getDoctors().size(); i++){
+        for(int i=0;i<SCM.getDoctors().size();i++){
             doctorsArrayList.add(SCM.getDoctors().get(i));
         }
 
@@ -53,41 +53,32 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
         // Sort By First Name Button
         firstNameBtn = new JButton("Sort First Name");
         firstNameBtn.setFont(font);
-        firstNameBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                remove(docList);
-                remove(surnameSort);
-                add("Center",firstNameSort);
-                setVisible(true);
-            }
+        firstNameBtn.addActionListener( (e) -> {
+            setVisible(false);
+            remove(docList);
+            remove(surnameSort);
+            add("Center",firstNameSort);
+            setVisible(true);
         });
 
         // Sort By Surname Button
         surnameBtn = new JButton("Sort Surname");
         surnameBtn.setFont(font);
-        surnameBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                remove(docList);
-                remove(firstNameSort);
-                add("Center",surnameSort);
-                setVisible(true);
-            }
+        surnameBtn.addActionListener( (e) -> {
+            setVisible(false);
+            remove(docList);
+            remove(firstNameSort);
+            add("Center",surnameSort);
+            setVisible(true);
         });
 
         // Refresh Button
         refreshBtn = new JButton("Refresh");
         refreshBtn.setFont(font);
-        refreshBtn.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SCM.openGUIWithOption(1);
-                mainMenu.dispose();
-                dispose();
-            }
+        refreshBtn.addActionListener((e) -> {
+            SCM.openGUIWithOption(1);
+            mainMenu.dispose();
+            dispose();
         });
 
 
