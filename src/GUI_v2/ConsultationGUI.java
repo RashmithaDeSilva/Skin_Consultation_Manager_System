@@ -32,7 +32,7 @@ public class ConsultationGUI extends MenuOptionControllerGUI {
 
         // Menu Options
         MOC.add(new CheckDoctorAvailabilityGUI(SCM,this));
-        //MOC.add();
+        MOC.add(new CheckConsultationDetailsGUI(SCM,this));
         consultationMenuOptionsPnl = new JPanel(new GridLayout(MOC.size()+1,1));
 
         // Set Other Option Buttons, Labels And Events
@@ -72,7 +72,7 @@ public class ConsultationGUI extends MenuOptionControllerGUI {
     private JPanel consultationMenuPotion(JLabel lbl,JButton btn){
         JPanel pnl = new JPanel(new FlowLayout());
         lbl.setFont(new Font("",1,15));
-        btn.setFont(new Font("",1,13));
+        btn.setFont(new Font("",1,14));
         pnl.add(lbl);
         pnl.add(btn);
         return pnl;

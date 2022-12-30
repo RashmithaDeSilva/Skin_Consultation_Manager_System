@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.security.Key;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class AddConsultationGUI extends MenuOptionControllerGUI {
@@ -273,10 +274,17 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         btnPnl = new JPanel(new FlowLayout());
         clearBtn = new JButton("Clear");
         clearBtn.setFont(font);
+        clearBtn.addActionListener((e)-> {
+            try {
+                cliarAddAction(consultation);
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+        });
         clearBtn.addActionListener((e)->{});
         checkBtn = new JButton("Check");
         checkBtn.setFont(font);
-        checkBtn.addActionListener((e)->{checkBtnAddAction(SCM,consultation);});
+        checkBtn.addActionListener((e)->checkBtnAddAction(SCM,consultation));
         submitBtn = new JButton("Submit");
         submitBtn.addActionListener( event -> submitAddAction(SCM,consultation,doctorPosition));
         submitBtn.setEnabled(false);
@@ -501,7 +509,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         }
     }
 
-    // Submit Button Add Action Listener
+    // Check Button Add Action Listener
     private void checkBtnAddAction(SkinConsultationManager SCM, Consultation consultation){
 
         Validations validations = new Validations();
@@ -530,14 +538,15 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                                                 "Warning",
                                                 JOptionPane.YES_NO_OPTION);
                                         if (response == 0) {
+
                                             firstNameTxt.setText(SCM.getPatient(i).getName());
                                             surnameTxt.setText(SCM.getPatient(i).getSurname());
-                                            SimpleDateFormat format = new SimpleDateFormat("yyyy");
-                                            yearTxt.setText(format.format(SCM.getPatient(i).getDateOfBirth()));
-                                            format = new SimpleDateFormat("MM");
-                                            monthTxt.setText(format.format(SCM.getPatient(i).getDateOfBirth()));
-                                            format = new SimpleDateFormat("dd");
-                                            dayTxt.setText(format.format(SCM.getPatient(i).getDateOfBirth()));
+                                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+                                            yearTxt.setText(SCM.getPatient(i).getDateOfBirth().format(formatter));
+                                            formatter = DateTimeFormatter.ofPattern("MM");
+                                            monthTxt.setText(SCM.getPatient(i).getDateOfBirth().format(formatter));
+                                            formatter = DateTimeFormatter.ofPattern("dd");
+                                            dayTxt.setText(SCM.getPatient(i).getDateOfBirth().format(formatter));
                                             mobileNumberTxt.setText(SCM.getPatient(i).getMobileNumber());
 
                                             firstNameTxt.setEditable(false);
@@ -590,6 +599,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         }
     }
 
+    // Submit Button Add Action Listener
     private void submitAddAction(SkinConsultationManager SCM,Consultation consultation,int doctorPosition){
 
         Validations validations = new Validations();
@@ -681,39 +691,41 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         } else {
             warningLbl.setText("Enter First Name Correctly");
         }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     }
 
+    // Clear Button Action Listener
+    private void cliarAddAction(Consultation consultation) throws IOException {
+
+        int response = JOptionPane.showConfirmDialog(null,
+                "Are You Sure \nYou Want To Clear This",
+                "Warning",
+                JOptionPane.YES_NO_OPTION);
+
+        if (response == 0) {
+            firstNameTxt.setText("");
+            firstNameTxt.setEditable(true);
+            surnameTxt.setText("");
+            surnameTxt.setEditable(true);
+            yearTxt.setText("");
+            yearTxt.setEditable(true);
+            monthTxt.setText("");
+            monthTxt.setEditable(true);
+            dayTxt.setText("");
+            dayTxt.setEditable(true);
+            mobileNumberTxt.setText("");
+            mobileNumberTxt.setEditable(true);
+            patientIDTxt.setText("");
+            patientIDTxt.setEditable(true);
+            costTxt.setText("");
+            notyLbl.setText("£15 Per Hour Firs Time After £25");
+            noteTxtAr.setText("");
+            warningLbl.setText("^_^");
+            submitBtn.setEnabled(false);
+            consultation.getPatient().setSkinEncryptImage("");
+            consultation.getPatient().setKey("");
+            photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Images\\Empty.jpg"),200,120)));
+        }
+    }
 
     @Override
     public String getOptionName() {

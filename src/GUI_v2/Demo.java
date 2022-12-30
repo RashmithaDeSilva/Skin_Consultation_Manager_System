@@ -1,15 +1,11 @@
 package GUI_v2;
 
-import Test.DragAndDropPanel;
 import consoleSystem_v2.Consultation;
 import consoleSystem_v2.Doctor;
-import consoleSystem_v2.Patient;
 import consoleSystem_v2.WestminsterSkinConsultationManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -39,8 +35,8 @@ public class Demo extends JFrame {
         con.setConsultationStartTime(LocalTime.parse("19:20"));
         con.setRequestedTime(5);
 
-        //new MainMenuGUI(w).setVisible(true);
-        new AddConsultationGUI(5,con,w).setVisible(true);
+        new MainMenuGUI(w).setVisible(true);
+        //new AddConsultationGUI(5,con,w).setVisible(true);
 
         //new Demo().drag();g
         //new DragAndDropPanel();
