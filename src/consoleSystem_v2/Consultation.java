@@ -1,10 +1,11 @@
 package consoleSystem_v2;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 
-public class Consultation {
+public class Consultation implements Serializable {
 
     private LocalDate date;
     private LocalTime consultationStartTime;

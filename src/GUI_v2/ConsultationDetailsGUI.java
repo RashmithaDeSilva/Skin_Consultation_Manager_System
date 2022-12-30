@@ -111,9 +111,7 @@ public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
                 if ((Integer.parseInt(viewTxt.getText())-1) <= doctor.getConsultationsArrayList().size() && (Integer.parseInt(viewTxt.getText())-1) >= 0) {
                     warningLbl.setText("");
                     valideID = true;
-
-
-
+                    new AllDetailsGUI(doctor,(Integer.parseInt(viewTxt.getText())-1)).setVisible(true);
                 }
             }
 
@@ -138,15 +136,10 @@ public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
     }
 
     public Font font;
-    private JPanel optionNamePnl;
-    private JLabel optionNameLbl;
+    private JPanel optionNamePnl,viewPnl,viewTxtAndBtnPnl,warningPnl;
+    private JLabel optionNameLbl,warningLbl,viewNumberLbl;
     private JScrollPane conList;
     private JTable cubsultationTable;
-    private JPanel viewPnl;
     private JTextField viewTxt;
     private JButton viewBtn;
-    private JPanel viewTxtAndBtnPnl;
-    private JPanel warningPnl;
-    private JLabel warningLbl;
-    private JLabel viewNumberLbl;
 }

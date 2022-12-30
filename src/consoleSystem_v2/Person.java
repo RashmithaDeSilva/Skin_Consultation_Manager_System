@@ -1,8 +1,9 @@
 package consoleSystem_v2;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-abstract class Person {
+abstract class Person implements Serializable {
 
     // Set Method
     abstract public void setName(String name);

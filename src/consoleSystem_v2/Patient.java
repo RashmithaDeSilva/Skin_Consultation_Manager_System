@@ -15,7 +15,6 @@ public class Patient extends Person {
     private String key;
 
 
-
     // Constructors
     public Patient(){
         //The compiler will add default values
@@ -44,6 +43,7 @@ public class Patient extends Person {
         this.key = key;
     }
 
+
     // Set Methods
     @Override
     public void setName(String name) {
@@ -71,7 +71,6 @@ public class Patient extends Person {
         this.key = key;
     }
 
-
     // Get Methods
     @Override
     public String getName() {
@@ -97,6 +96,9 @@ public class Patient extends Person {
     }
     public String getKey() {
         return key;
+    }
+    public String getFullName() {
+        return name+" "+surname;
     }
 
 }

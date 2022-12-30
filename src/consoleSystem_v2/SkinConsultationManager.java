@@ -8,6 +8,7 @@ public interface SkinConsultationManager {
     public void deleteDoctor();
     public void printDoctorsList();
     public void saveFile();
+    public void reloadData();
     public void openGUI();
     public Doctor getDoctor(int position);
     public ArrayList<Doctor> getDoctors();

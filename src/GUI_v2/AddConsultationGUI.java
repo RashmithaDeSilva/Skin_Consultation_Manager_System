@@ -61,7 +61,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         doctorNameLbl = new JLabel("Doctor Name >   "+SCM.getDoctor(doctorPosition).getFullName());
         doctorNameLbl.setFont(font);
         doctorDetailsPnl.add(doctorNameLbl,GBC);
-        GBC.insets = new Insets(5,20,5,20);
+        GBC.insets = new Insets(5,15,5,20);
         GBC.gridx = 1;
         GBC.gridy = 0;
         doctorNameLbl = new JLabel("Requested Time >   "+String.valueOf(consultation.getRequestedTime()));
@@ -301,7 +301,6 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         add("South",wanAndSubPnl);
     }
 
-
     // File Selector
     private void fileSelector(Patient patient) throws IOException {
 
@@ -464,7 +463,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                 out.close();
 
                 // Set Encrypt Key And Image Absolute Path In To Patient
-                patient.setSkinEncryptImage(".\\src\\Data\\"+imgName+"p.jpg");
+                patient.setSkinEncryptImage(".\\src\\Data\\"+imgName+"patient.jpg");
                 patient.setKey(key);
 
             } catch (Exception e){
@@ -503,7 +502,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                 patient.setKey(key);
 
             } catch (Exception e){
-                photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Images\\Empty.jpg"),200,120)));
+                photoLbl.setIcon(new ImageIcon(resizeImage(new File("./src/Images/Empty.jpg"),200,120)));
                 warningLbl.setText("Select Image Again");
             }
         }
@@ -739,59 +738,12 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
 
     private final String os = System.getProperty("os.name");
     private Font font;
-    private JLabel warningLbl;
-    private JPanel addConsultationPnl;
-    private JLabel addConsultationLbl;
-    private JPanel bodyPartPnl;
-    private JPanel patientDetailsPnl;
-    private JPanel firstNamePnl;
-    private JLabel firstNameLbl;
-    private JTextField firstNameTxt;
-    private JPanel surnamePnl;
-    private JLabel surnameLbl;
-    private JTextField surnameTxt;
-    private JPanel dateOfBirthPnl;
-    private JLabel dateOfBirthLbl;
-    private JLabel yearLbl;
-    private JTextField yearTxt;
-    private JLabel monthLbl;
-    private JTextField monthTxt;
-    private JLabel dayLbl;
-    private JTextField dayTxt;
-    private JPanel yearPnl;
-    private JPanel monthPnl;
-    private JPanel dayPnl;
-    private JPanel mobileNumberPnl;
-    private JLabel mobileNumberLbl;
-    private JTextField mobileNumberTxt;
-    private JPanel patientIDPnl;
-    private JLabel patientIDLbl;
-    private JTextField patientIDTxt;
-    private JPanel otherPnl;
-    private JPanel costPnl;
-    private JLabel costLbl;
-    private JTextField costTxt;
-    private JPanel notyPnl;
-    private JLabel notyLbl;
-    private JPanel btnPnl;
-    private JButton submitBtn;
-    private JPanel doctorDetailsPnl;
-    private JLabel doctorNameLbl;
-    private JLabel consultationDateLbl;
-    private JLabel consultationTimeLbl;
+    private JLabel photoLbl,imageLbl,noteLbl,consultationTimeLbl,consultationDateLbl,doctorNameLbl,notyLbl,costLbl,patientIDLbl,warningLbl,addConsultationLbl,firstNameLbl,surnameLbl,dateOfBirthLbl,yearLbl,monthLbl,dayLbl,mobileNumberLbl;
+    private JPanel wanPnl,wanAndSubPnl,imageLblPnl,noteTxtPnl,notePnl,doctorDetailsPnl,btnPnl,notyPnl,costPnl,otherPnl,patientIDPnl,addConsultationPnl,bodyPartPnl,patientDetailsPnl,firstNamePnl,surnamePnl,dateOfBirthPnl,yearPnl,monthPnl,dayPnl,mobileNumberPnl;
+    private JTextField costTxt,patientIDTxt,firstNameTxt,surnameTxt,yearTxt,monthTxt,dayTxt,mobileNumberTxt;
+    private JButton submitBtn,imageSelectBtn,checkBtn,clearBtn;
     private GridBagConstraints GBC;
-    private JPanel notePnl;
-    private JLabel noteLbl;
-    private JPanel noteTxtPnl;
     private JTextArea noteTxtAr;
     private JScrollPane noteSclPn;
-    private JPanel imageLblPnl;
-    private JLabel imageLbl;
-    private JLabel photoLbl;
-    private JButton imageSelectBtn;
-    private JPanel wanAndSubPnl;
-    private JPanel wanPnl;
-    private JButton checkBtn;
-    private JButton clearBtn;
 
 }

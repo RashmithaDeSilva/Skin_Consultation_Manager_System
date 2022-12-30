@@ -2,8 +2,7 @@ package consoleSystem_v2;
 
 import GUI_v2.MainMenuGUI;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import java.io.*;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,13 +14,14 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
 
     private ArrayList<Doctor> doctors = new ArrayList<>();
     private ArrayList<Patient> patients = new ArrayList<>();
-    private Validations validations = new Validations();
+    private final Validations validations = new Validations();
+    private final String os = System.getProperty("os.name");
 
 
     public static void main(String[] args) {
 
         WestminsterSkinConsultationManager WSCM = new WestminsterSkinConsultationManager();
-        System.out.println("\n");
+        WSCM.reloadData();
 
         do{
             int menuNumber = WSCM.mainMenu();
@@ -141,7 +141,6 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
             do{
                 System.out.print("Enter Doctor Mobile Number > ");
                 mobileNumber = strInput();
-                System.out.println(validations.mobileNumberValidator(mobileNumber));
                 if (!validations.mobileNumberValidator(mobileNumber)) {
                     System.out.println("Enter Correct Mobile Number .....!\n");
                 }
@@ -185,7 +184,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
 
         spase();
         System.out.println("\t\t\tDelete Doctor\n");
-        boolean doctorCount = (doctors.size() == 0) ? false : true;
+        boolean doctorCount = doctors.size() != 0;
         if (doctorCount){
             System.out.print("Enter the Doctor Medical License Number to be Deleted > ");
             String medicalLicenceNumber = strInput();
@@ -267,16 +266,104 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     @Override
     public void saveFile() {
 
-        // Create File
-        try {
-            BufferedWriter saveData = new BufferedWriter(new FileWriter("Save_Data_File.txt"));
+        // This Programme Work With only Windows And Mac Os
+        File file;
 
-        }catch (Exception e){
-            System.out.println(e);
+        if (os.startsWith("Windows")) {
+            file = new File(".\\src\\Data\\Data_File.txt");
+            // If File Is Exists It Will Delete
+            if (file.exists()) {
+                file.delete();
+            }
+
+            // This Will Write All Object With The File Using Serializable Interface
+            try (FileOutputStream fos = new FileOutputStream(".\\src\\Data\\Data_File.txt");
+                 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+
+                // Write the object to the file
+                oos.writeObject(doctors);
+                oos.writeObject(patients);
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+
+            System.out.println("Save Data Successfully");
+            spase();
+
+        } else if (os.startsWith("Mac")) {
+            file = new File("./src/Data/Data_File.txt");
+            // If File Is Exists It Will Delete
+            if (file.exists()) {
+                file.delete();
+            }
+
+            // This Will Write All Object With The File Using Serializable Interface
+            try (FileOutputStream fos = new FileOutputStream("./src/Data/Data_File.txt");
+                 ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+
+                // Write the object to the file
+                oos.writeObject(doctors);
+                oos.writeObject(patients);
+            } catch (IOException e) {
+                System.out.println(e);
+            }
+
+            System.out.println("Save Data Successfully");
+            spase();
+
+        } else {
+            System.out.println("This Programme Work With only Windows And Mac Os .....!");
+            spase();
         }
 
+    }
+    @Override
+    public void reloadData(){
 
+        // This Programme Work With only Windows And Mac Os
 
+        if (os.startsWith("Windows")) {
+            File file = new File(".\\src\\Data\\Data_File.txt");
+            if (file.exists()) {
+                // Reload data
+                try (FileInputStream fis = new FileInputStream(".\\src\\Data\\Data_File.txt");
+                     ObjectInputStream ois = new ObjectInputStream(fis)) {
+
+                    // Read the two ArrayList objects from the file
+                    doctors = (ArrayList<Doctor>) ois.readObject();
+                    patients = (ArrayList<Patient>) ois.readObject();
+                } catch (IOException | ClassNotFoundException e) {
+                    System.out.println(e);
+                }
+                System.out.println("Reload Successful\n");
+            } else {
+                System.out.println("There Have No Data File .....!");
+                spase();
+            }
+
+        } else if (os.startsWith("Mac")) {
+            File file = new File("./src/Data/Data_File.txt");
+            if (file.exists()) {
+                // Reload data
+                try (FileInputStream fis = new FileInputStream("./src/Data/Data_File.txt");
+                     ObjectInputStream ois = new ObjectInputStream(fis)) {
+
+                    // Read the two ArrayList objects from the file
+                    doctors = (ArrayList<Doctor>) ois.readObject();
+                    patients = (ArrayList<Patient>) ois.readObject();
+                } catch (IOException | ClassNotFoundException e) {
+                    System.out.println(e);
+                }
+                System.out.println("Reload Successful\n");
+            } else {
+                System.out.println("There Have No Data File .....!");
+                spase();
+            }
+
+        } else {
+            System.out.println("This Programme Work With only Windows And Mac Os .....!");
+            spase();
+        }
     }
     @Override
     public void openGUI() {
