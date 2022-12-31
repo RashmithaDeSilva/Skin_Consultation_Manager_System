@@ -13,7 +13,7 @@ public class ConsultationGUI extends MenuOptionControllerGUI {
 
         // Set Window
         setWindow(600,400,"Consultation");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Set Body
         GUIBody(SCM,mainMenu);
@@ -82,8 +82,7 @@ public class ConsultationGUI extends MenuOptionControllerGUI {
     private String optionNumber = "[2]";
     private String optionName = "Consultation";
     private JLabel consultationMenuNameLbl;
-    private JPanel consultationMenuNamePnl;
-    private JPanel consultationMenuOptionsPnl;
+    private JPanel consultationMenuNamePnl,consultationMenuOptionsPnl;
     private ArrayList<MenuOptionControllerGUI> MOC = new ArrayList<>();
     private ArrayList<JLabel> lbl = new ArrayList<>();
     private ArrayList<JButton> btn = new ArrayList<>();

@@ -21,7 +21,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
         // Set Window
         setWindow(600,400,"Check Doctor Availability");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Set Body
         GUIBody(SCM,MOC);
@@ -235,7 +235,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
                                         hoursTxt.setText("");
 
                                         // Pars That Consultation Object With Correct Doctor Object
-                                        new AddConsultationGUI(selectDoctorNumber-1,consultation,SCM).setVisible(true);
+                                        new AddConsultationGUI((selectDoctorNumber-1),consultation,SCM).setVisible(true);
 
                                     } else {
                                         // If This Doctor Is Not Available Programme Will Shows Alert Box
@@ -324,7 +324,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
         }
     }
 
-    // Chack Doctor Availability
+    // Check Doctor Availability
     private boolean checkDoctorAvailability(Doctor doctor, LocalDate date, String hoursTxt,int hoursCount){
         boolean check = true;
         LocalTime time = LocalTime.parse(hoursTxt+":00");
@@ -382,33 +382,12 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
     private String optionNumber = "[1]";
     private String optionName = "Add Consultation";
-    private JPanel CheckDoctorAvailabilityNamePnl;
-    private JLabel CheckDoctorAvailabilityNameLbl;
-    private JPanel bodyPartPnl;
-    private JPanel doctorsNamePnl;
-    private JButton backBtn;
-    private JPanel btnPnl;
-    private JPanel datePnl;
-    private JLabel dateLbl;
-    private JLabel yearLbl;
-    private JTextField yearTxt;
-    private JLabel monthLbl;
-    private JTextField monthTxt;
-    private JLabel dayLbl;
-    private JTextField dayTxt;
+    private JPanel hoursCountSldPnl,hoursCountPnl,warningPnl,timePnl,CheckDoctorAvailabilityNamePnl,bodyPartPnl,doctorsNamePnl,btnPnl,datePnl;
+    private JLabel hoursCountLbl,hoursCountNameLbl,warningLbl,hoursLbl,timeLbl,dayLbl,monthLbl,yearLbl,CheckDoctorAvailabilityNameLbl,dateLbl;
+    private JButton backBtn,checkBtn;
+    private JTextField yearTxt,monthTxt,dayTxt,hoursTxt;
     private JComboBox<String> selectDoctorCmBx;
     private String[] doctorNames;
-    private JPanel timePnl;
-    private JLabel timeLbl;
-    private JLabel hoursLbl;
-    private JTextField hoursTxt;
-    private JPanel warningPnl;
-    private JLabel warningLbl;
-    private JButton checkBtn;
-    private JPanel hoursCountPnl;
-    private JLabel hoursCountNameLbl;
-    private JLabel hoursCountLbl;
-    private JPanel hoursCountSldPnl;
     private JSlider hoursCountSld;
     private Font font;
 

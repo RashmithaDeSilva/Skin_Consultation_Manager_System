@@ -10,7 +10,7 @@ public class CheckConsultationDetailsGUI extends MenuOptionControllerGUI{
     public CheckConsultationDetailsGUI(SkinConsultationManager SCM,MenuOptionControllerGUI MOC){
         // Set Window
         setWindow(600,400,"Check Consultation Details");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         // Set Body
         setBody(SCM,MOC);
@@ -94,15 +94,11 @@ public class CheckConsultationDetailsGUI extends MenuOptionControllerGUI{
     private String optionNumber = "[2]";
     private String optionName = "Check Consultation";
     private Font font;
-    private JPanel CheckConsultationDetailsNamePnl;
+    private JPanel CheckConsultationDetailsNamePnl,bodyPartPnl,doctorsNamePnl,btnPnl;
     private JLabel CheckConsultationDetailsNameLbl;
-    private JPanel bodyPartPnl;
-    private JPanel doctorsNamePnl;
     private String[] doctorNames;
     private JComboBox selectDoctorCmBx;
     private GridBagConstraints GBC;
-    private JPanel btnPnl;
-    private JButton backBtn;
-    private JButton checkBtn;
+    private JButton backBtn,checkBtn;
 }
 

@@ -13,7 +13,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.Key;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
@@ -21,7 +20,7 @@ import java.util.Random;
 public class AddConsultationGUI extends MenuOptionControllerGUI {
 
     // Constructor
-    AddConsultationGUI(int doctorPosition, Consultation consultation, SkinConsultationManager SCM) throws IOException {
+    AddConsultationGUI(int doctorPosition, Consultation consultation, SkinConsultationManager SCM) {
         // Set Window
         setWindow(600,685,"Add Consultation");
 
@@ -29,13 +28,15 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         consultation.setPatient(new Patient());
 
         // Set Body
+        warningLbl = new JLabel("^_^");
         GUIBody(doctorPosition,consultation,SCM);
 
     }
 
 
     // Set Body
-    private void GUIBody(int doctorPosition, Consultation consultation,SkinConsultationManager SCM) throws IOException {
+    private void GUIBody(int doctorPosition, Consultation consultation,SkinConsultationManager SCM) {
+
         // Set Main Menu Name
         addConsultationPnl = new JPanel(new FlowLayout());
         addConsultationLbl = new JLabel("Add Consultation");
@@ -260,14 +261,18 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 2;
         GBC.gridy = 2;
         photoLbl = new JLabel();
-        photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Images\\Empty.jpg"),200,120)));
+        try {
+            photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Images\\Empty.jpg"),200,120)));
+        } catch (Exception e) {
+            warningLbl.setText(e.getMessage());
+        }
+
         otherPnl.add(photoLbl,GBC);
         bodyPartPnl.add(otherPnl);
 
         // Submit Button
         wanAndSubPnl = new JPanel(new GridLayout(2,1));
         wanPnl = new JPanel(new FlowLayout());
-        warningLbl = new JLabel("^_^");
         warningLbl.setFont(font);
         wanPnl.add(warningLbl);
         wanAndSubPnl.add(wanPnl);
@@ -416,14 +421,30 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
     private static String generateSecretKey(){
         Random random = new Random();
         StringBuilder key = new StringBuilder();
-        for (int i=0;i<16;i++) {
-            int randNum = random.nextInt(97,123);
-            if(randNum == 92 || randNum == 47 || randNum == 46 || randNum == 34) {
-                key.append("!");
-            } else {
-                key.append(String.valueOf((char)randNum));
+        int randNum = random.nextInt(0,2);
+
+        // This Secret Key Generate Will Generate Simple Or Capital Secret Keys
+        if (randNum == 0) {
+            for (int i=0;i<16;i++) {
+                randNum = random.nextInt(97,123);
+                if(randNum == 92 || randNum == 47 || randNum == 46 || randNum == 34) {
+                    key.append("!");
+                } else {
+                    key.append(String.valueOf((char)randNum));
+                }
+            }
+
+        } else {
+            for (int i=0;i<16;i++) {
+                randNum = random.nextInt(65,91);
+                if(randNum == 92 || randNum == 47 || randNum == 46 || randNum == 34) {
+                    key.append("!");
+                } else {
+                    key.append(String.valueOf((char)randNum));
+                }
             }
         }
+
         return key.toString();
     }
 
@@ -440,7 +461,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                 FileInputStream in = new FileInputStream(absolutePath);
                 // In Hear Encrypt Image name Is No Point
                 // Then No One Can Understand What Patient Skin Image Is This
-                FileOutputStream out = new FileOutputStream(".\\src\\Data\\"+imgName+"p.jpg");
+                FileOutputStream out = new FileOutputStream(".\\src\\Data\\"+imgName+".jpg");
 
                 Key secretKey = new SecretKeySpec(key.getBytes(), "AES");
                 Cipher cipher = Cipher.getInstance("AES");
@@ -463,7 +484,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                 out.close();
 
                 // Set Encrypt Key And Image Absolute Path In To Patient
-                patient.setSkinEncryptImage(".\\src\\Data\\"+imgName+"patient.jpg");
+                patient.setSkinEncryptImage(".\\src\\Data\\"+imgName+".jpg");
                 patient.setKey(key);
 
             } catch (Exception e){

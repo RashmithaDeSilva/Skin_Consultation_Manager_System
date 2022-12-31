@@ -368,6 +368,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     @Override
     public void openGUI() {
         new MainMenuGUI(this).setVisible(true);
+        spase();
     }
 
 

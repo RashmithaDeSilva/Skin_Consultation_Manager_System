@@ -17,6 +17,7 @@ public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
         setBody(doctor);
     }
 
+
     private void setBody(Doctor doctor){
         font = new Font("SansSerif",Font.BOLD,15);
 
@@ -62,7 +63,6 @@ public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
 
     }
 
-
     private JTable consultationList(ArrayList<Consultation> conArrList){
 
         String[] columnNames = {"Number","Patient Name","Patient ID","Consultation Date","Consultation Time","Requested Time"};
@@ -85,7 +85,7 @@ public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
                 } else if (j == 4) {
                     consultationArray[i][j] = String.valueOf(conArrList.get(i).getConsultationStartTime());
                 } else {
-                    consultationArray[i][j] = String.valueOf(conArrList.get(i).getRequestedTime());
+                    consultationArray[i][j] = String.valueOf(conArrList.get(i).getRequestedTime())+" Hours";
                 }
             }
         }
@@ -112,6 +112,7 @@ public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
                     warningLbl.setText("");
                     valideID = true;
                     new AllDetailsGUI(doctor,(Integer.parseInt(viewTxt.getText())-1)).setVisible(true);
+                    break;
                 }
             }
 

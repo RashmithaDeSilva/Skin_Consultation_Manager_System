@@ -232,9 +232,7 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
     private String optionName = "View List Of Doctors";
     private JLabel optionNameLbl;
     private JTable doctorsTable;
-    private JButton firstNameBtn;
-    private JButton surnameBtn;
-    private JButton refreshBtn;
+    private JButton firstNameBtn,surnameBtn,refreshBtn;
     private Font font;
 
     @Override

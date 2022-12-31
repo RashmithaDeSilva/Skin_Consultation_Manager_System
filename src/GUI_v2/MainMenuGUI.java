@@ -113,8 +113,7 @@ public class MainMenuGUI extends JFrame {
 
 
     private JLabel mainMenuNameLbl;
-    private JPanel mainMenuNamePnl;
-    private JPanel mainMenuOptionsPnl;
+    private JPanel mainMenuNamePnl,mainMenuOptionsPnl;
     private ArrayList<MenuOptionControllerGUI> MOC = new ArrayList<>();
     private ArrayList<JLabel> lbl = new ArrayList<>();
     private ArrayList<JButton> btn = new ArrayList<>();

@@ -164,10 +164,12 @@ public class AllDetailsGUI extends MenuOptionControllerGUI{
         GBC.gridy = 3;
         patientSkinImageLbl = new JLabel();
         try {
+            // Decryption Patient Skin Image and Resize And Set It In Window
             image = imageDecryption(doctor.getConsultation(consultationPosition).getPatient());
             if (image != null) {
                 patientSkinImageLbl.setIcon(new ImageIcon(resizeImage(image,300,150)));
             } else {
+                // If Patient have Not Image It Will Set Default Image
                 if (os.startsWith("Windows")) {
                     image = new File(".\\src\\Images\\Empty.jpg");
                 } else if (os.startsWith("Mac")) {
@@ -176,12 +178,15 @@ public class AllDetailsGUI extends MenuOptionControllerGUI{
                 patientSkinImageLbl.setIcon(new ImageIcon(resizeImage(image,300,150)));
             }
         } catch (Exception e) {
+            // If Patient Image Is Note In Data Base It Will Show This
             patientSkinImageLbl.setText("This Image Is Not in Data Base");
         }
         patientDetailsPnl.add(patientSkinImageLbl,GBC);
         bodyPnl.add(patientDetailsPnl);
 
-        image.delete();
+        if (!image.equals(".\\src\\Images\\Empty.jpg")) {
+            image.delete();
+        }
         add(bodyPnl);
 
         // Delete Button
@@ -224,16 +229,33 @@ public class AllDetailsGUI extends MenuOptionControllerGUI{
 
     // Secret Key Generate
     private static String generateSecretKey(){
+
         Random random = new Random();
         StringBuilder key = new StringBuilder();
-        for (int i=0;i<16;i++) {
-            int randNum = random.nextInt(97,123);
-            if(randNum == 92 || randNum == 47 || randNum == 46 || randNum == 34) {
-                key.append("!");
-            } else {
-                key.append(String.valueOf((char)randNum));
+        int randNum = random.nextInt(0,2);
+
+        // This Secret Key Generate Will Generate Simple Or Capital Secret Keys
+        if (randNum == 0) {
+            for (int i=0;i<16;i++) {
+                randNum = random.nextInt(97,123);
+                if(randNum == 92 || randNum == 47 || randNum == 46 || randNum == 34) {
+                    key.append("!");
+                } else {
+                    key.append(String.valueOf((char)randNum));
+                }
+            }
+
+        } else {
+            for (int i=0;i<16;i++) {
+                randNum = random.nextInt(65,91);
+                if(randNum == 92 || randNum == 47 || randNum == 46 || randNum == 34) {
+                    key.append("!");
+                } else {
+                    key.append(String.valueOf((char)randNum));
+                }
             }
         }
+
         return key.toString();
     }
 
