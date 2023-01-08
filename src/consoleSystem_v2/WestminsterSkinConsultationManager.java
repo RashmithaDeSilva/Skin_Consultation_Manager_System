@@ -119,6 +119,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 for (Doctor doctor : doctors) {
                     if (doctor.getMedicalLicenceNumber().equals(medicalLicenceNumber)) {
                         System.out.println("This Medical Licence Number is already Entered .....!\n");
+                        loopBreak = true;
                         break;
                     } else {
                         loopBreak = false;
@@ -153,6 +154,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
             System.out.print("Enter the Doctor Medical License Number to be Deleted > ");
             String medicalLicenceNumber = strInput();
 
+            boolean loopBreak = true,loopBreak2 = true;
             for(int i=0;i<doctors.size();i++){
                 if(doctors.get(i).getMedicalLicenceNumber().equals(medicalLicenceNumber)){
                     System.out.println("\nDoctor Name > " + doctors.get(i).getName());
@@ -161,7 +163,6 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                     System.out.println("Doctor Mobile Number > " + doctors.get(i).getMobileNumber());
                     System.out.println("Doctor Specialisation > " + doctors.get(i).getSpecialisation());
 
-                    boolean loopBreak = true;
                     do{
                         System.out.print("\nDo You Want Delete this Doctor (Y/N) > ");
                         String ans = strInput();
@@ -170,16 +171,19 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                             System.out.println("Successfully Deleted .....!");
                             System.out.println("Available Doctor Count is > "+doctors.size());
                             loopBreak = false;
+                            i = doctors.size();
                         } else if (ans.equalsIgnoreCase("N")) {
                             loopBreak = false;
                         }
                     }while (loopBreak);
-                    break;
-                }else {
-                    System.out.println("This Medical License Number is Incorrect .....!");
-                    break;
+                    loopBreak2 = false;
                 }
             }
+
+            if (loopBreak2) {
+                System.out.println("This Medical License Number is Incorrect .....!");
+            }
+
         }else {
             System.out.println("Doctors are not Available .....!");
         }
