@@ -15,41 +15,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     private final String os = System.getProperty("os.name");
 
 
-    public static void main(String[] args) {
-
-        WestminsterSkinConsultationManager WSCM = new WestminsterSkinConsultationManager();
-        WSCM.reloadData();
-
-        do{
-            int menuNumber = WSCM.mainMenu();
-            switch (menuNumber){
-                case -1:
-                    break;
-                case 1:
-                    WSCM.addNewDoctor();
-                    break;
-                case 2:
-                    WSCM.deleteDoctor();
-                    break;
-                case 3:
-                    WSCM.printDoctorsList();
-                    break;
-                case 4:
-                    WSCM.saveFile();
-                    break;
-                case 5:
-                    WSCM.openGUI();
-                    break;
-                case 6:
-                    System.exit(0);
-                default:
-                    System.out.println("Invalid Value .....!\n");
-            }
-        }while(true);
-    }
-
-
-    public int intInput(){
+    private int intInput(){
         Scanner user = new Scanner(System.in);
         int input = -1;
         try{
@@ -59,11 +25,11 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
         }
         return input;
     }
-    public String strInput(){
+    private String strInput(){
         Scanner user = new Scanner(System.in);
         return user.nextLine();
     }
-    public void spase(){
+    private void spase(){
         System.out.println("\n");
         for(int i=0;i<100;i++){
             System.out.print(">");
