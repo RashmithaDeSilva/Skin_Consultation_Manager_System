@@ -1,13 +1,10 @@
 package consoleSystem_v2;
 
 import GUI_v2.MainMenuGUI;
-
 import java.io.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.Scanner;
 
 public class WestminsterSkinConsultationManager implements SkinConsultationManager {
@@ -50,6 +47,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
             }
         }while(true);
     }
+
 
     public int intInput(){
         Scanner user = new Scanner(System.in);
@@ -166,7 +164,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 System.out.print("Enter Doctor Specialisation > ");
                 specialisation = strInput().trim();
                 if (!validations.nameValidator(specialisation,1)) {
-                    System.out.println("Ente Specialisation Correctly .....!\n");
+                    System.out.println("Enter Specialisation Correctly .....!\n");
                 }
             }while(!validations.nameValidator(specialisation,1));
 
@@ -204,6 +202,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                         if(ans.equalsIgnoreCase("Y")){
                             doctors.remove(i);
                             System.out.println("Successfully Deleted .....!");
+                            System.out.println("Available Doctor Count is > "+doctors.size());
                             loopBreak = false;
                         } else if (ans.equalsIgnoreCase("N")) {
                             loopBreak = false;
@@ -223,9 +222,9 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     @Override
     public void printDoctorsList() {
 
-        boolean loopBreak = (doctors.size() != 0) ? true : false;
+        boolean loopBreak = doctors.size() != 0;
         spase();
-        System.out.println("\t\t\tPrint Doctors List\n");
+        System.out.println("\t\t\tDoctors List\n");
 
         if(loopBreak){
             ArrayList<String> tempSurname = new ArrayList<>(doctors.size());
@@ -254,7 +253,7 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
             System.out.println("\t+---------------+-----------+---------------------------+-------------------+-------------------+---------------------------+");
 
             for(int i=0;i<doctors.size();i++){
-                System.out.printf("\t| %-14s| %-10s| %-26s| %-18s| %-18s| %-26s|\n",tempDoctors.get(Integer.valueOf(potions.get(i))).getSurname(),tempDoctors.get(Integer.valueOf(potions.get(i))).getName(),tempDoctors.get(Integer.valueOf(potions.get(i))).getMedicalLicenceNumber(),tempDoctors.get(Integer.valueOf(potions.get(i))).getMobileNumber(),tempDoctors.get(Integer.valueOf(potions.get(i))).getDateOfBirth(),tempDoctors.get(Integer.valueOf(potions.get(i))).getSpecialisation());
+                System.out.printf("\t| %-14s| %-10s| %-26s| %-18s| %-18s| %-26s|\n",tempDoctors.get(Integer.parseInt(potions.get(i))).getSurname(),tempDoctors.get(Integer.parseInt(potions.get(i))).getName(),tempDoctors.get(Integer.parseInt(potions.get(i))).getMedicalLicenceNumber(),tempDoctors.get(Integer.parseInt(potions.get(i))).getMobileNumber(),tempDoctors.get(Integer.parseInt(potions.get(i))).getDateOfBirth(),tempDoctors.get(Integer.parseInt(potions.get(i))).getSpecialisation());
             }
             System.out.println("\t+---------------+-----------+---------------------------+-------------------+-------------------+---------------------------+");
 
@@ -368,7 +367,6 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
     @Override
     public void openGUI() {
         new MainMenuGUI(this).setVisible(true);
-        spase();
     }
 
 

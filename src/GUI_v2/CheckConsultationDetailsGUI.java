@@ -1,11 +1,21 @@
 package GUI_v2;
 
 import consoleSystem_v2.SkinConsultationManager;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class CheckConsultationDetailsGUI extends MenuOptionControllerGUI{
+
+    private String optionNumber = "[2]";
+    private String optionName = "Check Consultation";
+    private Font font;
+    private JPanel checkConsultationDetailsNamePnl,bodyPartPnl,doctorsNamePnl,btnPnl;
+    private JLabel checkConsultationDetailsNameLbl;
+    private String[] doctorNames;
+    private JComboBox selectDoctorCmBx;
+    private GridBagConstraints GBC;
+    private JButton backBtn,checkBtn;
+
 
     public CheckConsultationDetailsGUI(SkinConsultationManager SCM,MenuOptionControllerGUI MOC){
         // Set Window
@@ -18,20 +28,27 @@ public class CheckConsultationDetailsGUI extends MenuOptionControllerGUI{
 
     private void setBody(SkinConsultationManager SCM,MenuOptionControllerGUI MOC) {
         font = new Font("SansSerif",Font.BOLD,14);
+        GBC = new GridBagConstraints();
 
         // Set Consultation Menu Name
-        CheckConsultationDetailsNamePnl = new JPanel(new FlowLayout());
-        CheckConsultationDetailsNameLbl = new JLabel("Check Consultation Details");
-        CheckConsultationDetailsNameLbl.setFont(new Font("SansSerif",Font.BOLD,25));
-        CheckConsultationDetailsNamePnl.add(CheckConsultationDetailsNameLbl);
-        add("North",CheckConsultationDetailsNamePnl);
+        checkConsultationDetailsNamePnl = new JPanel(new GridBagLayout());
+        checkConsultationDetailsNamePnl.setBackground(RGBColor);
+        checkConsultationDetailsNameLbl = new JLabel("Check Consultation Details");
+        checkConsultationDetailsNameLbl.setFont(new Font("SansSerif",Font.BOLD,25));
+
+        GBC.insets = new Insets(50,5,5,5);
+        GBC.gridx = 0;
+        GBC.gridy = 0;
+        checkConsultationDetailsNamePnl.add(checkConsultationDetailsNameLbl,GBC);
+        add("North",checkConsultationDetailsNamePnl);
 
         // Body Parts
         bodyPartPnl = new JPanel(new GridLayout(2,1));
+        bodyPartPnl.setBackground(RGBColor);
 
         // Show Doctors Name And Select Doctor
         doctorsNamePnl = new JPanel(new GridBagLayout());
-        GBC = new GridBagConstraints();
+        doctorsNamePnl.setBackground(RGBColor);
         doctorNames = new String[SCM.getDoctors().size()+1];
         doctorNames[0] = "   Select Doctor   ";
         for (int i=1;i<SCM.getDoctors().size()+1;i++) {
@@ -46,7 +63,10 @@ public class CheckConsultationDetailsGUI extends MenuOptionControllerGUI{
 
         // Back Button
         btnPnl = new JPanel(new GridBagLayout());
+        btnPnl.setBackground(RGBColor);
         backBtn = new JButton("Back");
+        backBtn.setBackground(RGBColor2);
+        backBtn.setForeground(RGBColor3);
         backBtn.setFont(font);
         backBtn.addActionListener( (e) -> {
             MOC.setVisible(true);
@@ -59,6 +79,8 @@ public class CheckConsultationDetailsGUI extends MenuOptionControllerGUI{
 
         // Check Button
         checkBtn = new JButton("Check");
+        checkBtn.setBackground(RGBColor2);
+        checkBtn.setForeground(RGBColor3);
         checkBtn.setFont(font);
         checkBtn.addActionListener( (e) -> checkAddActionListener(SCM));
         GBC.insets = new Insets(5,5,5,5);
@@ -91,14 +113,5 @@ public class CheckConsultationDetailsGUI extends MenuOptionControllerGUI{
         return optionNumber;
     }
 
-    private String optionNumber = "[2]";
-    private String optionName = "Check Consultation";
-    private Font font;
-    private JPanel CheckConsultationDetailsNamePnl,bodyPartPnl,doctorsNamePnl,btnPnl;
-    private JLabel CheckConsultationDetailsNameLbl;
-    private String[] doctorNames;
-    private JComboBox selectDoctorCmBx;
-    private GridBagConstraints GBC;
-    private JButton backBtn,checkBtn;
 }
 

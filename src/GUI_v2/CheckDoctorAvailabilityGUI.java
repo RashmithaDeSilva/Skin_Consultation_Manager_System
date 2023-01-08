@@ -16,6 +16,18 @@ import java.util.*;
 
 public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
+    private String optionNumber = "[1]";
+    private String optionName = "Add Consultation";
+    private JPanel hoursCountSldPnl,hoursCountPnl,timePnl,CheckDoctorAvailabilityNamePnl,bodyPartPnl,doctorsNamePnl,btnPnl,datePnl;
+    private JLabel hoursCountLbl,hoursCountNameLbl,hoursLbl,timeLbl,dayLbl,monthLbl,yearLbl,CheckDoctorAvailabilityNameLbl,dateLbl;
+    private JButton backBtn,checkBtn;
+    private JTextField yearTxt,monthTxt,dayTxt,hoursTxt;
+    private JComboBox<String> selectDoctorCmBx;
+    private String[] doctorNames;
+    private JSlider hoursCountSld;
+    private Font font;
+
+
     // Constructor
     CheckDoctorAvailabilityGUI(SkinConsultationManager SCM, MenuOptionControllerGUI MOC){
 
@@ -32,19 +44,27 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
     public void GUIBody(SkinConsultationManager SCM, MenuOptionControllerGUI MOC){
 
         font = new Font("SansSerif",Font.BOLD,14);
+        GridBagConstraints GBC = new GridBagConstraints();
 
         // Set Consultation Menu Name
-        CheckDoctorAvailabilityNamePnl = new JPanel(new FlowLayout());
+        CheckDoctorAvailabilityNamePnl = new JPanel(new GridBagLayout());
+        CheckDoctorAvailabilityNamePnl.setBackground(RGBColor);
         CheckDoctorAvailabilityNameLbl = new JLabel("Check Doctor Availability");
         CheckDoctorAvailabilityNameLbl.setFont(new Font("SansSerif",Font.BOLD,25));
-        CheckDoctorAvailabilityNamePnl.add(CheckDoctorAvailabilityNameLbl);
+
+        GBC.insets = new Insets(15,5,15,5);
+        GBC.gridx = 0;
+        GBC.gridy = 0;
+        CheckDoctorAvailabilityNamePnl.add(CheckDoctorAvailabilityNameLbl,GBC);
         add("North",CheckDoctorAvailabilityNamePnl);
 
         // Body Parts
         bodyPartPnl = new JPanel(new GridLayout(7,1));
+        bodyPartPnl.setBackground(RGBColor);
 
         // Show Doctors Name And Select Doctor
         doctorsNamePnl = new JPanel(new FlowLayout());
+        doctorsNamePnl.setBackground(RGBColor);
         doctorNames = new String[SCM.getDoctors().size()+1];
         doctorNames[0] = "Select Doctor";
         for (int i=1;i<SCM.getDoctors().size()+1;i++) {
@@ -56,6 +76,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
         // Consultation Date
         datePnl = new JPanel(new FlowLayout());
+        datePnl.setBackground(RGBColor);
         dateLbl = new JLabel("Date  ");
         dateLbl.setFont(font);
         datePnl.add(dateLbl);
@@ -84,6 +105,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
         // Time
         timePnl = new JPanel(new FlowLayout());
+        timePnl.setBackground(RGBColor);
         timeLbl = new JLabel("Time (24 Clock)   ");
         timeLbl.setFont(font);
         timePnl.add(timeLbl);
@@ -98,6 +120,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
         //Hours Count
         hoursCountPnl = new JPanel(new FlowLayout());
+        hoursCountPnl.setBackground(RGBColor);
         hoursCountNameLbl = new JLabel("Select Hours You Want > ");
         hoursCountLbl = new JLabel("   1 Hours");
         hoursCountNameLbl.setFont(font);
@@ -107,6 +130,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
         bodyPartPnl.add(hoursCountPnl);
 
         hoursCountSldPnl = new JPanel(new FlowLayout());
+        hoursCountSldPnl.setBackground(RGBColor);
         hoursCountSld = new JSlider(1,12,1);
         hoursCountSld.addChangeListener( (e) -> {
             hoursCountLbl.setText("   "+hoursCountSld.getValue()+" Hours");
@@ -115,16 +139,12 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
         hoursCountSldPnl.add(hoursCountSld);
         bodyPartPnl.add(hoursCountSldPnl);
 
-        // Warning
-        warningPnl = new JPanel(new FlowLayout());
-        warningLbl = new JLabel("");
-        warningLbl.setFont(font);
-        warningPnl.add(warningLbl);
-        bodyPartPnl.add(warningPnl);
-
         // Back Button
         btnPnl = new JPanel(new FlowLayout());
+        btnPnl.setBackground(RGBColor);
         backBtn = new JButton("Back");
+        backBtn.setBackground(RGBColor2);
+        backBtn.setForeground(RGBColor3);
         backBtn.setFont(font);
         backBtn.addActionListener( (e) -> {
             //This button again shows Consultation Window and hides this window
@@ -135,6 +155,8 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
         // Check Button
         checkBtn = new JButton("Check");
+        checkBtn.setBackground(RGBColor2);
+        checkBtn.setForeground(RGBColor3);
         checkBtn.setFont(font);
         // Check Button validation And It On Action Event
         checkBtn.addActionListener( (e) -> checkBtnAddAction(SCM));
@@ -159,11 +181,8 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
             int selectDoctorNumber = selectDoctorCmBx.getSelectedIndex();
             // If the doctor's checkBox output value is 0 it will show a warning message
             if(selectDoctorNumber != 0){
-                warningLbl.setText("");
 
                 try {
-                    warningLbl.setText("");
-
                     // Date Validation
                     // If the user will enter a single number this code line will set that number with 0
                     // Because LocalDate requests values like this (2022-12-24)
@@ -185,11 +204,9 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
                     int userInputDate = Integer.parseInt(yearTxt.getText()+monthTxt.getText()+dayTxt.getText());
 
                     if (tdy < userInputDate && aftYear > userInputDate){
-                        warningLbl.setText("");
                         consultationDate = LocalDate.parse(yearTxt.getText()+"-"+monthTxt.getText()+"-"+dayTxt.getText());
 
                         try {
-                            warningLbl.setText("");
 
                             // Time Validation
                             // If the user will enter a single number this code line will set that number with 0
@@ -200,13 +217,11 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
 
                             // All Doctors Are Available in 9am - 21pm Only
                             if (Integer.parseInt(hoursTxt.getText()) >= 9 && Integer.parseInt(hoursTxt.getText()) < 21) {
-                                warningLbl.setText("");
 
                                 consultationStartTime = LocalTime.parse(hoursTxt.getText()+":00");
 
                                 // Checking Hours Count Is Right Or Wrong
                                 if (hoursCountSld.getValue() <= (21 - Integer.parseInt(hoursTxt.getText()))) {
-                                    warningLbl.setText("");
 
                                     // Check This Doctor Is Available Or Not
                                     hoursCount = hoursCountSld.getValue();
@@ -296,31 +311,31 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
                                     }
 
                                 } else {
-                                    warningLbl.setText("You Can Select Maximum Hour Count Is " + (21 - Integer.parseInt(hoursTxt.getText()))+" .....!");
+                                    warningMassage("You Can Select Maximum Hour Count Is "+(21 - Integer.parseInt(hoursTxt.getText()))+" !","Warning");
                                 }
 
                             } else {
-                                warningLbl.setText("All Doctors Are Available In 9am - 9pm !");
+                                warningMassage("All Doctors Are Available In 9am - 9pm !","Warning");
                             }
 
                         } catch (NumberFormatException ex){
-                            warningLbl.setText("Fill Time Details Correctly !");
+                            warningMassage("Fill Time Details Correctly !","Warning");
                         }
 
                     } else {
-                        warningLbl.setText("Enter Date Between Today And After One Year !");
+                        warningMassage("Enter Date Between Today And After One Year !","Warning");
                     }
 
                 } catch (NumberFormatException ex){
-                    warningLbl.setText("Fill All Date Details Correctly !");
+                    warningMassage("Fill All Date Details Correctly !","Warning");
                 }
 
             } else {
-                warningLbl.setText("Select Doctor !");
+                warningMassage("Select Doctor !","Warning");
             }
 
         } catch (Exception ex){
-            warningLbl.setText("Fill All Details Correctly !");
+            warningMassage("Fill All Details Correctly !","Warning");
         }
     }
 
@@ -379,16 +394,5 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
     public String getOptionNumber() {
         return optionNumber;
     }
-
-    private String optionNumber = "[1]";
-    private String optionName = "Add Consultation";
-    private JPanel hoursCountSldPnl,hoursCountPnl,warningPnl,timePnl,CheckDoctorAvailabilityNamePnl,bodyPartPnl,doctorsNamePnl,btnPnl,datePnl;
-    private JLabel hoursCountLbl,hoursCountNameLbl,warningLbl,hoursLbl,timeLbl,dayLbl,monthLbl,yearLbl,CheckDoctorAvailabilityNameLbl,dateLbl;
-    private JButton backBtn,checkBtn;
-    private JTextField yearTxt,monthTxt,dayTxt,hoursTxt;
-    private JComboBox<String> selectDoctorCmBx;
-    private String[] doctorNames;
-    private JSlider hoursCountSld;
-    private Font font;
 
 }

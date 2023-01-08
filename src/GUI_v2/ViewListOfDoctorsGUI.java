@@ -1,17 +1,22 @@
 package GUI_v2;
 
-
 import consoleSystem_v2.Doctor;
 import consoleSystem_v2.SkinConsultationManager;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.security.Guard;
 import java.util.ArrayList;
 
 
 public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
+
+    private String optionNumber = "[1]";
+    private String optionName = "View List Of Doctors";
+    private JPanel optionNamePnl;
+    private JLabel optionNameLbl;
+    private JTable doctorsTable;
+    private JButton firstNameBtn,surnameBtn,refreshBtn,setDefaultBtn;
+    private Font font;
+
 
     // Contractor
     ViewListOfDoctorsGUI(SkinConsultationManager SCM, MainMenuGUI mainMenu){
@@ -28,20 +33,18 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
     // Set Body
     private void GUIBody(SkinConsultationManager SCM, MainMenuGUI mainMenu){
 
-        font = new Font("SansSerif",Font.BOLD,15);
+        font = new Font("SansSerif",Font.BOLD,12);
 
         // Set Option Name
-        JPanel optionNamePnl = new JPanel(new FlowLayout());
-        optionNameLbl = new JLabel("View List Of Doctors");
+        optionNamePnl = new JPanel(new FlowLayout());
+        optionNamePnl.setBackground(RGBColor);
+        optionNameLbl = new JLabel("List Of Doctors");
         optionNameLbl.setFont(new Font("SansSerif",Font.BOLD,25));
         optionNamePnl.add(optionNameLbl);
         add("North",optionNamePnl);
 
         // Copy consoleSystem_v2 doctor ArrayList Objs in to New Local ArrayList
-        ArrayList<Doctor> doctorsArrayList = new ArrayList<>();
-        for(int i=0;i<SCM.getDoctors().size();i++){
-            doctorsArrayList.add(SCM.getDoctors().get(i));
-        }
+        ArrayList<Doctor> doctorsArrayList = new ArrayList<>(SCM.getDoctors());
 
         // Set Table
         JScrollPane docList = new JScrollPane(doctorList(doctorsArrayList));
@@ -52,6 +55,8 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
         // Set Sort Button Types
         // Sort By First Name Button
         firstNameBtn = new JButton("Sort First Name");
+        firstNameBtn.setBackground(RGBColor2);
+        firstNameBtn.setForeground(RGBColor3);
         firstNameBtn.setFont(font);
         firstNameBtn.addActionListener( (e) -> {
             setVisible(false);
@@ -63,6 +68,8 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
 
         // Sort By Surname Button
         surnameBtn = new JButton("Sort Surname");
+        surnameBtn.setBackground(RGBColor2);
+        surnameBtn.setForeground(RGBColor3);
         surnameBtn.setFont(font);
         surnameBtn.addActionListener( (e) -> {
             setVisible(false);
@@ -72,8 +79,23 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
             setVisible(true);
         });
 
+        // Set Default Button
+        setDefaultBtn = new JButton("Set Default");
+        setDefaultBtn.setBackground(RGBColor2);
+        setDefaultBtn.setForeground(RGBColor3);
+        setDefaultBtn.setFont(font);
+        setDefaultBtn.addActionListener( (e) -> {
+            setVisible(false);
+            remove(firstNameSort);
+            remove(surnameSort);
+            add("Center",docList);
+            setVisible(true);
+        });
+
         // Refresh Button
         refreshBtn = new JButton("Refresh");
+        refreshBtn.setBackground(RGBColor4);
+        refreshBtn.setForeground(RGBColor5);
         refreshBtn.setFont(font);
         refreshBtn.addActionListener((e) -> {
             SCM.openGUIWithOption(1);
@@ -81,10 +103,11 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
             dispose();
         });
 
-
         JPanel pnl = new JPanel(new FlowLayout());
+        pnl.setBackground(RGBColor);
         pnl.add(firstNameBtn);
         pnl.add(surnameBtn);
+        pnl.add(setDefaultBtn);
         pnl.add(refreshBtn);
         add("South",pnl);
     }
@@ -227,13 +250,6 @@ public class ViewListOfDoctorsGUI extends MenuOptionControllerGUI {
         return doctorsTable;
     }
 
-
-    private String optionNumber = "[1]";
-    private String optionName = "View List Of Doctors";
-    private JLabel optionNameLbl;
-    private JTable doctorsTable;
-    private JButton firstNameBtn,surnameBtn,refreshBtn;
-    private Font font;
 
     @Override
     public String getOptionName() {

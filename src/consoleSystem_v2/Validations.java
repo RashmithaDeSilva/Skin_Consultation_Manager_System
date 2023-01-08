@@ -1,9 +1,7 @@
 package consoleSystem_v2;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.regex.Pattern;
 
@@ -25,19 +23,19 @@ public class Validations {
 
     public boolean nameValidator(String name,int validatePaton){
         // Validate the name using the regular expression
-        // 0 = Name  Validations
-        // 1 = Other String Validations
-
         boolean returnValue = false;
 
+        // 0 = Name  Validations
         if (validatePaton == 0) {
             int nameLength = name.length();
-            if (nameLength >= 4 && nameLength <= 30 && NAME_PATTERN.matcher(name).matches()) {
+            if (nameLength >= 3 && nameLength <= 30 && NAME_PATTERN.matcher(name).matches()) {
                 returnValue = true;
             }
+
         } else if (validatePaton == 1) {
+            // 1 = Other String Validations
             int nameLength = name.length();
-            if (nameLength >= 4 && nameLength <= 100 && NAME_PATTERN.matcher(name).matches()) {
+            if (nameLength >= 5 && nameLength <= 100 && NAME_PATTERN.matcher(name).matches()) {
                 returnValue = true;
             }
         }
@@ -100,7 +98,7 @@ public class Validations {
 
         }catch(Exception e){
             //Invalid Date .....!
-            System.out.println(e);
+            //System.out.println(e);
         }
         return returnBool;
     }

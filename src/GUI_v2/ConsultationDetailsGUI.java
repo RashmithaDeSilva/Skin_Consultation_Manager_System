@@ -9,6 +9,15 @@ import java.util.ArrayList;
 
 public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
 
+    public Font font;
+    private JPanel optionNamePnl,viewPnl,viewTxtAndBtnPnl,warningPnl;
+    private JLabel optionNameLbl,viewNumberLbl;
+    private JScrollPane conList;
+    private JTable cubsultationTable;
+    private JTextField viewTxt;
+    private JButton viewBtn;
+
+
     public ConsultationDetailsGUI(Doctor doctor){
         // Set Window
         setWindow(900,400,"Consultation Details");
@@ -23,6 +32,7 @@ public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
 
         // Set Option Name
         optionNamePnl = new JPanel(new FlowLayout());
+        optionNamePnl.setBackground(RGBColor);
         optionNameLbl = new JLabel("View List Of Doctors");
         optionNameLbl.setFont(new Font("SansSerif",Font.BOLD,25));
         optionNamePnl.add(optionNameLbl);
@@ -40,7 +50,9 @@ public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
 
         // View Buttons
         viewPnl = new JPanel(new GridLayout(2,1));
+        viewPnl.setBackground(RGBColor);
         viewTxtAndBtnPnl = new JPanel(new FlowLayout());
+        viewTxtAndBtnPnl.setBackground(RGBColor);
         viewNumberLbl = new JLabel("Enter Number >");
         viewNumberLbl.setFont(font);
         viewTxtAndBtnPnl.add(viewNumberLbl);
@@ -48,22 +60,17 @@ public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
         viewTxt.setFont(font);
         viewTxtAndBtnPnl.add(viewTxt);
         viewBtn = new JButton("View");
+        viewBtn.setBackground(RGBColor2);
+        viewBtn.setForeground(RGBColor3);
         viewBtn.setFont(font);
         viewBtn.addActionListener((e)-> viewBtnAddActionListener(doctor));
         viewTxtAndBtnPnl.add(viewBtn);
         viewPnl.add(viewTxtAndBtnPnl);
-
-        // Warning Label
-        warningPnl = new JPanel(new FlowLayout());
-        warningLbl = new JLabel("^_^");
-        warningLbl.setFont(font);
-        warningPnl.add(warningLbl);
-        viewPnl.add(warningPnl);
         add("South",viewPnl);
 
     }
 
-    private JTable consultationList(ArrayList<Consultation> conArrList){
+    JTable consultationList(ArrayList<Consultation> conArrList){
 
         String[] columnNames = {"Number","Patient Name","Patient ID","Consultation Date","Consultation Time","Requested Time"};
         String[][] consultationArray = new String[conArrList.size()][columnNames.length];
@@ -103,25 +110,33 @@ public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
 
     private void viewBtnAddActionListener(Doctor doctor){
 
-        if (!viewTxt.getText().equals("") && doctor.getConsultationsArrayList().size() != 0) {
-            warningLbl.setText("");
+        if (!viewTxt.getText().equals("")) {
+            try {
+                if (doctor.getConsultationsArrayList().size() != 0) {
 
-            boolean valideID = false;
-            for (int i=0;i<doctor.getConsultationsArrayList().size();i++) {
-                if ((Integer.parseInt(viewTxt.getText())-1) <= doctor.getConsultationsArrayList().size() && (Integer.parseInt(viewTxt.getText())-1) >= 0) {
-                    warningLbl.setText("");
-                    valideID = true;
-                    new AllDetailsGUI(doctor,(Integer.parseInt(viewTxt.getText())-1)).setVisible(true);
-                    break;
+                    boolean valideID = false;
+                    for (int i=0;i<doctor.getConsultationsArrayList().size();i++) {
+                        if ((Integer.parseInt(viewTxt.getText())-1) <= doctor.getConsultationsArrayList().size() && (Integer.parseInt(viewTxt.getText())-1) >= 0) {
+                            valideID = true;
+                            new AllDetailsGUI(doctor,(Integer.parseInt(viewTxt.getText())-1),this).setVisible(true);
+                            break;
+                        }
+                    }
+
+                    if (!valideID) {
+                        warningMassage("Invalid Number !","Warning");
+                    }
+
+                }else {
+                    warningMassage("Doctor "+doctor.getFullName()+" Have Not Consultations !","Warning");
                 }
-            }
 
-            if (!valideID) {
-                warningLbl.setText("Invalid Number");
+            } catch (Exception e) {
+                warningMassage("Enter Integer Value !","Warning");
             }
 
         } else {
-            warningLbl.setText("Doctor "+doctor.getFullName()+" Have Not Consultations");
+            warningMassage("Enter Number !","Warning");
         }
 
     }
@@ -136,11 +151,4 @@ public class ConsultationDetailsGUI extends MenuOptionControllerGUI{
         return null;
     }
 
-    public Font font;
-    private JPanel optionNamePnl,viewPnl,viewTxtAndBtnPnl,warningPnl;
-    private JLabel optionNameLbl,warningLbl,viewNumberLbl;
-    private JScrollPane conList;
-    private JTable cubsultationTable;
-    private JTextField viewTxt;
-    private JButton viewBtn;
 }

@@ -1,7 +1,6 @@
 package GUI_v2;
 
 import consoleSystem_v2.*;
-
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 import javax.imageio.ImageIO;
@@ -15,9 +14,21 @@ import java.io.IOException;
 import java.security.Key;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Base64;
 import java.util.Random;
 
 public class AddConsultationGUI extends MenuOptionControllerGUI {
+
+    private final String os = System.getProperty("os.name");
+    private Font font;
+    private JLabel photoLbl,imageLbl,noteLbl,consultationTimeLbl,consultationDateLbl,doctorNameLbl,notyLbl,costLbl,patientIDLbl,addConsultationLbl,firstNameLbl,surnameLbl,dateOfBirthLbl,yearLbl,monthLbl,dayLbl,mobileNumberLbl;
+    private JPanel wanPnl,wanAndSubPnl,imageLblPnl,noteTxtPnl,notePnl,doctorDetailsPnl,btnPnl,notyPnl,costPnl,otherPnl,patientIDPnl,addConsultationPnl,bodyPartPnl,patientDetailsPnl,firstNamePnl,surnamePnl,dateOfBirthPnl,yearPnl,monthPnl,dayPnl,mobileNumberPnl;
+    private JTextField costTxt,patientIDTxt,firstNameTxt,surnameTxt,yearTxt,monthTxt,dayTxt,mobileNumberTxt;
+    private JButton submitBtn,imageSelectBtn,checkBtn,clearBtn;
+    private GridBagConstraints GBC;
+    private JTextArea noteTxtAr;
+    private JScrollPane noteSclPn;
+
 
     // Constructor
     AddConsultationGUI(int doctorPosition, Consultation consultation, SkinConsultationManager SCM) {
@@ -26,9 +37,9 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
 
         // Set Empty Patient
         consultation.setPatient(new Patient());
+        consultation.getPatient().setKey(generateSecretKey());
 
         // Set Body
-        warningLbl = new JLabel("^_^");
         GUIBody(doctorPosition,consultation,SCM);
 
     }
@@ -39,6 +50,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
 
         // Set Main Menu Name
         addConsultationPnl = new JPanel(new FlowLayout());
+        addConsultationPnl.setBackground(RGBColor);
         addConsultationLbl = new JLabel("Add Consultation");
         addConsultationLbl.setFont(new Font("SansSerif",Font.BOLD,25));
         addConsultationPnl.add(addConsultationLbl);
@@ -46,12 +58,14 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
 
         // Main Body
         bodyPartPnl = new JPanel(new FlowLayout());
+        bodyPartPnl.setBackground(RGBColor);
         font = new Font("SansSerif",Font.BOLD,14);
 
 
         // Doctor Details
         doctorDetailsPnl = new JPanel(new GridBagLayout());
-        doctorDetailsPnl.setBorder(BorderFactory.createTitledBorder("Doctor Details"));
+        doctorDetailsPnl.setBackground(RGBColor);
+        doctorDetailsPnl.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2), "Doctor Details"));
         doctorDetailsPnl.setFont(new Font("SansSerif",Font.BOLD,14));
         GBC = new GridBagConstraints();
 
@@ -85,7 +99,8 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
 
         // Patient Details
         patientDetailsPnl = new JPanel(new GridBagLayout());
-        patientDetailsPnl.setBorder(BorderFactory.createTitledBorder("Patient Details"));
+        patientDetailsPnl.setBackground(RGBColor);
+        patientDetailsPnl.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2), "Patient Details"));
         patientDetailsPnl.setFont(new Font("SansSerif",Font.BOLD,14));
 
         // First name
@@ -93,6 +108,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 0;
         GBC.gridy = 0;
         firstNamePnl = new JPanel(new FlowLayout());
+        firstNamePnl.setBackground(RGBColor);
         firstNameLbl = new JLabel("First Name");
         firstNameLbl.setFont(font);
         firstNamePnl.add(firstNameLbl);
@@ -106,6 +122,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 1;
         GBC.gridy = 0;
         surnamePnl = new JPanel(new FlowLayout());
+        surnamePnl.setBackground(RGBColor);
         surnameLbl = new JLabel("Surname");
         surnameLbl.setFont(font);
         surnamePnl.add(surnameLbl);
@@ -119,6 +136,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 0;
         GBC.gridy = 1;
         dateOfBirthPnl = new JPanel(new FlowLayout());
+        dateOfBirthPnl.setBackground(RGBColor);
         dateOfBirthLbl = new JLabel("Date Of Birth");
         dateOfBirthLbl.setFont(font);
         dateOfBirthPnl.add(dateOfBirthLbl);
@@ -129,6 +147,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 1;
         GBC.gridy = 1;
         yearPnl = new JPanel(new FlowLayout());
+        yearPnl.setBackground(RGBColor);
         yearLbl = new JLabel("Y");
         yearLbl.setFont(font);
         yearPnl.add(yearLbl);
@@ -141,6 +160,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 2;
         GBC.gridy = 1;
         monthPnl = new JPanel(new FlowLayout());
+        monthPnl.setBackground(RGBColor);
         monthLbl = new JLabel("M");
         monthLbl.setFont(font);
         monthPnl.add(monthLbl);
@@ -153,6 +173,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 3;
         GBC.gridy = 1;
         dayPnl = new JPanel(new FlowLayout());
+        dayPnl.setBackground(RGBColor);
         dayLbl = new JLabel("D");
         dayLbl.setFont(font);
         dayPnl.add(dayLbl);
@@ -166,6 +187,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 0;
         GBC.gridy = 2;
         mobileNumberPnl = new JPanel(new FlowLayout());
+        mobileNumberPnl.setBackground(RGBColor);
         mobileNumberLbl = new JLabel("Mobile Number");
         mobileNumberLbl.setFont(font);
         mobileNumberPnl.add(mobileNumberLbl);
@@ -179,6 +201,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 1;
         GBC.gridy = 2;
         patientIDPnl = new JPanel(new FlowLayout());
+        patientIDPnl.setBackground(RGBColor);
         patientIDLbl = new JLabel("Patient ID");
         patientIDLbl.setFont(font);
         patientIDPnl.add(patientIDLbl);
@@ -190,7 +213,8 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
 
         // Other Details
         otherPnl = new JPanel(new GridBagLayout());
-        otherPnl.setBorder(BorderFactory.createTitledBorder("Other Details"));
+        otherPnl.setBackground(RGBColor);
+        otherPnl.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.black,2), "Other Details"));
         otherPnl.setFont(new Font("SansSerif",Font.BOLD,14));
 
         // Cost
@@ -198,6 +222,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 0;
         GBC.gridy = 0;
         costPnl = new JPanel(new FlowLayout());
+        costPnl.setBackground(RGBColor);
         costLbl = new JLabel("Cost £ ");
         costLbl.setFont(font);
         costPnl.add(costLbl);
@@ -210,6 +235,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 1;
         GBC.gridy = 0;
         notyPnl = new JPanel(new FlowLayout());
+        notyPnl.setBackground(RGBColor);
         notyLbl = new JLabel("£15 Per Hour Firs Time After £25");
         notyLbl.setFont(font);
         notyPnl.add(notyLbl);
@@ -220,6 +246,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 0;
         GBC.gridy = 1;
         notePnl = new JPanel(new FlowLayout());
+        notePnl.setBackground(RGBColor);
         noteLbl = new JLabel("Extra Note");
         noteLbl.setFont(font);
         notePnl.add(noteLbl);
@@ -229,6 +256,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 1;
         GBC.gridy = 1;
         noteTxtPnl = new JPanel(new FlowLayout());
+        noteTxtPnl.setBackground(RGBColor);
         noteTxtAr = new JTextArea(4,30);
         noteTxtAr.setFont(font);
         noteSclPn = new JScrollPane(noteTxtAr);
@@ -240,6 +268,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridx = 0;
         GBC.gridy = 2;
         imageLblPnl = new JPanel(new FlowLayout());
+        imageLblPnl.setBackground(RGBColor);
         imageLbl = new JLabel("Select Image");
         imageLbl.setFont(font);
         imageLblPnl.add(imageLbl);
@@ -253,7 +282,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
             try {
                 fileSelector(consultation.getPatient());
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                warningMassage("File Select Error !", "Warning");
             }
         });
         otherPnl.add(imageSelectBtn,GBC);
@@ -262,35 +291,46 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         GBC.gridy = 2;
         photoLbl = new JLabel();
         try {
-            photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Images\\Empty.jpg"),200,120)));
+            if (os.startsWith("Windows")) {
+                photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Data\\Empty.jpg"),200,120)));
+            } else if (os.startsWith("Mac")) {
+                photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Data\\Empty.jpg"),200,120)));
+            } else {
+                photoLbl.setText("Image Is Not In Data Base Or Your OS Is Not Supported !");
+            }
+
         } catch (Exception e) {
-            warningLbl.setText(e.getMessage());
+            warningMassage("Empty Image Is Not In Database !","Warning");
         }
 
         otherPnl.add(photoLbl,GBC);
         bodyPartPnl.add(otherPnl);
 
         // Submit Button
-        wanAndSubPnl = new JPanel(new GridLayout(2,1));
-        wanPnl = new JPanel(new FlowLayout());
-        warningLbl.setFont(font);
-        wanPnl.add(warningLbl);
-        wanAndSubPnl.add(wanPnl);
+        wanAndSubPnl = new JPanel(new GridLayout(1,1));
+        wanAndSubPnl.setBackground(RGBColor);
         btnPnl = new JPanel(new FlowLayout());
+        btnPnl.setBackground(RGBColor);
         clearBtn = new JButton("Clear");
+        clearBtn.setBackground(RGBColor2);
+        clearBtn.setForeground(RGBColor3);
         clearBtn.setFont(font);
         clearBtn.addActionListener((e)-> {
             try {
-                cliarAddAction(consultation);
+                clearAddAction(consultation);
             } catch (IOException ex) {
-                throw new RuntimeException(ex);
+                warningMassage("Clear Error !","Warning");
             }
         });
         clearBtn.addActionListener((e)->{});
         checkBtn = new JButton("Check");
+        checkBtn.setBackground(RGBColor2);
+        checkBtn.setForeground(RGBColor3);
         checkBtn.setFont(font);
         checkBtn.addActionListener((e)->checkBtnAddAction(SCM,consultation));
         submitBtn = new JButton("Submit");
+        submitBtn.setBackground(RGBColor2);
+        submitBtn.setForeground(RGBColor3);
         submitBtn.addActionListener( event -> submitAddAction(SCM,consultation,doctorPosition));
         submitBtn.setEnabled(false);
         submitBtn.setFont(font);
@@ -300,14 +340,25 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         wanAndSubPnl.add(btnPnl);
 
 
-        add("West",new JLabel("          "));
         add("Center",bodyPartPnl);
-        add("East",new JLabel("          "));
         add("South",wanAndSubPnl);
     }
 
     // File Selector
     private void fileSelector(Patient patient) throws IOException {
+
+        boolean imageSelect = false;
+        File file = null;
+
+        // If Eny Image in already select then that image deletes and set new image
+        if (patient.getSkinEncryptImage() != null) {
+            // Delete old encrypt image
+            try {
+                file = new File(patient.getSkinEncryptImage());
+            } catch (Exception e){
+                // In Hear Haven't imaged It Will Happen Exception Now It Will Not Happen
+            }
+        }
 
         // This Programme Working With Windows And macOS
 
@@ -319,7 +370,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
 
             // If Select Eny File It Will Return O If Cansel It Will Return 1
             if (response == JFileChooser.APPROVE_OPTION) { // APPROVE_OPTION or 0
-                warningLbl.setText("");
+                imageSelect = true;
 
                 // Get File
                 File imgFile = new File(fileChooser.getSelectedFile().getAbsolutePath());
@@ -333,7 +384,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                     imageEncrypting(imgFile.getAbsolutePath(),patient);
 
                 } else {
-                    warningLbl.setText("This Is Not Image");
+                    warningMassage("This Is Not Image !", "Warning");
                 }
             }
 
@@ -345,7 +396,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
 
             // If Select Eny File It Will Return O If Cansel It Will Return 1
             if (response == JFileChooser.APPROVE_OPTION) { // APPROVE_OPTION or 0
-                warningLbl.setText("");
+                imageSelect = true;
 
                 // Get File
                 File imgFile = new File(fileChooser.getSelectedFile().getAbsolutePath());
@@ -359,12 +410,21 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                     imageEncrypting(imgFile.getAbsolutePath(),patient);
 
                 } else {
-                    warningLbl.setText("This Is Not Image");
+                    warningMassage("This Is Not Image !", "Warning");
                 }
             }
 
         } else {
-            warningLbl.setText("try with windows or macOS");
+            warningMassage("Try With Windows or MacOS !", "Warning");
+        }
+
+        if (imageSelect) {
+            // Delete old encrypt image
+            try {
+                file.delete();
+            } catch (Exception e){
+                // In Hear Haven't imaged It Will Happen Exception Now It Will Not Happen
+            }
         }
     }
 
@@ -423,7 +483,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         StringBuilder key = new StringBuilder();
         int randNum = random.nextInt(0,2);
 
-        // This Secret Key Generate Will Generate Simple Or Capital Secret Keys
+        // This Secret Key Generate Will Simple Or Capital Secret Keys
         if (randNum == 0) {
             for (int i=0;i<16;i++) {
                 randNum = random.nextInt(97,123);
@@ -452,7 +512,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
     private void imageEncrypting(String absolutePath,Patient patient) throws IOException {
 
         // This Programme Working With Windows And macOS
-        String key = generateSecretKey();
+        String key = patient.getKey();
         String imgName = generateSecretKey();
 
         if (os.startsWith("Windows")) { // Code to execute on Windows
@@ -488,8 +548,8 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                 patient.setKey(key);
 
             } catch (Exception e){
-                photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Images\\Empty.jpg"),200,120)));
-                warningLbl.setText("Select Image Again");
+                photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Data\\Empty.jpg"),200,120)));
+                warningMassage("Select Image Again !", "Warning");
             }
 
         } else if (os.startsWith("Mac")) { // Code to execute on macOS
@@ -523,8 +583,8 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                 patient.setKey(key);
 
             } catch (Exception e){
-                photoLbl.setIcon(new ImageIcon(resizeImage(new File("./src/Images/Empty.jpg"),200,120)));
-                warningLbl.setText("Select Image Again");
+                photoLbl.setIcon(new ImageIcon(resizeImage(new File("./src/Data/Empty.jpg"),200,120)));
+                warningMassage("Select Image Again !", "Warning");
             }
         }
     }
@@ -535,87 +595,99 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         Validations validations = new Validations();
 
         if (validations.nameValidator(firstNameTxt.getText(),0)) {
-            warningLbl.setText("");
             if (validations.nameValidator(surnameTxt.getText(),0)) {
-                warningLbl.setText("");
                 if (validations.ageValidatorForPatient(yearTxt.getText(),monthTxt.getText(),dayTxt.getText())) {
-                    warningLbl.setText("");
                     if (validations.mobileNumberValidator(mobileNumberTxt.getText())) {
-                        warningLbl.setText("");
                         if (!patientIDTxt.getText().equals("")) {
-                            warningLbl.setText("");
-                            if (!costTxt.getText().equals("")) {
-                                warningLbl.setText("");
 
-                                // Check All Patients List
-                                int response = -1;
-                                boolean patientIDCheck = false;
-                                for (int i=0;i<SCM.getPatients().size();i++) {
-                                    if (SCM.getPatient(i).getPatientID().equals(patientIDTxt.getText())) {
-                                        patientIDCheck = true;
-                                        response = JOptionPane.showConfirmDialog(null,
-                                                "This patient ID already exist\ndo you want to continue with that patient",
-                                                "Warning",
-                                                JOptionPane.YES_NO_OPTION);
-                                        if (response == 0) {
-
-                                            firstNameTxt.setText(SCM.getPatient(i).getName());
-                                            surnameTxt.setText(SCM.getPatient(i).getSurname());
-                                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
-                                            yearTxt.setText(SCM.getPatient(i).getDateOfBirth().format(formatter));
-                                            formatter = DateTimeFormatter.ofPattern("MM");
-                                            monthTxt.setText(SCM.getPatient(i).getDateOfBirth().format(formatter));
-                                            formatter = DateTimeFormatter.ofPattern("dd");
-                                            dayTxt.setText(SCM.getPatient(i).getDateOfBirth().format(formatter));
-                                            mobileNumberTxt.setText(SCM.getPatient(i).getMobileNumber());
-
-                                            firstNameTxt.setEditable(false);
-                                            firstNameTxt.setBackground(Color.LIGHT_GRAY);
-                                            surnameTxt.setEditable(false);
-                                            surnameTxt.setBackground(Color.LIGHT_GRAY);
-                                            yearTxt.setEditable(false);
-                                            yearTxt.setBackground(Color.LIGHT_GRAY);
-                                            monthTxt.setEditable(false);
-                                            monthTxt.setBackground(Color.LIGHT_GRAY);
-                                            dayTxt.setEditable(false);
-                                            dayTxt.setBackground(Color.LIGHT_GRAY);
-                                            mobileNumberTxt.setEditable(false);
-                                            mobileNumberTxt.setBackground(Color.LIGHT_GRAY);
-                                            patientIDTxt.setEditable(false);
-                                            patientIDTxt.setBackground(Color.LIGHT_GRAY);
-
-                                            // Check Cost And Set
-                                            notyLbl.setText("£25 Per Hour :  h"+consultation.getRequestedTime()+"  x  £25  =  £"+(consultation.getRequestedTime()*25));
-                                            submitBtn.setEnabled(true);
-                                        }
-                                        break;
-                                    }
-                                }
-
-                                if (!patientIDCheck) {
-                                    // Check Cost And Set
-                                    notyLbl.setText("£15 Per Hour :  h"+consultation.getRequestedTime()+"  x  £15  =  £"+(consultation.getRequestedTime()*15));
-                                    patientIDTxt.setEditable(false);
-                                    submitBtn.setEnabled(true);
-                                }
-
-                            } else {
-                                warningLbl.setText("Enter Cost Correctly");
+                            // Date Validation
+                            // If the user will enter a single number this code line will set that number with 0
+                            // Because LocalDate requests values like this (2022-12-24)
+                            if (Integer.parseInt(monthTxt.getText()) < 10 || Integer.parseInt(dayTxt.getText()) < 10) {
+                                monthTxt.setText((monthTxt.getText().length() != 2) ? "0"+monthTxt.getText() : monthTxt.getText());
+                                dayTxt.setText((dayTxt.getText().length() != 2) ? "0"+dayTxt.getText() : dayTxt.getText());
                             }
+
+                            // Check All Patients List
+                            int response = -1;
+                            boolean patientIDCheck = false;
+                            for (int i=0;i<SCM.getPatients().size();i++) {
+                                if (SCM.getPatient(i).getPatientID().equals(patientIDTxt.getText())) {
+                                    patientIDCheck = true;
+                                    response = JOptionPane.showConfirmDialog(null,
+                                            "This patient ID already exist\ndo you want to continue with that patient",
+                                            "Conformation",
+                                            JOptionPane.YES_NO_OPTION);
+                                    if (response == 0) {
+
+                                        firstNameTxt.setText(SCM.getPatient(i).getName());
+                                        surnameTxt.setText(SCM.getPatient(i).getSurname());
+                                        try {
+                                            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy");
+                                            yearTxt.setText(String.format(SCM.getPatient(i).getDateOfBirth().format(formatter)));
+                                            formatter = DateTimeFormatter.ofPattern("MM");
+                                            monthTxt.setText(String.format(SCM.getPatient(i).getDateOfBirth().format(formatter)));
+                                            formatter = DateTimeFormatter.ofPattern("dd");
+                                            dayTxt.setText(String.format(SCM.getPatient(i).getDateOfBirth().format(formatter)));
+
+                                        } catch (Exception e) {
+                                            warningMassage("Data Getting Error !", "Warning");
+                                        }
+                                        mobileNumberTxt.setText(SCM.getPatient(i).getMobileNumber());
+
+                                        firstNameTxt.setEditable(false);
+                                        firstNameTxt.setBackground(Color.LIGHT_GRAY);
+                                        surnameTxt.setEditable(false);
+                                        surnameTxt.setBackground(Color.LIGHT_GRAY);
+                                        yearTxt.setEditable(false);
+                                        yearTxt.setBackground(Color.LIGHT_GRAY);
+                                        monthTxt.setEditable(false);
+                                        monthTxt.setBackground(Color.LIGHT_GRAY);
+                                        dayTxt.setEditable(false);
+                                        dayTxt.setBackground(Color.LIGHT_GRAY);
+                                        mobileNumberTxt.setEditable(false);
+                                        mobileNumberTxt.setBackground(Color.LIGHT_GRAY);
+                                        patientIDTxt.setEditable(false);
+                                        patientIDTxt.setBackground(Color.LIGHT_GRAY);
+
+                                        // Check Cost And Set
+                                        notyLbl.setText("£25 Per Hour :  h"+consultation.getRequestedTime()+"  x  £25  =  £"+(consultation.getRequestedTime()*25));
+                                        submitBtn.setEnabled(true);
+                                    }
+                                    break;
+                                }
+                            }
+
+                            if (!patientIDCheck) {
+                                // Check Cost And Set
+                                notyLbl.setText("£15 Per Hour :  h"+consultation.getRequestedTime()+"  x  £15  =  £"+(consultation.getRequestedTime()*15));
+                                patientIDTxt.setEditable(false);
+                                submitBtn.setEnabled(true);
+                            }
+
+                            // This will set cost automatically
+                            if (!costTxt.getText().equals("")) {
+                                if(!patientIDCheck) {
+                                    costTxt.setText(""+consultation.getRequestedTime() * 15);
+                                } else {
+                                    costTxt.setText(""+consultation.getRequestedTime() * 25);
+                                }
+                            }
+
                         } else {
-                            warningLbl.setText("Enter Patient ID");
+                            warningMassage("Enter Patient ID !","Warning");
                         }
                     } else {
-                        warningLbl.setText("Enter Mobile Number Correctly");
+                        warningMassage("Enter Mobile Number Correctly !","Warning");
                     }
                 } else {
-                    warningLbl.setText("Enter Age Correctly > It Must Be In Today And Before 125 Years");
+                    warningMassage("Enter Age Correctly \nIt Must Be In Today And Before 125 Years !","Warning");
                 }
             } else {
-                warningLbl.setText("Enter Surname Name Correctly");
+                warningMassage("Enter Surname Name Correctly !","Warning");
             }
         } else {
-            warningLbl.setText("Enter First Name Correctly");
+            warningMassage("Enter First Name Correctly !","Warning");
         }
     }
 
@@ -625,17 +697,19 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
         Validations validations = new Validations();
 
         if (validations.nameValidator(firstNameTxt.getText(),0)) {
-            warningLbl.setText("");
             if (validations.nameValidator(surnameTxt.getText(),0)) {
-                warningLbl.setText("");
                 if (validations.ageValidatorForPatient(yearTxt.getText(),monthTxt.getText(),dayTxt.getText())) {
-                    warningLbl.setText("");
                     if (validations.mobileNumberValidator(mobileNumberTxt.getText())) {
-                        warningLbl.setText("");
                         if (!patientIDTxt.getText().equals("")) {
-                            warningLbl.setText("");
                             if (!costTxt.getText().equals("")) {
-                                warningLbl.setText("");
+
+                                // Date Validation
+                                // If the user will enter a single number this code line will set that number with 0
+                                // Because LocalDate requests values like this (2022-12-24)
+                                if (Integer.parseInt(monthTxt.getText()) < 10 || Integer.parseInt(dayTxt.getText()) < 10) {
+                                    monthTxt.setText((monthTxt.getText().length() != 2) ? "0"+monthTxt.getText() : monthTxt.getText());
+                                    dayTxt.setText((dayTxt.getText().length() != 2) ? "0"+dayTxt.getText() : dayTxt.getText());
+                                }
 
                                 boolean checkID = false;
                                 for (int i=0;i<SCM.getPatients().size();i++) {
@@ -647,21 +721,26 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                                             patient.setKey(consultation.getPatient().getKey());
                                             patient.setSkinEncryptImage(consultation.getPatient().getSkinEncryptImage());
                                         } catch (Exception e) {
-                                            warningLbl.setText("You Can Add Patient Skin Image To");
+                                            JOptionPane.showMessageDialog(null,
+                                                    "You Can Add Patient Skin Image To",
+                                                    "Information",
+                                                    JOptionPane.INFORMATION_MESSAGE);
                                         }
                                         consultation.setPatient(patient);
                                         try {
                                             consultation.setCost(Integer.parseInt(costTxt.getText()));
-                                            consultation.setNote(noteTxtAr.getText());
+                                            consultation.setNote(textEncrypting(noteTxtAr.getText(),
+                                                    consultation.getPatient().getKey()));
                                         } catch (Exception e){
-                                            warningLbl.setText("Enter Cost Correctly");
+                                            warningMassage("Enter Cost Correctly !","Warning");
                                         }
                                         SCM.getDoctor(doctorPosition).setConsultation(consultation);
 
                                         // Successfully Massage
                                         JOptionPane.showMessageDialog(null,
                                                 "Consultation Is Added Successfully",
-                                                "Successfully",JOptionPane.INFORMATION_MESSAGE);
+                                                "Successfully",
+                                                JOptionPane.INFORMATION_MESSAGE);
                                         dispose();
                                         break;
                                     }
@@ -674,47 +753,57 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                                     try {
                                         LocalDate DOB = LocalDate.parse(yearTxt.getText()+"-"+monthTxt.getText()+"-"+dayTxt.getText());
                                         consultation.getPatient().setDateOfBirth(DOB);
+                                        checkID = true;
                                     } catch (Exception e) {
-                                        warningLbl.setText("Enter Date Of Birth Correctly");
+                                        warningMassage("Enter Date Of Birth Correctly !","Warning");
                                     }
                                     consultation.getPatient().setMobileNumber(mobileNumberTxt.getText());
                                     consultation.getPatient().setPatientID(patientIDTxt.getText());
-                                    consultation.setNote(noteTxtAr.getText());
+                                    consultation.setCost(Double.parseDouble(costTxt.getText()));
+                                    try {
+                                        consultation.setNote(textEncrypting(noteTxtAr.getText(),
+                                                consultation.getPatient().getKey()));
+                                    } catch (Exception e) {
+                                        consultation.setNote(noteTxtAr.getText());
+                                    }
                                     SCM.getDoctor(doctorPosition).setConsultation(consultation);
 
-                                    // Set New Patient In To WestminsterSkinConsultationManager Main Patient Array List
-                                    Patient patient = new Patient(consultation.getPatient());
-                                    SCM.setPatient(patient);
+                                    if (checkID) {
+                                        // Set New Patient In To WestminsterSkinConsultationManager Main Patient Array List
+                                        Patient patient = new Patient(consultation.getPatient());
+                                        SCM.setPatient(patient);
 
-                                    // Successfully Massage
-                                    JOptionPane.showMessageDialog(null,
-                                            "Consultation Is Added Successfully",
-                                            "Successfully",JOptionPane.INFORMATION_MESSAGE);
-                                    dispose();
+                                        // Successfully Massage
+                                        JOptionPane.showMessageDialog(null,
+                                                "Consultation Is Added Successfully",
+                                                "Successfully",JOptionPane.INFORMATION_MESSAGE);
+                                        dispose();
+                                    }
                                 }
 
                             } else {
-                                warningLbl.setText("Enter Cost Correctly");
+                                warningMassage("Enter Cost Correctly !","Warning");
                             }
                         } else {
-                            warningLbl.setText("Enter Patient ID");
+                            warningMassage("Enter Patient ID !","Warning");
                         }
                     } else {
-                        warningLbl.setText("Enter Mobile Number Correctly");
+                        warningMassage("Enter Mobile Number Correctly !","Warning");
                     }
                 } else {
-                    warningLbl.setText("Enter Age Correctly > It Must Be In Today And Before 125 Years");
+                    warningMassage("Enter Age Correctly \nIt Must Be In Today And Before 125 Years !","Warning");
                 }
             } else {
-                warningLbl.setText("Enter Surname Name Correctly");
+                warningMassage("Enter Surname Name Correctly !","Warning");
             }
         } else {
-            warningLbl.setText("Enter First Name Correctly");
+            warningMassage("Enter First Name Correctly !","Warning");
         }
+
     }
 
     // Clear Button Action Listener
-    private void cliarAddAction(Consultation consultation) throws IOException {
+    private void clearAddAction(Consultation consultation) throws IOException {
 
         int response = JOptionPane.showConfirmDialog(null,
                 "Are You Sure \nYou Want To Clear This",
@@ -722,29 +811,84 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
                 JOptionPane.YES_NO_OPTION);
 
         if (response == 0) {
+
+            // Clear first name
             firstNameTxt.setText("");
             firstNameTxt.setEditable(true);
+            firstNameTxt.setBackground(Color.WHITE);
+
+            // Clear surname
             surnameTxt.setText("");
             surnameTxt.setEditable(true);
+            surnameTxt.setBackground(Color.WHITE);
+
+            // Clear year
             yearTxt.setText("");
             yearTxt.setEditable(true);
+            yearTxt.setBackground(Color.WHITE);
+
+            // Clear month
             monthTxt.setText("");
             monthTxt.setEditable(true);
+            monthTxt.setBackground(Color.WHITE);
+
+            // Clear date
             dayTxt.setText("");
             dayTxt.setEditable(true);
+            dayTxt.setBackground(Color.WHITE);
+
+            // Clear mobile number
             mobileNumberTxt.setText("");
             mobileNumberTxt.setEditable(true);
+            mobileNumberTxt.setBackground(Color.WHITE);
+
+            // Clear ID
             patientIDTxt.setText("");
             patientIDTxt.setEditable(true);
+            patientIDTxt.setBackground(Color.WHITE);
+
+            // Clear cost
             costTxt.setText("");
+
+            // Set default
             notyLbl.setText("£15 Per Hour Firs Time After £25");
+
+            // Clear note
             noteTxtAr.setText("");
-            warningLbl.setText("^_^");
+
+            // Set default
             submitBtn.setEnabled(false);
-            consultation.getPatient().setSkinEncryptImage("");
-            consultation.getPatient().setKey("");
-            photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Images\\Empty.jpg"),200,120)));
+
+            // Delete encrypt image
+            try {
+                File file = new File(consultation.getPatient().getSkinEncryptImage());
+                file.delete();
+            } catch (Exception e){
+                // In Hear Haven't imaged It Will Happen Exception Now It Will Not Happen
+            }
+
+            // Clear encrypt image
+            consultation.getPatient().setSkinEncryptImage(null);
+
+            // Set default image
+            if (os.startsWith("Windows")) {
+                photoLbl.setIcon(new ImageIcon(resizeImage(new File(".\\src\\Data\\Empty.jpg"),200,120)));
+            } else if (os.startsWith("Mac")) {
+                photoLbl.setIcon(new ImageIcon(resizeImage(new File("./src/Data/Empty.jpg"),200,120)));
+            }
+
         }
+    }
+
+    // Encrypting Text
+    private String textEncrypting(String txt,String key) throws Exception {
+
+        Key secretKey = new SecretKeySpec(key.getBytes(), "AES");
+        Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey);
+        byte[] ciphertext = cipher.doFinal(txt.getBytes());
+
+        return Base64.getEncoder().encodeToString(ciphertext);
     }
 
     @Override
@@ -755,16 +899,5 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
     public String getOptionNumber() {
         return null;
     }
-
-
-    private final String os = System.getProperty("os.name");
-    private Font font;
-    private JLabel photoLbl,imageLbl,noteLbl,consultationTimeLbl,consultationDateLbl,doctorNameLbl,notyLbl,costLbl,patientIDLbl,warningLbl,addConsultationLbl,firstNameLbl,surnameLbl,dateOfBirthLbl,yearLbl,monthLbl,dayLbl,mobileNumberLbl;
-    private JPanel wanPnl,wanAndSubPnl,imageLblPnl,noteTxtPnl,notePnl,doctorDetailsPnl,btnPnl,notyPnl,costPnl,otherPnl,patientIDPnl,addConsultationPnl,bodyPartPnl,patientDetailsPnl,firstNamePnl,surnamePnl,dateOfBirthPnl,yearPnl,monthPnl,dayPnl,mobileNumberPnl;
-    private JTextField costTxt,patientIDTxt,firstNameTxt,surnameTxt,yearTxt,monthTxt,dayTxt,mobileNumberTxt;
-    private JButton submitBtn,imageSelectBtn,checkBtn,clearBtn;
-    private GridBagConstraints GBC;
-    private JTextArea noteTxtAr;
-    private JScrollPane noteSclPn;
 
 }
