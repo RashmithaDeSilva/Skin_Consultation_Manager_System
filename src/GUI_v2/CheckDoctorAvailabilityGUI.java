@@ -292,7 +292,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
                                             } else { // And All Doctors Are Not Available
                                                 // After Show Alert Box Auto Reset Consultation Forme
                                                 JOptionPane.showConfirmDialog(null,
-                                                        "All Doctors Are Not Available On This Date And Time!\nSelect Another Date And Time .....",
+                                                        "All Doctors Are Not Available On This Date And Time!\nSelect Another Date And Time .....!",
                                                         "Sorry!", JOptionPane.CLOSED_OPTION);
                                                 selectDoctorCmBx.setSelectedIndex(0);
                                                 yearTxt.setText("");
@@ -315,7 +315,7 @@ public class CheckDoctorAvailabilityGUI extends MenuOptionControllerGUI {
                                 }
 
                             } else {
-                                warningMassage("All Doctors Are Available In 9am - 9pm !","Warning");
+                                warningMassage("All Doctors Are Available From 9am - 9pm !","Warning");
                             }
 
                         } catch (NumberFormatException ex){

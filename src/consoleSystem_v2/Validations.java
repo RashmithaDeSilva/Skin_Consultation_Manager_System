@@ -20,7 +20,6 @@ public class Validations {
     private final Pattern MOBILE_NUMBER_PATTERN = Pattern.compile(MOBILE_NUMBER_REGEX);
 
 
-
     public boolean nameValidator(String name,int validatePaton){
         // Validate the name using the regular expression
         boolean returnValue = false;
@@ -47,6 +46,23 @@ public class Validations {
         return MOBILE_NUMBER_PATTERN.matcher(mobileNumber).matches();
     }
 
+    public boolean validateID(String ID) {
+
+        // Check if the ID is empty
+        if (ID == null || ID.length() < 4) {
+            return false;
+        }
+
+        // Check if the ID contains only letters and digits
+        for (int i = 0; i < ID.length(); i++) {
+            char c = ID.charAt(i);
+            if (!Character.isLetterOrDigit(c)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public boolean ageValidatorForDoctor(String year,String month,String date){
         boolean returnBool = false;
         try{
@@ -59,7 +75,7 @@ public class Validations {
                 LocalDate DOB = LocalDate.parse(year+"-"+month+"-"+date);
                 returnBool = true;
             } else {
-                System.out.println("Age Cannot be Entered in this \nThe Doctor Should be Between 25-60 Years of Age .....!\n");
+                System.out.println("This Age Cannot be Entered \nThe Doctor Should be Between 25-60 Years of Age .....!\n");
             }
 
         }catch(Exception e){

@@ -62,71 +62,102 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
 
             System.out.println("\t\t\tAdd New Doctor\n");
 
+            // Get doctor name
             do{
                 System.out.print("Enter Doctor Name > ");
                 name = strInput().trim();
                 if (!validations.nameValidator(name,0)) {
-                    System.out.println("Enter Correct Name .....!\n");
+                    if (name.length() < 3) {
+                        System.out.println("Enter Name Only Minimum Number Of 3 LETTERS .....!\n");
+                    } else if (name.length() > 30) {
+                        System.out.println("Enter Name Only Maximum Number Of 30 LETTERS .....!\n");
+                    } else {
+                        System.out.println("The Name Can Only Contain LETTERS .....!\n");
+                    }
                 }
             } while (!validations.nameValidator(name,0));
 
+            // Get doctor surname
             do{
                 System.out.print("Enter Doctor Surname > ");
                 surname = strInput().trim();
                 if (!validations.nameValidator(surname,0)) {
-                    System.out.println("Enter Correct Name .....!\n");
+                    if (name.length() < 3) {
+                        System.out.println("Enter Name Only Minimum Number Of 3 LETTERS .....!\n");
+                    } else if (name.length() > 30) {
+                        System.out.println("Enter Name Only Maximum Number Of 30 LETTERS .....!\n");
+                    } else {
+                        System.out.println("The Name Can Only Contain LETTERS .....!\n");
+                    }
                 }
             } while (!validations.nameValidator(surname,0));
 
+            // Get doctor date of birth
             do{
                 System.out.println("Enter Doctor Date of Birth > ");
                 String year, month, date;
 
-                System.out.print("\tYear > ");
-                year = strInput();
-                System.out.print("\tMonth > ");
-                month = strInput();
-                if(Integer.parseInt(month) < 10){
-                    month = "0"+String.valueOf(Integer.valueOf(month));
-                }
-                System.out.print("\tDate > ");
-                date = strInput();
-                if(Integer.parseInt(date) < 10){
-                    date = "0"+String.valueOf(Integer.valueOf(date));
-                }
+                try {
+                    System.out.print("\tYear > ");
+                    year = strInput();
+                    System.out.print("\tMonth > ");
+                    month = strInput();
+                    if(Integer.parseInt(month) < 10){
+                        month = "0"+String.valueOf(Integer.valueOf(month));
+                    }
+                    System.out.print("\tDate > ");
+                    date = strInput();
+                    if(Integer.parseInt(date) < 10){
+                        date = "0"+String.valueOf(Integer.valueOf(date));
+                    }
 
-                loopBreak = !validations.ageValidatorForDoctor(year,month,date);
-                if (!loopBreak){
-                    DOB = LocalDate.parse(year+"-"+month+"-"+date);
-                }
+                    loopBreak = !validations.ageValidatorForDoctor(year,month,date);
+                    if (!loopBreak){
+                        DOB = LocalDate.parse(year+"-"+month+"-"+date);
+                    }
 
+                } catch (Exception e) {
+                    System.out.println("Invalid Date .....!\n");
+                }
             }while(loopBreak);
 
+            // Get doctor mobile number
             do{
                 System.out.print("Enter Doctor Mobile Number > ");
                 mobileNumber = strInput();
                 if (!validations.mobileNumberValidator(mobileNumber)) {
-                    System.out.println("Enter Correct Mobile Number .....!\n");
+                    System.out.println("Invalid Mobile Numbered .....!\n");
                 }
             }while(!validations.mobileNumberValidator(mobileNumber));
 
+            // Get doctor medical licence number
             loopBreak = true;
             do {
                 System.out.print("Enter Doctor Medical Licence Number > ");
                 medicalLicenceNumber = strInput().trim();
 
-                loopBreak = doctors.size() != 0;
-                for (Doctor doctor : doctors) {
-                    if (doctor.getMedicalLicenceNumber().equals(medicalLicenceNumber)) {
-                        System.out.println("This Medical Licence Number is already Entered .....!\n");
-                        loopBreak = true;
-                        break;
-                    } else {
-                        loopBreak = false;
+                if (validations.validateID(medicalLicenceNumber)) {
+                    loopBreak = doctors.size() != 0;
+                    for (Doctor doctor : doctors) {
+                        if (doctor.getMedicalLicenceNumber().equals(medicalLicenceNumber)) {
+                            System.out.println("This Medical Licence Number is Already Entered .....!\n");
+                            loopBreak = true;
+                            break;
+                        } else {
+                            loopBreak = false;
+                        }
+                    }
+                } else {
+                    if (medicalLicenceNumber.length() < 4) {
+                        System.out.println("The Medical License Number Must be Start With 4 Letters or Numbers Only ....!\n");
+                    }else {
+                        System.out.println("The Medical License Number Can be Given in Letters and Numbers Only ....!\n");
                     }
                 }
+
             }while(loopBreak);
 
+            // Get doctor specialisation
             do{
                 System.out.print("Enter Doctor Specialisation > ");
                 specialisation = strInput().trim();
@@ -135,7 +166,10 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 }
             }while(!validations.nameValidator(specialisation,1));
 
+            // set doctor into doctors ArrayList
             doctors.add(new Doctor(name, surname, DOB, mobileNumber, medicalLicenceNumber, specialisation));
+            System.out.println("Doctor Added Successfully");
+            System.out.println("All Doctor Count is "+doctors.size());
             spase();
 
         }else {
@@ -166,14 +200,16 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                     do{
                         System.out.print("\nDo You Want Delete this Doctor (Y/N) > ");
                         String ans = strInput();
-                        if(ans.equalsIgnoreCase("Y")){
+                        if(ans.equalsIgnoreCase("Y") || ans.equalsIgnoreCase("YES")){
                             doctors.remove(i);
                             System.out.println("Successfully Deleted .....!");
                             System.out.println("Available Doctor Count is > "+doctors.size());
                             loopBreak = false;
                             i = doctors.size();
-                        } else if (ans.equalsIgnoreCase("N")) {
+                        } else if (ans.equalsIgnoreCase("N") || ans.equalsIgnoreCase("NO")) {
                             loopBreak = false;
+                        } else {
+                            System.out.println("Incorrect Input .....!");
                         }
                     }while (loopBreak);
                     loopBreak2 = false;
@@ -307,7 +343,6 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 System.out.println("Reload Successful\n");
             } else {
                 System.out.println("There Have No Data File .....!");
-                spase();
             }
 
         } else if (os.startsWith("Mac")) {
@@ -326,7 +361,6 @@ public class WestminsterSkinConsultationManager implements SkinConsultationManag
                 System.out.println("Reload Successful\n");
             } else {
                 System.out.println("There Have No Data File .....!");
-                spase();
             }
 
         } else {

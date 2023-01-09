@@ -807,7 +807,7 @@ public class AddConsultationGUI extends MenuOptionControllerGUI {
 
         int response = JOptionPane.showConfirmDialog(null,
                 "Are You Sure \nYou Want To Clear This",
-                "Warning",
+                "Conformation",
                 JOptionPane.YES_NO_OPTION);
 
         if (response == 0) {
